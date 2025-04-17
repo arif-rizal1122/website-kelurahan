@@ -36,11 +36,11 @@
                     <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                         <i class="las la-tachometer-alt"></i> <span>@lang('translation.dashboards')</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="sidebarDashboards">
+                    <div class="menu-dropdown" id="sidebarDashboards">
                         <ul class="nav nav-sm flex-column">
                             
                             <li class="nav-item">
-                                <a href="{{ route('penduduk.index') }}" class="nav-link">Kependudukan</a>
+                                <a href="{{ route('penduduk.index') }}" class="m-2"><i class="bx bxs-user-check m-2">Kependudukan</i></a>
                             </li>
                             
                         </ul>

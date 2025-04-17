@@ -24,10 +24,12 @@ class PendudukController extends Controller
 
     public function store(StorePendudukRequest $request)
     {
+       
         TwebPenduduk::create($request->validated());
         return redirect()->route('penduduk.index')->with('success', 'Data penduduk berhasil ditambahkan.');
     }
-
+    
+    
     public function edit(TwebPenduduk $penduduk)
     {
         return view('penduduk.edit', compact('penduduk'));

@@ -188,7 +188,7 @@
     modal.find('#edit_id').val($(this).data('id'));
     modal.find('#edit_nik').val($(this).data('nik'));
     modal.find('#edit_nama').val($(this).data('nama'));
-    modal.find('#edit_sex').val($(this).data('sex'));
+    modal.find('#edit_jenis_kelamin').val($(this).data('jenis_kelamin'));
     modal.find('#edit_tempatlahir').val($(this).data('tempatlahir'));
     modal.find('#edit_tanggallahir').val($(this).data('tanggallahir'));
     modal.find('#edit_alamat').val($(this).data('alamat'));

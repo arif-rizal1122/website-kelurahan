@@ -46,26 +46,46 @@
                                 <tr>
                                     <td><?php echo e($penduduk->nama); ?></td>
                                     <td><?php echo e($penduduk->nik); ?></td>
-                                    <td><?php echo e($penduduk->sex); ?></td>
-                                    <td><?php echo e($penduduk->tanggallahir); ?></td>
+                                    <td>
+                                       <?php echo e($penduduk->jenis_kelamin); ?>
+
+                                    </td>
+                                    <td><?php echo e($penduduk->tanggal_lahir); ?></td>
                                     <td><?php echo e($penduduk->alamat_sekarang); ?></td>
                                     <td><?php echo e($penduduk->email); ?></td>
                                     <td>
                                         <a href="<?php echo e(route('penduduk.show', $penduduk->id)); ?>" class="btn btn-sm btn-info">Detail</a>
-                                        <button 
-                                            class="btn btn-sm btn-warning edit-btn" 
+                                        <button class="btn btn-sm btn-warning edit-btn"
                                             data-id="<?php echo e($penduduk->id); ?>"
                                             data-nik="<?php echo e($penduduk->nik); ?>"
                                             data-nama="<?php echo e($penduduk->nama); ?>"
-                                            data-sex="<?php echo e($penduduk->sex); ?>"
-                                            data-tempatlahir="<?php echo e($penduduk->tempatlahir); ?>"
-                                            data-tanggallahir="<?php echo e($penduduk->tanggallahir); ?>"
-                                            data-alamat="<?php echo e($penduduk->alamat_sekarang); ?>"
-                                            data-status="<?php echo e($penduduk->status_dasar); ?>"
+                                            data-email="<?php echo e($penduduk->email); ?>"
+                                            data-jenis_kelamin="<?php echo e($penduduk->jenis_kelamin); ?>"
+                                            data-tempat_lahir="<?php echo e($penduduk->tempat_lahir); ?>"
+                                            data-tanggal_lahir="<?php echo e($penduduk->tanggal_lahir); ?>"
+                                            data-alamat_sekarang="<?php echo e($penduduk->alamat_sekarang); ?>"
+                                            data-alamat_sebelumnya="<?php echo e($penduduk->alamat_sebelumnya); ?>"
+                                            data-agama="<?php echo e($penduduk->agama); ?>"
+                                            data-status_kawin="<?php echo e($penduduk->status_kawin); ?>"
+                                            data-warga_negara="<?php echo e($penduduk->warga_negara); ?>"
+                                            data-pendidikan_terakhir="<?php echo e($penduduk->pendidikan_terakhir); ?>"
+                                            data-pekerjaan="<?php echo e($penduduk->pekerjaan); ?>"
+                                            data-ayah_nik="<?php echo e($penduduk->ayah_nik); ?>"
+                                            data-ibu_nik="<?php echo e($penduduk->ibu_nik); ?>"
+                                            data-nama_ayah="<?php echo e($penduduk->nama_ayah); ?>"
+                                            data-nama_ibu="<?php echo e($penduduk->nama_ibu); ?>"
+                                            data-hubungan_warga="<?php echo e($penduduk->hubungan_warga); ?>"
+                                            data-no_kk_sebelumnya="<?php echo e($penduduk->no_kk_sebelumnya); ?>"
+                                            data-golongan_darah="<?php echo e($penduduk->golongan_darah); ?>"
+                                            data-suku="<?php echo e($penduduk->suku); ?>"
+                                            data-ktp_el="<?php echo e($penduduk->ktp_el); ?>"
+                                            data-status_rekam="<?php echo e($penduduk->status_rekam); ?>"
+                                            data-tempat_cetak_ktp="<?php echo e($penduduk->tempat_cetak_ktp); ?>"
+                                            data-tanggal_cetak_ktp="<?php echo e($penduduk->tanggal_cetak_ktp); ?>"
+                                            data-note="<?php echo e($penduduk->note); ?>"
                                             data-url="<?php echo e(route('penduduk.update', $penduduk->id)); ?>"
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#editPendudukModal"
-                                        >
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editPendudukModal">
                                             Edit
                                         </button>
 
@@ -89,128 +109,11 @@
 
 
 <!-- Modal Tambah Penduduk -->
-<div class="modal fade" id="createPendudukModal" tabindex="-1" aria-labelledby="createPendudukModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <form action="<?php echo e(route('penduduk.store')); ?>" method="POST">
-                <?php echo csrf_field(); ?>
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createPendudukModalLabel">Tambah Data Penduduk</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Form Input -->
-                    <div class="mb-3">
-                        <label for="nik" class="form-label">NIK</label>
-                        <input type="text" name="nik" class="form-control" id="nik" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nama" class="form-label">Nama</label>
-                        <input type="text" name="nama" class="form-control" id="nama" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="sex" class="form-label">Jenis Kelamin</label>
-                        <select name="sex" class="form-select" required>
-                            <option value="">Pilih Jenis Kelamin</option>
-                            <option value="1">Laki-laki</option>
-                            <option value="2">Perempuan</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tempatlahir" class="form-label">Tempat Lahir</label>
-                        <input type="text" name="tempatlahir" class="form-control" id="tempatlahir" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tanggallahir" class="form-label">Tanggal Lahir</label>
-                        <input type="date" name="tanggallahir" class="form-control" id="tanggallahir" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="alamat_sekarang" class="form-label">Alamat Sekarang</label>
-                        <textarea name="alamat_sekarang" class="form-control" id="alamat_sekarang" rows="2" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="status_dasar" class="form-label">Status</label>
-                        <select name="status_dasar" class="form-select" required>
-                            <option value="">Pilih Status</option>
-                            <option value="1">Hidup</option>
-                            <option value="2">Mati</option>
-                            <option value="3">Pindah</option>
-                            <option value="4">Hilang</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<?php echo $__env->make('penduduk.create', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
 
 <!-- Modal Edit Penduduk -->
-<div class="modal fade" id="editPendudukModal" tabindex="-1" aria-labelledby="editPendudukModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <form id="editPendudukForm" method="POST">
-                <?php echo csrf_field(); ?>
-                <?php echo method_field('PUT'); ?>
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editPendudukModalLabel">Edit Data Penduduk</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Form Input sama seperti Tambah -->
-                    <input type="hidden" name="id" id="edit_id">
-                    <div class="mb-3">
-                        <label for="edit_nik" class="form-label">NIK</label>
-                        <input type="text" name="nik" class="form-control" id="edit_nik" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_nama" class="form-label">Nama</label>
-                        <input type="text" name="nama" class="form-control" id="edit_nama" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_sex" class="form-label">Jenis Kelamin</label>
-                        <select name="sex" class="form-select" id="edit_sex" required>
-                            <option value="">Pilih Jenis Kelamin</option>
-                            <option value="1">Laki-laki</option>
-                            <option value="2">Perempuan</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_tempatlahir" class="form-label">Tempat Lahir</label>
-                        <input type="text" name="tempatlahir" class="form-control" id="edit_tempatlahir" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_tanggallahir" class="form-label">Tanggal Lahir</label>
-                        <input type="date" name="tanggallahir" class="form-control" id="edit_tanggallahir" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_alamat" class="form-label">Alamat Sekarang</label>
-                        <textarea name="alamat_sekarang" class="form-control" id="edit_alamat" rows="2" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_status" class="form-label">Status</label>
-                        <select name="status_dasar" class="form-select" id="edit_status" required>
-                            <option value="">Pilih Status</option>
-                            <option value="1">Hidup</option>
-                            <option value="2">Mati</option>
-                            <option value="3">Pindah</option>
-                            <option value="4">Hilang</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Update</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
+<?php echo $__env->make('penduduk.edit', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
 <!-- Modal Hapus Penduduk -->
 <div id="hapus-penduduk" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
@@ -260,24 +163,62 @@
 <script src="<?php echo e(URL::asset('build/js/app.js')); ?>"></script>
 
 <script>
-    $(document).on('click', '.edit-btn', function () {
-    const modal = $('#editPendudukModal');
+$(document).ready(function() {
+    $(document).ready(function() {
+        $('#editPendudukModal').on('show.bs.modal', function(e) {
+            const button = $(e.relatedTarget);
+            const penduduk = button.data();
 
-    modal.find('#edit_id').val($(this).data('id'));
-    modal.find('#edit_nik').val($(this).data('nik'));
-    modal.find('#edit_nama').val($(this).data('nama'));
-    modal.find('#edit_sex').val($(this).data('sex'));
-    modal.find('#edit_tempatlahir').val($(this).data('tempatlahir'));
-    modal.find('#edit_tanggallahir').val($(this).data('tanggallahir'));
-    modal.find('#edit_alamat').val($(this).data('alamat'));
-    modal.find('#edit_status').val($(this).data('status'));
+            // Field wajib
+            $(this).find('#edit_id').val(penduduk.id);
+            $(this).find('#edit_nik').val(penduduk.nik);
+            $(this).find('#edit_nama').val(penduduk.nama);
+            $(this).find('#edit_email').val(penduduk.email);
+            $(this).find('#edit_jenis_kelamin').val(penduduk.jenis_kelamin);
+            $(this).find('#edit_tempat_lahir').val(penduduk.tempat_lahir);
+            $(this).find('#edit_tanggal_lahir').val(penduduk.tanggal_lahir);
+            $(this).find('#edit_alamat_sekarang').val(penduduk.alamat_sekarang);
 
-    // Ganti action form ke URL update yang sesuai
-    modal.find('#editPendudukForm').attr('action', $(this).data('url'));
+            // Field opsional
+            $(this).find('#edit_alamat_sebelumnya').val(penduduk.alamat_sebelumnya || '');
+            $(this).find('#edit_ayah_nik').val(penduduk.ayah_nik || '');
+            $(this).find('#edit_ibu_nik').val(penduduk.ibu_nik || '');
+            $(this).find('#edit_nama_ayah').val(penduduk.nama_ayah || '');
+            $(this).find('#edit_nama_ibu').val(penduduk.nama_ibu || '');
+            $(this).find('#edit_no_kk_sebelumnya').val(penduduk.no_kk_sebelumnya || '');
+            $(this).find('#edit_tempat_cetak_ktp').val(penduduk.tempat_cetak_ktp || '');
+            $(this).find('#edit_tanggal_cetak_ktp').val(penduduk.tanggal_cetak_ktp || '');
+            $(this).find('#edit_note').val(penduduk.note || '');
+
+            // Select options
+            $(this).find('#edit_agama').val(penduduk.agama || '');
+            $(this).find('#edit_status_kawin').val(penduduk.status_kawin || '');
+            $(this).find('#edit_warga_negara').val(penduduk.warga_negara || '');
+            $(this).find('#edit_pendidikan_terakhir').val(penduduk.pendidikan_terakhir || '');
+            $(this).find('#edit_pekerjaan').val(penduduk.pekerjaan || '');
+            $(this).find('#edit_hubungan_warga').val(penduduk.hubungan_warga || '');
+            $(this).find('#edit_golongan_darah').val(penduduk.golongan_darah || '');
+            $(this).find('#edit_suku').val(penduduk.suku || '');
+            $(this).find('#edit_ktp_el').val(penduduk.ktp_el ? '1' : '0'); // Konversi boolean ke string '1' atau '0'
+            $(this).find('#edit_status_rekam').val(penduduk.status_rekam || '');
+            $(this).find('#edit_status_keadaan').val(penduduk.status_keadaan || '');
+
+            // Set form action URL
+            $(this).find('#editPendudukForm').attr('action', penduduk.url);
+        });
+    });
 });
 
+    flatpickr("#tanggal_cetak_ktp", {
+        dateFormat: "Y-m-d"
+    });
 
+    flatpickr("#tanggal_lahir", {
+        dateFormat: "Y-m-d"
+    });
+
+    
 </script>
 
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/penduduk/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/penduduk/index.blade.php ENDPATH**/ ?>
