@@ -43,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/create', [PendudukController::class, 'create'])->name('penduduk.create');
         Route::post('/', [PendudukController::class, 'store'])->name('penduduk.store');
         Route::get('/{id}/detail', [PendudukController::class, 'show'])->name('penduduk.show');
+        Route::get('/{id}/edit', [PendudukController::class, 'edit'])->name('penduduk.edit'); // Baris ini ditambahkan
         Route::put('/{id}', [PendudukController::class, 'update'])->name('penduduk.update');
         Route::delete('/{id}', [PendudukController::class, 'destroy'])->name('penduduk.destroy');
     });

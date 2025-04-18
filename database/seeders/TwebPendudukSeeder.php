@@ -20,7 +20,6 @@ class TwebPendudukSeeder extends Seeder
             $noKkSebelumnya = $faker->optional()->numerify('##########');
 
             TwebPenduduk::create([
-                'config_id' => $configId,
                 'nama' => $faker->name,
                 'nik' => $faker->unique()->numerify('################'),
                 'email' => $faker->unique()->safeEmail,
@@ -30,7 +29,7 @@ class TwebPendudukSeeder extends Seeder
                 'agama' => $faker->randomElement(['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu']),
                 'status_kawin' => $faker->randomElement(['Sudah', 'Belum', 'Cerai', 'Cerai_Mati']),
                 'warga_negara' => 'Indonesia',
-                'pendidikan_terakhir' => $faker->randomElement(['SD', 'SMP', 'SMA', 'D3', 'S1', 'S2']),
+                'pendidikan_terakhir' => $faker->randomElement(['SD', 'SMP', 'SMA', 'D3', 'S1', 'S2', 'S3']),
                 'pekerjaan' => $faker->jobTitle,
                 'alamat_sekarang' => $faker->address,
                 'alamat_sebelumnya' => $faker->optional()->address,

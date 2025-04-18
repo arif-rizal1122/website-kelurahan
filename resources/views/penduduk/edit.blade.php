@@ -1,7 +1,7 @@
 <div class="modal fade" id="editPendudukModal" tabindex="-1" aria-labelledby="editPendudukModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <form id="editPendudukForm" method="POST" action="{{ route('penduduk.update', $penduduk->id) }}">
+            <form id="editPendudukForm" method="POST" action="{">
                 @csrf
                 @method('PUT')
                 <div class="modal-header">
@@ -9,8 +9,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="id" id="edit_id">
-
+                    @if(isset($penduduk))
+                        {{-- Data penduduk tersedia --}}
+                        <input type="hidden" id="edit_id" name="id" value="{{ $penduduk->id }}">
+                    @else
+                        <p>Data penduduk tidak tersedia di modal ini.</p>
+                    @endif
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="edit_nik" class="form-label text-secondary">NIK</label>

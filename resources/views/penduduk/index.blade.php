@@ -56,6 +56,8 @@
                                     <td>
                                         <a href="{{ route('penduduk.show', $penduduk->id) }}" class="btn btn-sm btn-info">Detail</a>
                                         <button class="btn btn-sm btn-warning edit-btn"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editPendudukModal" 
                                             data-id="{{ $penduduk->id }}"
                                             data-nik="{{ $penduduk->nik }}"
                                             data-nama="{{ $penduduk->nama }}"
@@ -67,6 +69,7 @@
                                             data-alamat_sebelumnya="{{ $penduduk->alamat_sebelumnya }}"
                                             data-agama="{{ $penduduk->agama }}"
                                             data-status_kawin="{{ $penduduk->status_kawin }}"
+                                            data-status_keadaan="{{ $penduduk->status_keadaan }}"
                                             data-warga_negara="{{ $penduduk->warga_negara }}"
                                             data-pendidikan_terakhir="{{ $penduduk->pendidikan_terakhir }}"
                                             data-pekerjaan="{{ $penduduk->pekerjaan }}"
@@ -82,10 +85,7 @@
                                             data-status_rekam="{{ $penduduk->status_rekam }}"
                                             data-tempat_cetak_ktp="{{ $penduduk->tempat_cetak_ktp }}"
                                             data-tanggal_cetak_ktp="{{ $penduduk->tanggal_cetak_ktp }}"
-                                            data-note="{{ $penduduk->note }}"
-                                            data-url="{{ route('penduduk.update', $penduduk->id) }}"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#editPendudukModal">
+                                            data-note="{{ $penduduk->note }}">
                                             Edit
                                         </button>
 
@@ -119,27 +119,22 @@
 <div id="hapus-penduduk" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-body text-center p-5">
+            <div class="modal-body text-center p-4">
                 <div class="text-end">
                     <button type="button" class="btn-close text-end" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="mt-2">
-                    <lord-icon src="https://cdn.lordicon.com/tqywkdcz.json" trigger="hover"
-                        style="width:150px;height:150px">
-                    </lord-icon>
-                    <h4 class="mb-3 mt-4">Your Transaction is Successfull !</h4>
-                    <p class="text-muted fs-15 mb-4">Successful transaction is the status of operation whose result is the payment of the amount paid by the customer in favor of the merchant.</p>
-                    <div class="hstack gap-2 justify-content-center">
-                        <button class="btn btn-primary">New transaction</button>
-                        <button class="btn btn-soft-success"><i class="ri-links-line align-bottom"></i> Copy tracking link</button>
+                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" style="width:100px;height:100px"></lord-icon>
+                    <h4 class="mt-4">Anda yakin ingin menghapus data ini?</h4>
+                    <p class="text-muted fs-15 mb-4">Data yang sudah dihapus tidak dapat dikembalikan.</p>
+                    <div class="hstack gap-3 justify-content-center">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-danger btn-hapus-penduduk">Hapus</button>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer bg-light p-3 justify-content-center">
-                <p class="mb-0 text-muted">You like our service? <a href="javascript:void(0)" class="link-secondary fw-semibold">Invite Friends</a></p>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+        </div>
+    </div>
 </div>
 
 
@@ -164,13 +159,20 @@
 
 <script>
 $(document).ready(function() {
-    $(document).ready(function() {
-        $('#editPendudukModal').on('show.bs.modal', function(e) {
-            const button = $(e.relatedTarget);
-            const penduduk = button.data();
-
-            // Field wajib
+    $('#editPendudukModal').on('show.bs.modal', function(e) {
+        const button = $(e.relatedTarget);
+        const penduduk = button.data();
+        
+        // Pastikan penduduk.id tersedia
+        if (penduduk.id) {
+            // Set URL update dengan ID penduduk
+            const updateUrl = `/penduduk/${penduduk.id}`;
+            $(this).find('#editPendudukForm').attr('action', updateUrl);
+            
+            // Set nilai ID di input hidden
             $(this).find('#edit_id').val(penduduk.id);
+            
+            // Field wajib
             $(this).find('#edit_nik').val(penduduk.nik);
             $(this).find('#edit_nama').val(penduduk.nama);
             $(this).find('#edit_email').val(penduduk.email);
@@ -199,16 +201,16 @@ $(document).ready(function() {
             $(this).find('#edit_hubungan_warga').val(penduduk.hubungan_warga || '');
             $(this).find('#edit_golongan_darah').val(penduduk.golongan_darah || '');
             $(this).find('#edit_suku').val(penduduk.suku || '');
-            $(this).find('#edit_ktp_el').val(penduduk.ktp_el ? '1' : '0'); // Konversi boolean ke string '1' atau '0'
+            $(this).find('#edit_ktp_el').val(penduduk.ktp_el ? '1' : '0');
             $(this).find('#edit_status_rekam').val(penduduk.status_rekam || '');
             $(this).find('#edit_status_keadaan').val(penduduk.status_keadaan || '');
-
-            // Set form action URL
-            $(this).find('#editPendudukForm').attr('action', penduduk.url);
-        });
+        } else {
+            console.error('ID penduduk tidak ditemukan');
+        }
     });
+    
+    // Script lainnya tetap sama
 });
-
     flatpickr("#tanggal_cetak_ktp", {
         dateFormat: "Y-m-d"
     });
@@ -217,7 +219,17 @@ $(document).ready(function() {
         dateFormat: "Y-m-d"
     });
 
-    
+    $(document).ready(function() {
+        $('#hapus-penduduk').on('show.bs.modal', function(e) {
+            const button = $(e.relatedTarget);
+            const form = button.closest('form');
+            const action = form.attr('action');
+
+            $(this).find('.btn-hapus-penduduk').off('click').on('click', function() {
+                form.submit();
+            });
+        });
+    });
 </script>
 
 @endsection

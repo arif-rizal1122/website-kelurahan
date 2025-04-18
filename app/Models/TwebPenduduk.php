@@ -9,6 +9,7 @@ class TwebPenduduk extends Model
 {
     use HasFactory;
 
+    
     protected $fillable = [
         'nik', 'nama', 'email', 'tempat_lahir', 'tanggal_lahir', 'agama', 'status_kawin',
         'jenis_kelamin', 'status_keadaan', 'warga_negara', 'pendidikan_terakhir', 'pekerjaan',

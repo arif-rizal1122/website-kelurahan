@@ -15,7 +15,6 @@ class UpdatePendudukRequest extends FormRequest
     public function rules(): array
     {
         $pendudukId = $this->input('id');
-
         return [
             'nik' => [
                 'required',

@@ -7,6 +7,9 @@ use App\Models\TwebPenduduk;
 use Illuminate\Http\Request;
 use App\Http\Requests\Common\StorePendudukRequest;
 use App\Http\Requests\Common\UpdatePendudukRequest;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
+
 
 class PendudukController extends Controller
 {
@@ -35,17 +38,43 @@ class PendudukController extends Controller
         return view('penduduk.edit', compact('penduduk'));
     }
 
-    public function update(UpdatePendudukRequest $request, TwebPenduduk $penduduk)
+
+    public function update(UpdatePendudukRequest $request, $id)
     {
-        $penduduk->update($request->validated());
-        return redirect()->route('penduduk.index')->with('success', 'Data penduduk berhasil diperbarui.');
+        // Cari penduduk berdasarkan ID
+        $penduduk = TwebPenduduk::findOrFail($id);
+        
+        try {
+            $validatedData = $request->validated();
+            
+            // Update data penduduk
+            $updated = $penduduk->update($validatedData);
+            
+            if ($updated) {
+                return redirect()->route('penduduk.index')->with('success', 'Data penduduk berhasil diperbarui.');
+            } else {
+                return redirect()->route('penduduk.index')->with('error', 'Gagal memperbarui data penduduk.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('penduduk.index')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
-    public function destroy(TwebPenduduk $penduduk)
+
+
+    public function destroy(TwebPenduduk $penduduk, $id) // Pastikan type hint benar
     {
-        $penduduk->delete();
-        return redirect()->route('penduduk.index')->with('success', 'Data penduduk berhasil dihapus.');
+        try {
+            $penduduk = TwebPenduduk::findOrFail($id);
+            $penduduk->delete();
+            return redirect()->route('penduduk.index')->with('success', 'Data penduduk berhasil dihapus.');
+        } catch (\Exception $e) {
+            dd($e->getMessage()); // Untuk debugging, tampilkan pesan error
+            // Atau log error: \Log::error('Gagal menghapus penduduk dengan ID ' . $penduduk->id . ': ' . $e->getMessage());
+            return back()->withErrors(['error' => 'Terjadi kesalahan saat menghapus data.']);
+        }
     }
+
 
 
 }
