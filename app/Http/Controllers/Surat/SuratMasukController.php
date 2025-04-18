@@ -14,7 +14,7 @@ class SuratMasukController extends Controller
     public function index()
     {
         $surats = Surat::masuk()->with('config')->latest()->get();
-        return view('surats.masuk.index', compact('surats'));
+        return view('surat.masuk.index', compact('surats'));
     }
 
     public function create()
@@ -31,13 +31,13 @@ class SuratMasukController extends Controller
 
     public function show(Surat $surat)
     {
-        return view('surats.masuk.show', compact('surat'));
+        return view('surat.masuk.show', compact('surat'));
     }
 
     public function edit(Surat $surat)
     {
         $configs = Config::all();
-        return view('surats.masuk.edit', compact('surat', 'configs'));
+        return view('surat.masuk.edit', compact('surat', 'configs'));
     }
 
     public function update(UpdateSuratMasukRequest $request, Surat $surat)

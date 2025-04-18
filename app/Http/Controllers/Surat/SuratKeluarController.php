@@ -14,13 +14,13 @@ class SuratKeluarController extends Controller
     public function index()
     {
         $surats = Surat::keluar()->with('config')->latest()->get();
-        return view('surats.keluar.index', compact('surats'));
+        return view('surat.keluar.index', compact('surats'));
     }
 
     public function create()
     {
         $configs = Config::all();
-        return view('surats.keluar.create', compact('configs'));
+        return view('surat.keluar.create', compact('configs'));
     }
 
     public function store(StoreSuratKeluarRequest $request)
@@ -31,13 +31,13 @@ class SuratKeluarController extends Controller
 
     public function show(Surat $surat)
     {
-        return view('surats.keluar.show', compact('surat'));
+        return view('surat.keluar.show', compact('surat'));
     }
 
     public function edit(Surat $surat)
     {
         $configs = Config::all();
-        return view('surats.keluar.edit', compact('surat', 'configs'));
+        return view('surat.keluar.edit', compact('surat', 'configs'));
     }
 
     public function update(UpdateSuratKeluarRequest $request, Surat $surat)

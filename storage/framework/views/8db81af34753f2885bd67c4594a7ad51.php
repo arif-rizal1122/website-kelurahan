@@ -1,15 +1,14 @@
-@extends('layouts.master')
-@section('title') @lang('translation.datatables') @endsection
-@section('css')
+<?php $__env->startSection('title'); ?> <?php echo app('translator')->get('translation.datatables'); ?> <?php $__env->stopSection(); ?>
+<?php $__env->startSection('css'); ?>
 <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
 <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
-@endsection
-@section('content')
-@component('components.breadcrumb')
-@slot('li_1') Tables @endslot
-@slot('title')Datatables @endslot
-@endcomponent
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
+<?php $__env->startComponent('components.breadcrumb'); ?>
+<?php $__env->slot('li_1'); ?> Tables <?php $__env->endSlot(); ?>
+<?php $__env->slot('title'); ?>Datatables <?php $__env->endSlot(); ?>
+<?php echo $__env->renderComponent(); ?>
 
 <div class="row">
     <div class="col-lg-12">
@@ -37,42 +36,42 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($surats as $surat)
+                            <?php $__currentLoopData = $surats; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $surat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
-                                <td>{{ $surat->nomor_surat }}</td>
-                                <td>{{ $surat->pengirim }}</td>
-                                <td>{{ $surat->perihal }}</td>
-                                <td>{{ $surat->tanggal_surat }}</td>
-                                <td>{{ $surat->tanggal_diterima }}</td>
+                                <td><?php echo e($surat->nomor_surat); ?></td>
+                                <td><?php echo e($surat->pengirim); ?></td>
+                                <td><?php echo e($surat->perihal); ?></td>
+                                <td><?php echo e($surat->tanggal_surat); ?></td>
+                                <td><?php echo e($surat->tanggal_diterima); ?></td>
                                 <td>
-                                    @if ($surat->lampiran)
-                                        <a href="{{ asset('storage/' . $surat->lampiran) }}" target="_blank">Lihat</a>
-                                    @else
+                                    <?php if($surat->lampiran): ?>
+                                        <a href="<?php echo e(asset('storage/' . $surat->lampiran)); ?>" target="_blank">Lihat</a>
+                                    <?php else: ?>
                                         Tidak Ada Lampiran
-                                    @endif
+                                    <?php endif; ?>
                                 </td>
                                 <td>
-                                    <a href="{{ route('surat-keluar.show', $surat->id) }}" class="btn btn-sm btn-info">Detail</a>
+                                    <a href="<?php echo e(route('surat-keluar.show', $surat->id)); ?>" class="btn btn-sm btn-info">Detail</a>
                                     <button class="btn btn-sm btn-warning edit-btn"
                                         data-bs-toggle="modal"
                                         data-bs-target="#editSuratKeluarModal"
-                                        data-id="{{ $surat->id }}"
-                                        data-nomor_surat="{{ $surat->nomor_surat }}"
-                                        data-pengirim="{{ $surat->pengirim }}"
-                                        data-perihal="{{ $surat->perihal }}"
-                                        data-tanggal_surat="{{ $surat->tanggal_surat }}"
-                                        data-tanggal_diterima="{{ $surat->tanggal_diterima }}"
-                                        data-lampiran="{{ $surat->lampiran }}">
+                                        data-id="<?php echo e($surat->id); ?>"
+                                        data-nomor_surat="<?php echo e($surat->nomor_surat); ?>"
+                                        data-pengirim="<?php echo e($surat->pengirim); ?>"
+                                        data-perihal="<?php echo e($surat->perihal); ?>"
+                                        data-tanggal_surat="<?php echo e($surat->tanggal_surat); ?>"
+                                        data-tanggal_diterima="<?php echo e($surat->tanggal_diterima); ?>"
+                                        data-lampiran="<?php echo e($surat->lampiran); ?>">
                                         Edit
                                     </button>
-                                    <form action="{{ route('surat-keluar.destroy', $surat->id) }}" method="POST" style="display: inline-block;">
-                                        @csrf
-                                        @method('DELETE')
+                                    <form action="<?php echo e(route('surat-keluar.destroy', $surat->id)); ?>" method="POST" style="display: inline-block;">
+                                        <?php echo csrf_field(); ?>
+                                        <?php echo method_field('DELETE'); ?>
                                         <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapus-surat-masuk">Hapus</button>
                                     </form>
                                 </td>
                             </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
                 </div>
@@ -81,8 +80,8 @@
     </div>
 </div>
 
-@include('surat.keluar.create')
-@include('surat.keluar.edit')
+<?php echo $__env->make('surat.keluar.create', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+<?php echo $__env->make('surat.keluar.edit', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
 <div id="hapus-surat-keluar" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered">
@@ -105,8 +104,8 @@
     </div>
 </div>
 
-@endsection
-@section('script')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('script'); ?>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
@@ -117,8 +116,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
-<script src="{{ URL::asset('build/js/app.js') }}"></script>
+<script src="<?php echo e(URL::asset('build/js/pages/datatables.init.js')); ?>"></script>
+<script src="<?php echo e(URL::asset('build/js/app.js')); ?>"></script>
 <script>
 $(document).ready(function() {
     $('#editSuratKeluarModal').on('show.bs.modal', function(e) {
@@ -152,4 +151,5 @@ $(document).ready(function() {
     });
 });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/surat/keluar/index.blade.php ENDPATH**/ ?>
