@@ -10,6 +10,7 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="<?php echo e(URL::asset('build/images/favicon.ico')); ?>">
     <?php echo $__env->make('layouts.head-css', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    
 </head>
 
 <?php $__env->startSection('body'); ?>
@@ -40,6 +41,29 @@
 
     <!-- JAVASCRIPT -->
     <?php echo $__env->make('layouts.vendor-scripts', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+   
+
+    <script type="text/javascript">
+        <?php if(session('success')): ?>
+            Swal.fire({
+                title: 'Berhasil!',
+                text: '<?php echo e(session('success')); ?>',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        <?php endif; ?>
+
+        <?php if(session('error')): ?>
+            Swal.fire({
+                title: 'Gagal!',
+                text: '<?php echo e(session('error')); ?>',
+                icon: 'error',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        <?php endif; ?>
+    </script>
 </body>
 
 </html>

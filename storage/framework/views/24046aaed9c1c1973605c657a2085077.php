@@ -10,4 +10,4 @@
 <!-- custom Css-->
 <link href="<?php echo e(URL::asset('build/css/custom.min.css')); ?>"  rel="stylesheet" type="text/css" />
 
-<?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/layouts/head-css.blade.php ENDPATH**/ ?>
+<link href="<?php echo e(URL::asset('build/libs/sweetalert2/sweetalert2.min.css')); ?>" rel="stylesheet" type="text/css" /><?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/layouts/head-css.blade.php ENDPATH**/ ?>

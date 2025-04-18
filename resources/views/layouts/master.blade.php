@@ -10,6 +10,7 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ URL::asset('build/images/favicon.ico')}}">
     @include('layouts.head-css')
+    
 </head>
 
 @section('body')
@@ -40,6 +41,29 @@
 
     <!-- JAVASCRIPT -->
     @include('layouts.vendor-scripts')
+   
+
+    <script type="text/javascript">
+        @if (session('success'))
+            Swal.fire({
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        @endif
+
+        @if (session('error'))
+            Swal.fire({
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                icon: 'error',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        @endif
+    </script>
 </body>
 
 </html>

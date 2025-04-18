@@ -1,9 +1,7 @@
 @extends('layouts.master')
 @section('title') @lang('translation.datatables') @endsection
 @section('css')
-<!--datatable css-->
 <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
-<!--datatable responsive css-->
 <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
 @endsection
@@ -13,8 +11,6 @@
 @slot('title')Datatables @endslot
 @endcomponent
 
-
-
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
@@ -23,9 +19,9 @@
                     <h5 class="card-title mb-0">Data Penduduk</h5>
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPendudukModal">
                         Tambah Penduduk
-                    </button>                    
+                    </button>
                 </div>
-                
+
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -41,7 +37,7 @@
                                 <th>Aksi</th>
                             </tr>
                         </thead>
-                        
+
                         <tbody>
                             @foreach ($penduduks as $penduduk)
                                 <tr>
@@ -57,7 +53,7 @@
                                         <a href="{{ route('penduduk.show', $penduduk->id) }}" class="btn btn-sm btn-info">Detail</a>
                                         <button class="btn btn-sm btn-warning edit-btn"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#editPendudukModal" 
+                                            data-bs-target="#editPendudukModal"
                                             data-id="{{ $penduduk->id }}"
                                             data-nik="{{ $penduduk->nik }}"
                                             data-nama="{{ $penduduk->nama }}"
@@ -97,8 +93,8 @@
                                     </td>
                                 </tr>
                             @endforeach
-                        </tbody> 
-                            
+                        </tbody>
+
                     </table>
                 </div>
             </div>
@@ -106,16 +102,9 @@
     </div>
 </div>
 
-
-
-<!-- Modal Tambah Penduduk -->
 @include('penduduk.create')
-
-
-<!-- Modal Edit Penduduk -->
 @include('penduduk.edit')
 
-<!-- Modal Hapus Penduduk -->
 <div id="hapus-penduduk" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -137,12 +126,9 @@
     </div>
 </div>
 
-
 @endsection
 @section('script')
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
@@ -152,27 +138,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-
 <script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
-
 <script src="{{ URL::asset('build/js/app.js') }}"></script>
-
 <script>
 $(document).ready(function() {
     $('#editPendudukModal').on('show.bs.modal', function(e) {
         const button = $(e.relatedTarget);
         const penduduk = button.data();
-        
-        // Pastikan penduduk.id tersedia
+
         if (penduduk.id) {
-            // Set URL update dengan ID penduduk
             const updateUrl = `/penduduk/${penduduk.id}`;
             $(this).find('#editPendudukForm').attr('action', updateUrl);
-            
-            // Set nilai ID di input hidden
             $(this).find('#edit_id').val(penduduk.id);
-            
-            // Field wajib
             $(this).find('#edit_nik').val(penduduk.nik);
             $(this).find('#edit_nama').val(penduduk.nama);
             $(this).find('#edit_email').val(penduduk.email);
@@ -180,8 +157,6 @@ $(document).ready(function() {
             $(this).find('#edit_tempat_lahir').val(penduduk.tempat_lahir);
             $(this).find('#edit_tanggal_lahir').val(penduduk.tanggal_lahir);
             $(this).find('#edit_alamat_sekarang').val(penduduk.alamat_sekarang);
-
-            // Field opsional
             $(this).find('#edit_alamat_sebelumnya').val(penduduk.alamat_sebelumnya || '');
             $(this).find('#edit_ayah_nik').val(penduduk.ayah_nik || '');
             $(this).find('#edit_ibu_nik').val(penduduk.ibu_nik || '');
@@ -191,8 +166,6 @@ $(document).ready(function() {
             $(this).find('#edit_tempat_cetak_ktp').val(penduduk.tempat_cetak_ktp || '');
             $(this).find('#edit_tanggal_cetak_ktp').val(penduduk.tanggal_cetak_ktp || '');
             $(this).find('#edit_note').val(penduduk.note || '');
-
-            // Select options
             $(this).find('#edit_agama').val(penduduk.agama || '');
             $(this).find('#edit_status_kawin').val(penduduk.status_kawin || '');
             $(this).find('#edit_warga_negara').val(penduduk.warga_negara || '');
@@ -208,7 +181,7 @@ $(document).ready(function() {
             console.error('ID penduduk tidak ditemukan');
         }
     });
-    
+
     // Script lainnya tetap sama
 });
     flatpickr("#tanggal_cetak_ktp", {
@@ -220,16 +193,15 @@ $(document).ready(function() {
     });
 
     $(document).ready(function() {
-        $('#hapus-penduduk').on('show.bs.modal', function(e) {
-            const button = $(e.relatedTarget);
-            const form = button.closest('form');
-            const action = form.attr('action');
+    $('#hapus-penduduk').on('show.bs.modal', function(e) {
+        const button = $(e.relatedTarget);
+        const form = button.closest('form');
+        const action = form.attr('action');
 
-            $(this).find('.btn-hapus-penduduk').off('click').on('click', function() {
-                form.submit();
-            });
+        $(this).find('.btn-hapus-penduduk').off('click').on('click', function() {
+            form.submit();
         });
     });
+});
 </script>
-
 @endsection
