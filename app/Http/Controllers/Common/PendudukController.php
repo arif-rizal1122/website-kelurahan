@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Common;
 
+use App\Enums\Suku;
 use App\Http\Controllers\Controller;
 use App\Models\TwebPenduduk;
 use Illuminate\Http\Request;
@@ -15,8 +16,9 @@ class PendudukController extends Controller
 {
     public function index()
     {
+        $suku = Suku::cases();
         $penduduks = TwebPenduduk::all();
-        return view('penduduk.index', compact('penduduks'));
+        return view('penduduk.index', compact('penduduks', 'suku'));
     }
 
     public function create()

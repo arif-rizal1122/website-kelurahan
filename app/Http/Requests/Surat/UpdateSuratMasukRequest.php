@@ -15,7 +15,7 @@ class UpdateSuratMasukRequest extends FormRequest
     {
         return [
             'nomor_surat' => 'nullable|string|max:35',
-            'kode_surat' => 'nullable|string|max:10',
+            'kode_surat' => 'nullable|string|max:35',
             'dari' => 'nullable|string',
             'tujuan' => 'nullable|string',
             'tanggal_surat' => 'nullable|date',
@@ -24,8 +24,6 @@ class UpdateSuratMasukRequest extends FormRequest
             'isi_surat' => 'nullable|string',
             'catatan' => 'nullable|string',
             'ringkasan' => 'nullable|string',
-            'ekspedisi' => 'nullable|boolean',
-            'config_id' => 'nullable|exists:configs,id',
         ];
     }
 }

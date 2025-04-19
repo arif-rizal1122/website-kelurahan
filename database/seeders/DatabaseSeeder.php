@@ -14,7 +14,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ConfigSeeder::class,
             TwebPendudukSeeder::class,
-            SuratSeeder::class
+            SuratMasukSeeder::class,
+            SuratKeluarSeeder::class,
+            AttachmentSeeder::class
         ]);
     }
 }

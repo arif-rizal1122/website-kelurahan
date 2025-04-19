@@ -10,6 +10,7 @@ use App\Enums\Pendidikan;
 use App\Enums\StatusKeadaan;
 use App\Enums\StatusKawin;
 use App\Enums\StatusRekam;
+use App\Enums\Suku;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
@@ -48,7 +49,7 @@ class StorePendudukRequest extends FormRequest
             'no_kk_sebelumnya' => 'nullable|string|max:30',
 
             'golongan_darah' => ['required', new Enum(GolonganDarah::class)],
-            'suku' => 'required|string|max:50',
+            'suku' => ['required', 'string', 'max:50', new Enum(Suku::class)],
 
             'ktp_el' => 'boolean|required',
             'status_rekam' => ['required', new Enum(StatusRekam::class)],

@@ -57,6 +57,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{surat}/edit', [SuratMasukController::class, 'edit'])->name('surat-masuk.edit');
         Route::put('/{surat}', [SuratMasukController::class, 'update'])->name('surat-masuk.update');
         Route::delete('/{surat}', [SuratMasukController::class, 'destroy'])->name('surat-masuk.destroy');
+        Route::delete('/attachments/{attachment}', [SuratMasukController::class, 'destroyAttachment'])->name('surat-masuk.attachments.destroy');
     });
 
     // Surat Keluar

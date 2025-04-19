@@ -25,7 +25,7 @@ class SuratKeluarController extends Controller
 
     public function store(StoreSuratKeluarRequest $request)
     {
-        Surat::create($request->validated() + ['surat' => 'keluar']);
+        Surat::create($request->validated() + ['surat' => 'Keluar']);
         return redirect()->route('surat-keluar.index')->with('success', 'Surat Keluar berhasil ditambahkan.');
     }
 

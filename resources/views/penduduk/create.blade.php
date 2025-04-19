@@ -185,13 +185,18 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="suku" class="form-label text-secondary">Suku</label>
-                            <input type="text" name="suku" class="form-control" id="suku" required value="{{ old('suku') }}" placeholder="Contoh: Jawa, Sunda, dll">
-                            @error('suku') <div class="text-danger mt-1">{{ $message }}</div> @enderror
-                        </div>
 
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
+                            <label for="ktp_el" class="form-label text-secondary">KTP Elektronik</label>
+                            <select name="ktp_el" class="form-select" id="ktp_el" required>
+                                <option value="">Pilih KTP Elektronik</option>
+                                <option value="1" {{ old('ktp_el') == '1' ? 'selected' : '' }}>Ya</option>
+                                <option value="0" {{ old('ktp_el') == '0' ? 'selected' : '' }}>Tidak</option>
+                            </select>
+                            @error('ktp_el') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
                             <label for="status_rekam" class="form-label text-secondary">Status Rekam</label>
                             <select name="status_rekam" class="form-select" id="status_rekam" required>
                                 <option value="">Pilih Status Rekam</option>
@@ -204,37 +209,46 @@
                             @error('status_rekam') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                         </div>
 
-                        <div class="col-md-4 mb-3">
-                            <label for="ktp_el" class="form-label text-secondary">KTP Elektronik</label>
-                            <select name="ktp_el" class="form-select" id="ktp_el" required>
-                                <option value="">Pilih KTP Elektronik</option>
-                                <option value="1" {{ old('ktp_el') == '1' ? 'selected' : '' }}>Ya</option>
-                                <option value="0" {{ old('ktp_el') == '0' ? 'selected' : '' }}>Tidak</option>
-                            </select>
-                            @error('ktp_el') <div class="text-danger mt-1">{{ $message }}</div> @enderror
-                        </div>
+                        
                     </div>
 
                     <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="tanggal_cetak_ktp" class="form-label text-secondary">
+                                Cetak KTP</label>
+                            <input type="date" name="tanggal_cetak_ktp" class="form-control" id="tanggal_cetak_ktp" value="{{ old('tanggal_cetak_ktp') }}">
+                            @error('tanggal_cetak_ktp') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                        </div>
                         <div class="col-md-6 mb-3">
                             <label for="tempat_cetak_ktp" class="form-label text-secondary">Tempat Cetak KTP</label>
                             <input type="text" name="tempat_cetak_ktp" class="form-control" id="tempat_cetak_ktp" placeholder="Contoh: Kantor Kecamatan Setiabudi" value="{{ old('tempat_cetak_ktp') }}">
                             @error('tempat_cetak_ktp') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                         </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="tanggal_cetak_ktp" class="form-label text-secondary">
-                                Tanggal Cetak KTP</label>
-                            <input type="date" name="tanggal_cetak_ktp" class="form-control" id="tanggal_cetak_ktp" value="{{ old('tanggal_cetak_ktp') }}">
-                            @error('tanggal_cetak_ktp') <div class="text-danger mt-1">{{ $message }}</div> @enderror
-                        </div>
                     </div>
 
+
+                 <div class="row">
+                   <div class="col-md-6 mb-3">
                     <div class="mb-3">
                         <label for="pekerjaan" class="form-label text-secondary">Pekerjaan</label>
                         <input type="text" name="pekerjaan" class="form-control" id="pekerjaan" required value="{{ old('pekerjaan') }}" placeholder="Contoh: Guru, Wiraswasta, PNS, dll">
                         @error('pekerjaan') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                     </div>
+                </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="suku" class="form-label text-secondary">Suku</label>
+                        <select name="suku" class="form-select" id="suku" required>
+                            <option value="">Pilih Suku</option>
+                            @foreach ($suku as $sukuItem)
+                                <option value="{{ $sukuItem->value }}" {{ old('suku') == $sukuItem->value ? 'selected' : '' }}>
+                                    {{ $sukuItem->value }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('suku') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                    </div>
+                </div>
 
                     <div class="mb-3">
                         <label for="alamat_sekarang" class="form-label text-secondary">Alamat Sekarang</label>
@@ -272,3 +286,4 @@
         });
     </script>
 @endif
+

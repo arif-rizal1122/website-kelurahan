@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Common;
 
+use App\Enums\Suku;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
@@ -61,7 +62,7 @@ class UpdatePendudukRequest extends FormRequest
             'nama_ibu' => 'nullable|string|max:100',
             'hubungan_warga' => ['required', new Enum(\App\Enums\HubunganWarga::class)], // Asumsi Anda punya Enum
             'golongan_darah' => ['required', new Enum(\App\Enums\GolonganDarah::class)], // Asumsi Anda punya Enum
-            'suku' => 'required|string|max:50',
+            'suku' => ['required', 'string', 'max:50', new Enum(Suku::class)],
             'ktp_el' => 'required|boolean',
             'status_rekam' => ['required', new Enum(\App\Enums\StatusRekam::class)], // Asumsi Anda punya Enum
             'tempat_cetak_ktp' => 'nullable|string|max:100',

@@ -25,7 +25,6 @@ class UpdateSuratKeluarRequest extends FormRequest
             'catatan' => 'nullable|string',
             'ringkasan' => 'nullable|string',
             'ekspedisi' => 'nullable|boolean',
-            'config_id' => 'nullable|exists:configs,id',
         ];
     }
 }

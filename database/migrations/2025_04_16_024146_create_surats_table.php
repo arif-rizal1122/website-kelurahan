@@ -23,8 +23,7 @@ return new class extends Migration
             $table->text('isi_surat')->nullable();
             $table->text('catatan')->nullable();
             $table->string('ringkasan')->nullable();
-            $table->enum('surat', ['masuk', 'keluar'])->nullable();
-            $table->boolean('ekspedisi')->nullable()->default(false);
+            $table->enum('tipe_surat', ['Masuk', 'Keluar'])->nullable();
             $table->unsignedBigInteger('config_id')->nullable();
             $table->timestamps();
 

@@ -1,7 +1,7 @@
 <div class="modal fade" id="editSuratMasukModal" tabindex="-1" aria-labelledby="editSuratMasukModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <form id="editSuratMasukForm" method="POST" action="">
+            <form id="editSuratMasukForm" method="POST" action="" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="modal-header">
@@ -10,58 +10,92 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="edit_id" name="id">
-
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="edit_nomor_surat" class="form-label text-secondary">Nomor Surat</label>
-                            <input type="text" name="nomor_surat" class="form-control" id="edit_nomor_surat" required value="{{ old('nomor_surat') }}" placeholder="Masukkan Nomor Surat">
+                            <label for="edit_nomor_surat" class="form-label text-secondary">Nomor Surat (Wajib)</label>
+                            <input type="text" name="nomor_surat" class="form-control" id="edit_nomor_surat" value="" placeholder="Masukkan Nomor Surat" required>
                             @error('nomor_surat') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label for="edit_pengirim" class="form-label text-secondary">Pengirim</label>
-                            <input type="text" name="pengirim" class="form-control" id="edit_pengirim" required value="{{ old('pengirim') }}" placeholder="Masukkan Nama Pengirim">
-                            @error('pengirim') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                            <label for="edit_kode_surat" class="form-label text-secondary">Kode Surat (Wajib)</label>
+                            <input type="text" name="kode_surat" class="form-control" id="edit_kode_surat" value="" placeholder="Masukkan Kode Surat" required>
+                            @error('kode_surat') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="edit_perihal" class="form-label text-secondary">Perihal</label>
-                        <input type="text" name="perihal" class="form-control" id="edit_perihal" required value="{{ old('perihal') }}" placeholder="Masukkan Perihal Surat">
-                        @error('perihal') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                        <label for="edit_dari" class="form-label text-secondary">Dari (Wajib)</label>
+                        <input type="text" name="dari" class="form-control" id="edit_dari" value="" placeholder="Masukkan Nama Pengirim" required>
+                        @error('dari') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="edit_tujuan" class="form-label text-secondary">Tujuan (Wajib)</label>
+                        <input type="text" name="tujuan" class="form-control" id="edit_tujuan" value="" placeholder="Masukkan Tujuan Surat" required>
+                        @error('tujuan') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="edit_tanggal_surat" class="form-label text-secondary">Tanggal Surat</label>
-                            <input type="date" name="tanggal_surat" class="form-control" id="edit_tanggal_surat" required value="{{ old('tanggal_surat') }}">
+                            <label for="edit_tanggal_surat" class="form-label text-secondary">Tanggal Surat (Wajib)</label>
+                            <input type="date" name="tanggal_surat" class="form-control" id="edit_tanggal_surat" value="" required>
                             @error('tanggal_surat') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label for="edit_tanggal_diterima" class="form-label text-secondary">Tanggal Diterima</label>
-                            <input type="date" name="tanggal_diterima" class="form-control" id="edit_tanggal_diterima" required value="{{ old('tanggal_diterima') }}">
+                            <label for="edit_tanggal_diterima" class="form-label text-secondary">Tanggal Diterima (Wajib)</label>
+                            <input type="date" name="tanggal_diterima" class="form-control" id="edit_tanggal_diterima" value="" required>
                             @error('tanggal_diterima') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="edit_lampiran" class="form-label text-secondary">File Lampiran (Kosongkan jika tidak ingin diubah)</label>
-                        <input type="file" name="lampiran" class="form-control" id="edit_lampiran">
-                        @error('lampiran') <div class="text-danger mt-1">{{ $message }}</div> @enderror
-                        <small class="text-muted">Format file yang diizinkan: pdf, doc, docx. Maksimal ukuran: 2MB.</small>
-                        <p class="mt-1">File saat ini: <span id="current_lampiran"></span></p>
+                        <label for="edit_catatan" class="form-label text-secondary">Catatan (Opsional)</label>
+                        <textarea name="catatan" class="form-control" id="edit_catatan" rows="2" placeholder="Masukkan catatan tambahan jika ada"></textarea>
+                        @error('catatan') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                     </div>
 
                     <div class="mb-3">
-                        <label for="edit_keterangan" class="form-label text-secondary">Keterangan (Opsional)</label>
-                        <textarea name="keterangan" class="form-control" id="edit_keterangan" rows="2" placeholder="Masukkan keterangan tambahan jika ada">{{ old('keterangan') }}</textarea>
-                        @error('keterangan') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                        <label for="edit_ringkasan" class="form-label text-secondary">Ringkasan (Wajib)</label>
+                        <textarea name="ringkasan" class="form-control" id="edit_ringkasan" rows="2" placeholder="Masukkan ringkasan surat jika ada" required></textarea>
+                        @error('ringkasan') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                     </div>
 
+                    <div class="mb-3">
+                        <label for="existing_attachments" class="form-label text-secondary">Lampiran Saat Ini</label>
+                        @if ($surat->attachments->isNotEmpty())
+                            <div>
+                                @foreach ($surat->attachments as $attachment)
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <div>
+                                            <i class="bx bx-file me-2"></i> {{ $attachment->filename }}
+                                        </div>
+                                        <form action="{{ route('surat-masuk.attachments.destroy', $attachment->id) }}" method="POST" style="display: inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger">
+                                                <i class="bx bx-trash"></i> Hapus
+                                            </button>
+                                        </form>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <p class="text-muted">Tidak ada lampiran.</p>
+                        @endif
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="edit_attachments" class="form-label text-secondary">Ubah/Tambah File Lampiran</label>
+                        <input type="file" name="attachments[]" class="form-control" id="edit_attachments" multiple>
+                        @error('attachments') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                        @error('attachments.*') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                        <small class="text-muted">Format file yang diizinkan: pdf. Maksimal ukuran per file: 2MB. Anda dapat memilih beberapa file.</small>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                 </div>
             </form>
@@ -72,44 +106,10 @@
 @if ($errors->any())
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var modal = new bootstrap.Modal(document.getElementById('editSuratMasukModal'));
-            modal.show();
+            @if ($errors->hasAny(['nomor_surat', 'dari', 'tujuan', 'tanggal_surat', 'tanggal_diterima', 'catatan', 'ringkasan', 'attachments', 'removed_attachments']))
+                var editModal = new bootstrap.Modal(document.getElementById('editSuratMasukModal'));
+                editModal.show();
+            @endif
         });
     </script>
 @endif
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const editSuratMasukModal = document.getElementById('editSuratMasukModal');
-        if (editSuratMasukModal) {
-            editSuratMasukModal.addEventListener('show.bs.modal', event => {
-                const button = event.relatedTarget;
-                const id = button.getAttribute('data-id');
-                const nomorSurat = button.getAttribute('data-nomor_surat');
-                const pengirim = button.getAttribute('data-pengirim');
-                const perihal = button.getAttribute('data-perihal');
-                const tanggalSurat = button.getAttribute('data-tanggal_surat');
-                const tanggalDiterima = button.getAttribute('data-tanggal_diterima');
-                const lampiran = button.getAttribute('data-lampiran'); // Nama file saja
-
-                const modalForm = editSuratMasukModal.querySelector('#editSuratMasukForm');
-                const modalId = editSuratMasukModal.querySelector('#edit_id');
-                const modalNomorSurat = editSuratMasukModal.querySelector('#edit_nomor_surat');
-                const modalPengirim = editSuratMasukModal.querySelector('#edit_pengirim');
-                const modalPerihal = editSuratMasukModal.querySelector('#edit_perihal');
-                const modalTanggalSurat = editSuratMasukModal.querySelector('#edit_tanggal_surat');
-                const modalTanggalDiterima = editSuratMasukModal.querySelector('#edit_tanggal_diterima');
-                const currentLampiranSpan = editSuratMasukModal.querySelector('#current_lampiran');
-
-                modalForm.action = `/surat-masuk/${id}`; // Set URL edit yang benar
-                modalId.value = id;
-                modalNomorSurat.value = nomorSurat;
-                modalPengirim.value = pengirim;
-                modalPerihal.value = perihal;
-                modalTanggalSurat.value = tanggalSurat;
-                modalTanggalDiterima.value = tanggalDiterima;
-                currentLampiranSpan.textContent = lampiran ? lampiran.split('/').pop() : 'Tidak ada file'; // Tampilkan nama file saja
-            });
-        }
-    });
-</script>
