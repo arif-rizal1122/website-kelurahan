@@ -48,7 +48,7 @@
                 </li> <!-- end Dashboard Menu -->
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
-                        <i class="lab la-delicious"></i> <span>@lang('translation.apps')</span>
+                        <i class="bx bx-envelope"></i></i> <span>Persuratan</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarApps">
                         <ul class="nav nav-sm flex-column">

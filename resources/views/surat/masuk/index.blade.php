@@ -42,8 +42,8 @@
                                         <td>{{ $surat->nomor_surat }}</td>
                                         <td>{{ $surat->dari }}</td>
                                         <td>{{ Str::limit($surat->ringkasan, 70) }}</td>
-                                        <td>{{ $surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->format('d-m-Y') : '-' }}</td>
-                                        <td>{{ $surat->tanggal_diterima ? \Carbon\Carbon::parse($surat->tanggal_diterima)->format('d-m-Y') : '-' }}</td>
+                                        <td>{{ $surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->format('d\m\Y') : '-' }}</td>
+                                        <td>{{ $surat->tanggal_diterima ? \Carbon\Carbon::parse($surat->tanggal_diterima)->format('d\m\Y') : '-' }}</td>
                                         <td>
                                             @if ($surat->attachments->isNotEmpty())
                                             @foreach ($surat->attachments as $attachment)

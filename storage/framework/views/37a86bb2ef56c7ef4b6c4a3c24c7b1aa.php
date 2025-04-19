@@ -41,8 +41,8 @@
                                         <td><?php echo e($surat->nomor_surat); ?></td>
                                         <td><?php echo e($surat->dari); ?></td>
                                         <td><?php echo e(Str::limit($surat->ringkasan, 70)); ?></td>
-                                        <td><?php echo e($surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->format('d-m-Y') : '-'); ?></td>
-                                        <td><?php echo e($surat->tanggal_diterima ? \Carbon\Carbon::parse($surat->tanggal_diterima)->format('d-m-Y') : '-'); ?></td>
+                                        <td><?php echo e($surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->format('d\m\Y') : '-'); ?></td>
+                                        <td><?php echo e($surat->tanggal_diterima ? \Carbon\Carbon::parse($surat->tanggal_diterima)->format('d\m\Y') : '-'); ?></td>
                                         <td>
                                             <?php if($surat->attachments->isNotEmpty()): ?>
                                             <?php $__currentLoopData = $surat->attachments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attachment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
