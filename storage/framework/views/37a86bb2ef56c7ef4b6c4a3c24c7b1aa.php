@@ -46,7 +46,9 @@
                                         <td>
                                             <?php if($surat->attachments->isNotEmpty()): ?>
                                                 <?php $__currentLoopData = $surat->attachments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attachment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                    <a href="<?php echo e(asset('storage/attachments/' . $attachment->filename)); ?>" target="_blank"><?php echo e($attachment->filename); ?></a><br>
+                                                    <a href="<?php echo e(asset('storage/' . $attachment->path)); ?>" target="_blank" style="display: inline-flex; align-items: center;">
+                                                        <i class="fas fa-file-pdf me-2" style="color: #dc3545;"></i> 
+                                                    </a><br>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             <?php else: ?>
                                                 Tidak Ada Lampiran
@@ -126,34 +128,48 @@
     <script>
         $(document).ready(function() {
             $('#editSuratMasukModal').on('show.bs.modal', function(e) {
-                const button = $(e.relatedTarget);
-                const surat = button.data();
+    const button = $(e.relatedTarget);
+    const surat = button.data();
 
-                if (surat.id) {
-                    const updateUrl = `/surat-masuk/${surat.id}`; // Sesuaikan dengan route Anda
-                    $(this).find('#editSuratMasukForm').attr('action', updateUrl);
-                    $(this).find('#edit_id').val(surat.id);
-                    $('#edit_nomor_surat').val(surat.nomor_surat);
-                    $('#edit_kode_surat').val(surat.kode_surat);
-                    $('#edit_dari').val(surat.dari);
-                    $('#edit_tujuan').val(surat.tujuan || '');
-                    $('#edit_tanggal_surat').val(surat.tanggal_surat || '');
-                    $('#edit_tanggal_diterima').val(surat.tanggal_diterima || '');
-                    $('#edit_catatan').val(surat.catatan || '');
-                    $('#edit_ringkasan').val(surat.ringkasan);
+    if (surat.id) {
+        const updateUrl = `/surat-masuk/${surat.id}`;
+        $(this).find('#editSuratMasukForm').attr('action', updateUrl);
+        $(this).find('#edit_id').val(surat.id);
+        $('#edit_nomor_surat').val(surat.nomor_surat);
+        $('#edit_kode_surat').val(surat.kode_surat);
+        $('#edit_dari').val(surat.dari);
+        $('#edit_tujuan').val(surat.tujuan || '');
+        $('#edit_tanggal_surat').val(surat.tanggal_surat || '');
+        $('#edit_tanggal_diterima').val(surat.tanggal_diterima || '');
+        $('#edit_catatan').val(surat.catatan || '');
+        $('#edit_ringkasan').val(surat.ringkasan);
 
-                    // Loop melalui attachment dan set nilai checkbox jika diperlukan (misalnya, jika ada logika default untuk menghapus)
-                    const attachments = surat.attachments;
-                    if (attachments && attachments.length > 0) {
-                        attachments.forEach(attachment => {
-                            $(this).find(`#removeAttachment${attachment.id}`).prop('checked', false); // Default tidak dicentang
-                        });
-                    }
-
+        // Clear existing attachments
+        $('.existing-attachments').empty();
+        
+        // Add attachments if they exist
+                const attachments = JSON.parse(button.attr('data-attachments'));
+                if (attachments && attachments.length > 0) {
+                    attachments.forEach(attachment => {
+                        $('.existing-attachments').append(`
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <div>
+                                    <i class="bx bx-file me-2"></i> ${attachment.filename}
+                                </div>
+                                <div>
+                                    <input type="checkbox" name="removed_attachments[]" value="${attachment.id}" id="removeAttachment${attachment.id}">
+                                    <label for="removeAttachment${attachment.id}">Hapus</label>
+                                </div>
+                            </div>
+                        `);
+                    });
                 } else {
-                    console.error('ID surat masuk tidak ditemukan');
+                    $('.existing-attachments').append('<p class="text-muted">Tidak ada lampiran.</p>');
                 }
-            });
+            } else {
+                console.error('ID surat masuk tidak ditemukan');
+            }
+        });
 
             $('#hapus-surat-masuk').on('show.bs.modal', function(e) {
                 const button = $(e.relatedTarget);

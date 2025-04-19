@@ -64,26 +64,9 @@
 
                     <div class="mb-3">
                         <label for="existing_attachments" class="form-label text-secondary">Lampiran Saat Ini</label>
-                        @if ($surat->attachments->isNotEmpty())
-                            <div>
-                                @foreach ($surat->attachments as $attachment)
-                                    <div class="d-flex justify-content-between align-items-center mb-1">
-                                        <div>
-                                            <i class="bx bx-file me-2"></i> {{ $attachment->filename }}
-                                        </div>
-                                        <form action="{{ route('surat-masuk.attachments.destroy', $attachment->id) }}" method="POST" style="display: inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">
-                                                <i class="bx bx-trash"></i> Hapus
-                                            </button>
-                                        </form>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @else
-                            <p class="text-muted">Tidak ada lampiran.</p>
-                        @endif
+                        <div class="existing-attachments">
+                            <!-- Akan diisi melalui JavaScript -->
+                        </div>
                     </div>
 
                     <div class="mb-3">

@@ -1,0 +1,7 @@
+#hapus-surat-masuk {
+    z-index: 1055;
+}
+
+#hapus-surat-masuk .modal-backdrop {
+    z-index: 1054;
+}

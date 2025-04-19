@@ -24,6 +24,8 @@ class UpdateSuratMasukRequest extends FormRequest
             'isi_surat' => 'nullable|string',
             'catatan' => 'nullable|string',
             'ringkasan' => 'nullable|string',
+            'attachments.*' => 'nullable|file|mimes:pdf|max:2048', 
+            'attachments' => 'nullable|array', 
         ];
     }
 }

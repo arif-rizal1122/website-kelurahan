@@ -8,6 +8,7 @@ use App\Http\Requests\Surat\UpdateSuratMasukRequest;
 use App\Models\Attachment;
 use App\Models\Config;
 use App\Models\Surat;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -43,28 +44,39 @@ class SuratMasukController extends Controller
      */
     public function store(StoreSuratMasukRequest $request)
     {
-        $config = Config::first();
-        $configId = $config ? $config->id : null;
-        $validatedData = $request->validated();
-        $suratData = $validatedData + [
-            'tipe_surat' => 'Masuk',
-            'config_id' => $configId,
-        ];
-        $surat = Surat::create($suratData);
-        if ($request->hasFile('attachments')) {
-            foreach ($request->file('attachments') as $file) {
-                $path = $file->store('attachments', 'public');
-
-                $surat->attachments()->create([
-                    'path' => $path,
-                    'filename' => $file->getClientOriginalName(),
-                    'extension' => $file->getClientOriginalExtension(),
-                ]);
+        try {
+            $config = Config::first();
+            $configId = $config ? $config->id : null;
+            $validatedData = $request->validated();
+            $suratData = $validatedData + [
+                'tipe_surat' => 'Masuk',
+                'config_id' => $configId,
+            ];
+            
+            $surat = Surat::create($suratData);
+            
+            if ($request->hasFile('attachments')) {
+                foreach ($request->file('attachments') as $file) {
+                    $path = $file->store('attachments', 'public');
+                    
+                    $attachment = new Attachment([
+                        'path' => $path,
+                        'filename' => $file->getClientOriginalName(),
+                        'extension' => $file->getClientOriginalExtension(),
+                    ]);
+                    
+                    $surat->attachments()->save($attachment);
+                }
             }
+            return redirect()->route('surat-masuk.index')->with('success', 'Surat Masuk berhasil ditambahkan beserta lampirannya.');
+        } catch (\Exception $e) {
+            return redirect()->route('surat-masuk.index')->with('error', 'Gagal menambahkan Surat Masuk: ' . $e->getMessage());
         }
-        return redirect()->route('surat-masuk.index')->with('success', 'Surat Masuk berhasil ditambahkan beserta lampirannya.');
     }
 
+
+    
+    
     /**
      * Menampilkan detail spesifik dari satu Surat Masuk.
      * Memuat juga relasi 'attachments' untuk menampilkan lampiran terkait.
