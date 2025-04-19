@@ -46,11 +46,11 @@
                                         <td>{{ $surat->tanggal_diterima ? \Carbon\Carbon::parse($surat->tanggal_diterima)->format('d-m-Y') : '-' }}</td>
                                         <td>
                                             @if ($surat->attachments->isNotEmpty())
-                                                @foreach ($surat->attachments as $attachment)
-                                                    <a href="{{ asset('storage/' . $attachment->path) }}" target="_blank" style="display: inline-flex; align-items: center;">
-                                                        <i class="fas fa-file-pdf me-2" style="color: #dc3545;"></i> 
-                                                    </a><br>
-                                                @endforeach
+                                            @foreach ($surat->attachments as $attachment)
+                                                <a href="{{ route('surat-masuk.show', $surat->id) }}" target="_blank" style="color: #dc3545;">
+                                                    <i class="bx bxs-file-pdf bx-sm"></i>
+                                                </a>
+                                                @endforeach    
                                             @else
                                                 Tidak Ada Lampiran
                                             @endif

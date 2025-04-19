@@ -45,11 +45,11 @@
                                         <td><?php echo e($surat->tanggal_diterima ? \Carbon\Carbon::parse($surat->tanggal_diterima)->format('d-m-Y') : '-'); ?></td>
                                         <td>
                                             <?php if($surat->attachments->isNotEmpty()): ?>
-                                                <?php $__currentLoopData = $surat->attachments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attachment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                    <a href="<?php echo e(asset('storage/' . $attachment->path)); ?>" target="_blank" style="display: inline-flex; align-items: center;">
-                                                        <i class="fas fa-file-pdf me-2" style="color: #dc3545;"></i> 
-                                                    </a><br>
-                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <?php $__currentLoopData = $surat->attachments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attachment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <a href="<?php echo e(route('surat-masuk.show', $surat->id)); ?>" target="_blank" style="color: #dc3545;">
+                                                    <i class="bx bxs-file-pdf bx-sm"></i>
+                                                </a>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>    
                                             <?php else: ?>
                                                 Tidak Ada Lampiran
                                             <?php endif; ?>
