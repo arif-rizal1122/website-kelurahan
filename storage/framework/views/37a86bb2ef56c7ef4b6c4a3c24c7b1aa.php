@@ -45,38 +45,41 @@
                                         <td><?php echo e($surat->tanggal_diterima ? \Carbon\Carbon::parse($surat->tanggal_diterima)->format('d-m-Y') : '-'); ?></td>
                                         <td>
                                             <?php if($surat->attachments->isNotEmpty()): ?>
-                                            <?php $__currentLoopData = $surat->attachments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attachment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <a href="<?php echo e(route('surat-masuk.show', $surat->id)); ?>" target="_blank" style="color: #dc3545;">
-                                                    <i class="bx bxs-file-pdf bx-sm"></i>
-                                                </a>
-                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>    
+                                                <?php $__currentLoopData = $surat->attachments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attachment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <a href="<?php echo e(asset('storage/' . $attachment->path)); ?>" target="_blank" style="color: #dc3545;">
+                                                        <i class="bx bxs-file-pdf bx-sm"></i>
+                                                    </a>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             <?php else: ?>
                                                 Tidak Ada Lampiran
                                             <?php endif; ?>
                                         </td>
                                         <td>
-                                            <a href="<?php echo e(route('surat-masuk.show', $surat->id)); ?>" class="btn btn-sm btn-info">Detail</a>
-                                            <button class="btn btn-sm btn-warning edit-btn"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#editSuratMasukModal"
-                                                data-id="<?php echo e($surat->id); ?>"
-                                                data-nomor_surat="<?php echo e($surat->nomor_surat); ?>"
-                                                data-kode_surat="<?php echo e($surat->kode_surat); ?>"
-                                                data-dari="<?php echo e($surat->dari); ?>"
-                                                data-tujuan="<?php echo e($surat->tujuan); ?>"
-                                                data-tanggal_surat="<?php echo e($surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->format('Y-m-d') : ''); ?>"
-                                                data-tanggal_diterima="<?php echo e($surat->tanggal_diterima ? \Carbon\Carbon::parse($surat->tanggal_diterima)->format('Y-m-d') : ''); ?>"
-                                                data-catatan="<?php echo e($surat->catatan); ?>"
-                                                data-ringkasan="<?php echo e($surat->ringkasan); ?>"
-                                                data-attachments="<?php echo e(json_encode($surat->attachments)); ?>"> 
-                                                Edit
-                                            </button>
-                                            <form action="<?php echo e(route('surat-masuk.destroy', $surat->id)); ?>" method="POST" style="display: inline-block;">
-                                                <?php echo csrf_field(); ?>
-                                                <?php echo method_field('DELETE'); ?>
-                                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapus-surat-masuk">Hapus</button>
-                                            </form>
+                                            <div class="d-flex flex-wrap gap-1">
+                                                <a href="<?php echo e(route('surat-masuk.show', $surat->id)); ?>" class="btn btn-sm btn-info">Detail</a>
+                                                <button class="btn btn-sm btn-warning edit-btn"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editSuratMasukModal"
+                                                    data-id="<?php echo e($surat->id); ?>"
+                                                    data-nomor_surat="<?php echo e($surat->nomor_surat); ?>"
+                                                    data-kode_surat="<?php echo e($surat->kode_surat); ?>"
+                                                    data-dari="<?php echo e($surat->dari); ?>"
+                                                    data-tujuan="<?php echo e($surat->tujuan); ?>"
+                                                    data-tanggal_surat="<?php echo e($surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->format('Y-m-d') : ''); ?>"
+                                                    data-tanggal_diterima="<?php echo e($surat->tanggal_diterima ? \Carbon\Carbon::parse($surat->tanggal_diterima)->format('Y-m-d') : ''); ?>"
+                                                    data-catatan="<?php echo e($surat->catatan); ?>"
+                                                    data-ringkasan="<?php echo e($surat->ringkasan); ?>"
+                                                    data-attachments="<?php echo e(json_encode($surat->attachments)); ?>">
+                                                    Edit
+                                                </button>
+                                                <form action="<?php echo e(route('surat-masuk.destroy', $surat->id)); ?>" method="POST">
+                                                    <?php echo csrf_field(); ?>
+                                                    <?php echo method_field('DELETE'); ?>
+                                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapus-surat-masuk">Hapus</button>
+                                                </form>
+                                            </div>
                                         </td>
+                                        
                                     </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </tbody>

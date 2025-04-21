@@ -46,7 +46,7 @@
                                         <td>
                                             <?php if($surat->attachments->isNotEmpty()): ?>
                                                 <?php $__currentLoopData = $surat->attachments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attachment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                    <a href="<?php echo e(route('surat-keluar.show', $surat->id)); ?>" target="_blank" style="color: #dc3545;">
+                                                    <a href="<?php echo e(asset('storage/' . $attachment->path)); ?>" target="_blank" style="color: #dc3545;">
                                                         <i class="bx bxs-file-pdf bx-sm"></i>
                                                     </a>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -55,26 +55,28 @@
                                             <?php endif; ?>
                                         </td>
                                         <td>
-                                            <a href="<?php echo e(route('surat-keluar.show', $surat->id)); ?>" class="btn btn-sm btn-info">Detail</a>
-                                            <button class="btn btn-sm btn-warning edit-btn"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#editSuratKeluarModal"
-                                                data-id="<?php echo e($surat->id); ?>"
-                                                data-nomor_surat="<?php echo e($surat->nomor_surat); ?>"
-                                                data-dari="<?php echo e($surat->dari); ?>"
-                                                data-tujuan="<?php echo e($surat->tujuan); ?>"
-                                                data-tanggal_surat="<?php echo e($surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->format('Y-m-d') : ''); ?>"
-                                                data-tanggal_pengiriman="<?php echo e($surat->tanggal_pengiriman ? \Carbon\Carbon::parse($surat->tanggal_pengiriman)->format('Y-m-d') : ''); ?>"
-                                                data-catatan="<?php echo e($surat->catatan); ?>"
-                                                data-isi_surat="<?php echo e($surat->isi_surat); ?>"
-                                                data-attachments="<?php echo e(json_encode($surat->attachments)); ?>">
-                                                Edit
-                                            </button>
-                                            <form action="<?php echo e(route('surat-keluar.destroy', $surat->id)); ?>" method="POST" style="display: inline-block;">
-                                                <?php echo csrf_field(); ?>
-                                                <?php echo method_field('DELETE'); ?>
-                                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapus-surat-keluar">Hapus</button>
-                                            </form>
+                                            <div class="d-flex flex-wrap gap-2">
+                                                <a href="<?php echo e(route('surat-keluar.show', $surat->id)); ?>" class="btn btn-sm btn-info">Detail</a>
+                                                <button class="btn btn-sm btn-warning edit-btn"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editSuratKeluarModal"
+                                                    data-id="<?php echo e($surat->id); ?>"
+                                                    data-nomor_surat="<?php echo e($surat->nomor_surat); ?>"
+                                                    data-dari="<?php echo e($surat->dari); ?>"
+                                                    data-tujuan="<?php echo e($surat->tujuan); ?>"
+                                                    data-tanggal_surat="<?php echo e($surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->format('Y-m-d') : ''); ?>"
+                                                    data-tanggal_pengiriman="<?php echo e($surat->tanggal_pengiriman ? \Carbon\Carbon::parse($surat->tanggal_pengiriman)->format('Y-m-d') : ''); ?>"
+                                                    data-catatan="<?php echo e($surat->catatan); ?>"
+                                                    data-isi_surat="<?php echo e($surat->isi_surat); ?>"
+                                                    data-attachments="<?php echo e(json_encode($surat->attachments)); ?>">
+                                                    Edit
+                                                </button>
+                                                <form action="<?php echo e(route('surat-keluar.destroy', $surat->id)); ?>" method="POST" style="display: inline-block;">
+                                                    <?php echo csrf_field(); ?>
+                                                    <?php echo method_field('DELETE'); ?>
+                                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapus-surat-keluar">Hapus</button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

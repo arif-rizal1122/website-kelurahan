@@ -47,7 +47,7 @@
                                         <td>
                                             @if ($surat->attachments->isNotEmpty())
                                                 @foreach ($surat->attachments as $attachment)
-                                                    <a href="{{ route('surat-keluar.show', $surat->id) }}" target="_blank" style="color: #dc3545;">
+                                                    <a href="{{ asset('storage/' . $attachment->path) }}" target="_blank" style="color: #dc3545;">
                                                         <i class="bx bxs-file-pdf bx-sm"></i>
                                                     </a>
                                                 @endforeach
@@ -56,26 +56,28 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('surat-keluar.show', $surat->id) }}" class="btn btn-sm btn-info">Detail</a>
-                                            <button class="btn btn-sm btn-warning edit-btn"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#editSuratKeluarModal"
-                                                data-id="{{ $surat->id }}"
-                                                data-nomor_surat="{{ $surat->nomor_surat }}"
-                                                data-dari="{{ $surat->dari }}"
-                                                data-tujuan="{{ $surat->tujuan }}"
-                                                data-tanggal_surat="{{ $surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->format('Y-m-d') : '' }}"
-                                                data-tanggal_pengiriman="{{ $surat->tanggal_pengiriman ? \Carbon\Carbon::parse($surat->tanggal_pengiriman)->format('Y-m-d') : '' }}"
-                                                data-catatan="{{ $surat->catatan }}"
-                                                data-isi_surat="{{ $surat->isi_surat }}"
-                                                data-attachments="{{ json_encode($surat->attachments) }}">
-                                                Edit
-                                            </button>
-                                            <form action="{{ route('surat-keluar.destroy', $surat->id) }}" method="POST" style="display: inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapus-surat-keluar">Hapus</button>
-                                            </form>
+                                            <div class="d-flex flex-wrap gap-2">
+                                                <a href="{{ route('surat-keluar.show', $surat->id) }}" class="btn btn-sm btn-info">Detail</a>
+                                                <button class="btn btn-sm btn-warning edit-btn"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editSuratKeluarModal"
+                                                    data-id="{{ $surat->id }}"
+                                                    data-nomor_surat="{{ $surat->nomor_surat }}"
+                                                    data-dari="{{ $surat->dari }}"
+                                                    data-tujuan="{{ $surat->tujuan }}"
+                                                    data-tanggal_surat="{{ $surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->format('Y-m-d') : '' }}"
+                                                    data-tanggal_pengiriman="{{ $surat->tanggal_pengiriman ? \Carbon\Carbon::parse($surat->tanggal_pengiriman)->format('Y-m-d') : '' }}"
+                                                    data-catatan="{{ $surat->catatan }}"
+                                                    data-isi_surat="{{ $surat->isi_surat }}"
+                                                    data-attachments="{{ json_encode($surat->attachments) }}">
+                                                    Edit
+                                                </button>
+                                                <form action="{{ route('surat-keluar.destroy', $surat->id) }}" method="POST" style="display: inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapus-surat-keluar">Hapus</button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
