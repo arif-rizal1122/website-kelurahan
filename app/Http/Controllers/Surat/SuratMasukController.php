@@ -6,9 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Surat\StoreSuratMasukRequest;
 use App\Http\Requests\Surat\UpdateSuratMasukRequest;
 use App\Models\Attachment;
-use App\Models\Config;
 use App\Models\Surat;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -20,17 +18,16 @@ class SuratMasukController extends Controller
 {
     /**
      * Menampilkan daftar Surat Masuk.
-     * Hanya menampilkan surat dengan tipe 'Masuk' dan memuat relasi 'config'.
+     * Hanya menampilkan surat dengan tipe 'Masuk'.
      */
     public function index()
     {
         $surats = Surat::masuk()->get();
         return view('surat.masuk.index', compact('surats'));
     }
-    
+
     /**
      * Menampilkan form untuk membuat Surat Masuk baru.
-     * Memuat data konfigurasi yang mungkin diperlukan.
      */
     public function create()
     {
@@ -45,66 +42,63 @@ class SuratMasukController extends Controller
     public function store(StoreSuratMasukRequest $request)
     {
         try {
-            $config = Config::first();
-            $configId = $config ? $config->id : null;
             $validatedData = $request->validated();
+
+            // Tambahkan tipe surat secara manual
             $suratData = $validatedData + [
                 'tipe_surat' => 'Masuk',
-                'config_id' => $configId,
             ];
-            
+
             $surat = Surat::create($suratData);
-            
+
+            // Proses penyimpanan lampiran jika ada
             if ($request->hasFile('attachments')) {
                 foreach ($request->file('attachments') as $file) {
                     $path = $file->store('attachments', 'public');
-                    
+
                     $attachment = new Attachment([
                         'path' => $path,
                         'filename' => $file->getClientOriginalName(),
                         'extension' => $file->getClientOriginalExtension(),
                     ]);
-                    
+
                     $surat->attachments()->save($attachment);
                 }
             }
+
             return redirect()->route('surat-masuk.index')->with('success', 'Surat Masuk berhasil ditambahkan beserta lampirannya.');
         } catch (\Exception $e) {
             return redirect()->route('surat-masuk.index')->with('error', 'Gagal menambahkan Surat Masuk: ' . $e->getMessage());
         }
     }
 
-
-    
-    
     /**
      * Menampilkan detail spesifik dari satu Surat Masuk.
      * Memuat juga relasi 'attachments' untuk menampilkan lampiran terkait.
      */
     public function show(Surat $surat)
     {
-        $surat->load('attachments'); // Eager load relasi attachments
+        $surat->load('attachments');
         return view('surat.masuk.show', compact('surat'));
     }
 
     /**
      * Menampilkan form untuk mengedit data Surat Masuk.
-     * Memuat data surat yang akan diedit, data konfigurasi, dan lampiran terkait.
+     * Memuat data surat dan lampiran yang akan diedit.
      * Hanya menampilkan data surat yang memiliki tipe 'Masuk'.
      */
     public function edit(Surat $surat)
     {
         if ($surat->tipe_surat !== 'Masuk') {
-            abort(404); // Atau redirect dengan pesan error jika surat bukan tipe 'Masuk'
+            abort(404);
         }
-        $configs = Config::all();
-        $attachments = $surat->attachments()->get(); // Ambil semua attachment terkait surat
-        return view('surat.masuk.edit', compact('surat', 'configs', 'attachments'));
+
+        $attachments = $surat->attachments()->get();
+        return view('surat.masuk.edit', compact('surat', 'attachments'));
     }
 
     /**
      * Mengupdate data Surat Masuk ke database.
-     * Menerima data yang telah divalidasi dari UpdateSuratMasukRequest.
      * Menangani penghapusan lampiran yang dipilih dan penambahan lampiran baru.
      */
     public function update(UpdateSuratMasukRequest $request, Surat $surat)
@@ -112,7 +106,8 @@ class SuratMasukController extends Controller
         try {
             $validatedData = $request->validated();
             $surat->update($validatedData);
-            // Proses penghapusan attachment yang dipilih
+
+            // Hapus lampiran yang dipilih jika ada
             if ($request->has('removed_attachments')) {
                 $removedAttachments = $request->input('removed_attachments');
                 if (is_array($removedAttachments)) {
@@ -125,7 +120,8 @@ class SuratMasukController extends Controller
                     }
                 }
             }
-            // Proses penambahan attachment baru
+
+            // Tambah lampiran baru jika diunggah
             if ($request->hasFile('attachments')) {
                 foreach ($request->file('attachments') as $file) {
                     $path = $file->store('attachments', 'public');
@@ -136,6 +132,7 @@ class SuratMasukController extends Controller
                     ]);
                 }
             }
+
             return redirect()->route('surat-masuk.index')->with('success', 'Surat Masuk berhasil diperbarui beserta lampirannya.');
         } catch (\Throwable $exception) {
             return redirect()->route('surat-masuk.index')->with('error', 'Gagal memperbarui Surat Masuk: ' . $exception->getMessage());
@@ -143,23 +140,22 @@ class SuratMasukController extends Controller
     }
 
     /**
-     * Menghapus data Surat Masuk dari database.
-     * Juga menghapus semua file lampiran yang terkait dengan surat tersebut dari storage.
+     * Menghapus data Surat Masuk dari database beserta seluruh lampirannya.
      */
     public function destroy(Surat $surat)
     {
-        // Hapus semua attachment terkait sebelum menghapus surat
         foreach ($surat->attachments as $attachment) {
             Storage::disk('public')->delete($attachment->path);
             $attachment->delete();
         }
+
         $surat->delete();
+
         return redirect()->route('surat-masuk.index')->with('success', 'Surat Masuk berhasil dihapus beserta lampirannya.');
     }
 
     /**
-     * Menghapus satu file lampiran spesifik.
-     * Menghapus file dari storage dan record dari database.
+     * Menghapus satu file lampiran spesifik dari storage dan database.
      */
     public function destroyAttachment(Attachment $attachment)
     {

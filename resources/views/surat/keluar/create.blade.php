@@ -1,7 +1,7 @@
-<div class="modal fade" id="createSuratKeluarModal" tabindex="-1" aria-labelledby="createSuratMasukModalLabel" aria-hidden="true">
+<div class="modal fade" id="createSuratKeluarModal" tabindex="-1" aria-labelledby="createSuratKeluarModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <form action="{{ route('surat-keluar.store') }}" method="POST" enctype="multipart/form-data">
+            <form id="createSuratKeluarForm" method="POST" action="{{ route('surat-keluar.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="createSuratKeluarModalLabel">Tambah Surat Keluar</h5>
@@ -16,43 +16,50 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label for="pengirim" class="form-label text-secondary">Pengirim</label>
-                            <input type="text" name="pengirim" class="form-control" id="pengirim" required value="{{ old('pengirim') }}" placeholder="Masukkan Nama Pengirim">
-                            @error('pengirim') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                            <label for="dari" class="form-label text-secondary">Pengirim</label>
+                            <input type="text" name="dari" class="form-control" id="dari" required value="{{ old('dari') }}" placeholder="Masukkan Nama Pengirim">
+                            @error('dari') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="perihal" class="form-label text-secondary">Perihal</label>
-                        <input type="text" name="perihal" class="form-control" id="perihal" required value="{{ old('perihal') }}" placeholder="Masukkan Perihal Surat">
-                        @error('perihal') <div class="text-danger mt-1">{{ $message }}</div> @enderror
-                    </div>
-
                     <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="tujuan" class="form-label text-secondary">Tujuan</label>
+                            <input type="text" name="tujuan" class="form-control" id="tujuan" required value="{{ old('tujuan') }}" placeholder="Masukkan Tujuan Surat">
+                            @error('tujuan') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                        </div>
+
                         <div class="col-md-6 mb-3">
                             <label for="tanggal_surat" class="form-label text-secondary">Tanggal Surat</label>
                             <input type="date" name="tanggal_surat" class="form-control" id="tanggal_surat" required value="{{ old('tanggal_surat') }}">
                             @error('tanggal_surat') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                         </div>
+                    </div>
 
+                    <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="tanggal_diterima" class="form-label text-secondary">Tanggal Diterima</label>
-                            <input type="date" name="tanggal_diterima" class="form-control" id="tanggal_diterima" required value="{{ old('tanggal_diterima') }}">
-                            @error('tanggal_diterima') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                            <label for="tanggal_pengiriman" class="form-label text-secondary">Tanggal Pengiriman</label>
+                            <input type="date" name="tanggal_pengiriman" class="form-control" id="tanggal_pengiriman" required value="{{ old('tanggal_pengiriman') }}">
+                            @error('tanggal_pengiriman') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="attachments" class="form-label text-secondary">Lampiran (PDF)</label>
+                            <input type="file" name="attachments[]" class="form-control" id="attachments" multiple>
+                            @error('attachments.*') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                            <small class="text-muted">Format file yang diizinkan: pdf. Maksimal ukuran: 2MB per file.</small>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="lampiran" class="form-label text-secondary">File Lampiran</label>
-                        <input type="file" name="lampiran" class="form-control" id="lampiran" required>
-                        @error('lampiran') <div class="text-danger mt-1">{{ $message }}</div> @enderror
-                        <small class="text-muted">Format file yang diizinkan: pdf, doc, docx. Maksimal ukuran: 2MB.</small>
+                        <label for="isi_surat" class="form-label text-secondary">Isi Surat</label>
+                        <textarea name="isi_surat" class="form-control" id="isi_surat" rows="5" required placeholder="Masukkan Isi Surat">{{ old('isi_surat') }}</textarea>
+                        @error('isi_surat') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                     </div>
 
                     <div class="mb-3">
-                        <label for="keterangan" class="form-label text-secondary">Keterangan (Opsional)</label>
-                        <textarea name="keterangan" class="form-control" id="keterangan" rows="2" placeholder="Masukkan keterangan tambahan jika ada">{{ old('keterangan') }}</textarea>
-                        @error('keterangan') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                        <label for="catatan" class="form-label text-secondary">Catatan</label>
+                        <textarea name="catatan" class="form-control" id="catatan" rows="3" placeholder="Masukkan Catatan">{{ old('catatan') }}</textarea>
+                        @error('catatan') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                     </div>
 
                 </div>

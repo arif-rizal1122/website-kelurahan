@@ -126,63 +126,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            $('#editSuratMasukModal').on('show.bs.modal', function(e) {
-    const button = $(e.relatedTarget);
-    const surat = button.data();
 
-    if (surat.id) {
-        const updateUrl = `/surat-masuk/${surat.id}`;
-        $(this).find('#editSuratMasukForm').attr('action', updateUrl);
-        $(this).find('#edit_id').val(surat.id);
-        $('#edit_nomor_surat').val(surat.nomor_surat);
-        $('#edit_kode_surat').val(surat.kode_surat);
-        $('#edit_dari').val(surat.dari);
-        $('#edit_tujuan').val(surat.tujuan || '');
-        $('#edit_tanggal_surat').val(surat.tanggal_surat || '');
-        $('#edit_tanggal_diterima').val(surat.tanggal_diterima || '');
-        $('#edit_catatan').val(surat.catatan || '');
-        $('#edit_ringkasan').val(surat.ringkasan);
-
-        // Clear existing attachments
-        $('.existing-attachments').empty();
-        
-        // Add attachments if they exist
-                const attachments = JSON.parse(button.attr('data-attachments'));
-                if (attachments && attachments.length > 0) {
-                    attachments.forEach(attachment => {
-                        $('.existing-attachments').append(`
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <div>
-                                    <i class="bx bx-file me-2"></i> ${attachment.filename}
-                                </div>
-                                <div>
-                                    <input type="checkbox" name="removed_attachments[]" value="${attachment.id}" id="removeAttachment${attachment.id}">
-                                    <label for="removeAttachment${attachment.id}">Hapus</label>
-                                </div>
-                            </div>
-                        `);
-                    });
-                } else {
-                    $('.existing-attachments').append('<p class="text-muted">Tidak ada lampiran.</p>');
-                }
-            } else {
-                console.error('ID surat masuk tidak ditemukan');
-            }
-        });
-
-            $('#hapus-surat-masuk').on('show.bs.modal', function(e) {
-                const button = $(e.relatedTarget);
-                const form = button.closest('form');
-                const action = form.attr('action');
-
-                $(this).find('.btn-hapus-surat-masuk').off('click').on('click', function() {
-                    form.submit();
-                });
-            });
-        });
-    </script>
 @endsection
 
 @if ($errors->any())

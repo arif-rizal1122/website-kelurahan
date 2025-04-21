@@ -140,68 +140,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
 <script src="{{ URL::asset('build/js/app.js') }}"></script>
-<script>
-$(document).ready(function() {
-    $('#editPendudukModal').on('show.bs.modal', function(e) {
-        const button = $(e.relatedTarget);
-        const penduduk = button.data();
 
-        if (penduduk.id) {
-            const updateUrl = `/penduduk/${penduduk.id}`;
-            $(this).find('#editPendudukForm').attr('action', updateUrl);
-            $(this).find('#edit_id').val(penduduk.id);
-            $(this).find('#edit_nik').val(penduduk.nik);
-            $(this).find('#edit_nama').val(penduduk.nama);
-            $(this).find('#edit_email').val(penduduk.email);
-            $(this).find('#edit_jenis_kelamin').val(penduduk.jenis_kelamin);
-            $(this).find('#edit_tempat_lahir').val(penduduk.tempat_lahir);
-            $(this).find('#edit_tanggal_lahir').val(penduduk.tanggal_lahir);
-            $(this).find('#edit_alamat_sekarang').val(penduduk.alamat_sekarang);
-            $(this).find('#edit_alamat_sebelumnya').val(penduduk.alamat_sebelumnya || '');
-            $(this).find('#edit_ayah_nik').val(penduduk.ayah_nik || '');
-            $(this).find('#edit_ibu_nik').val(penduduk.ibu_nik || '');
-            $(this).find('#edit_nama_ayah').val(penduduk.nama_ayah || '');
-            $(this).find('#edit_nama_ibu').val(penduduk.nama_ibu || '');
-            $(this).find('#edit_no_kk_sebelumnya').val(penduduk.no_kk_sebelumnya || '');
-            $(this).find('#edit_tempat_cetak_ktp').val(penduduk.tempat_cetak_ktp || '');
-            $(this).find('#edit_tanggal_cetak_ktp').val(penduduk.tanggal_cetak_ktp || '');
-            $(this).find('#edit_note').val(penduduk.note || '');
-            $(this).find('#edit_agama').val(penduduk.agama || '');
-            $(this).find('#edit_status_kawin').val(penduduk.status_kawin || '');
-            $(this).find('#edit_warga_negara').val(penduduk.warga_negara || '');
-            $(this).find('#edit_pendidikan_terakhir').val(penduduk.pendidikan_terakhir || '');
-            $(this).find('#edit_pekerjaan').val(penduduk.pekerjaan || '');
-            $(this).find('#edit_hubungan_warga').val(penduduk.hubungan_warga || '');
-            $(this).find('#edit_golongan_darah').val(penduduk.golongan_darah || '');
-            $(this).find('#edit_suku').val(penduduk.suku || '');
-            $(this).find('#edit_ktp_el').val(penduduk.ktp_el ? '1' : '0');
-            $(this).find('#edit_status_rekam').val(penduduk.status_rekam || '');
-            $(this).find('#edit_status_keadaan').val(penduduk.status_keadaan || '');
-        } else {
-            console.error('ID penduduk tidak ditemukan');
-        }
-    });
 
-    // Script lainnya tetap sama
-});
-    flatpickr("#tanggal_cetak_ktp", {
-        dateFormat: "Y-m-d"
-    });
-
-    flatpickr("#tanggal_lahir", {
-        dateFormat: "Y-m-d"
-    });
-
-    $(document).ready(function() {
-    $('#hapus-penduduk').on('show.bs.modal', function(e) {
-        const button = $(e.relatedTarget);
-        const form = button.closest('form');
-        const action = form.attr('action');
-
-        $(this).find('.btn-hapus-penduduk').off('click').on('click', function() {
-            form.submit();
-        });
-    });
-});
-</script>
 @endsection

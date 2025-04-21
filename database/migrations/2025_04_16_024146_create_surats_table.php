@@ -24,13 +24,8 @@ return new class extends Migration
             $table->text('catatan')->nullable();
             $table->string('ringkasan')->nullable();
             $table->enum('tipe_surat', ['Masuk', 'Keluar'])->nullable();
-            $table->unsignedBigInteger('config_id')->nullable();
             $table->timestamps();
 
-            $table->foreign('config_id')
-                  ->references('id')
-                  ->on('configs')
-                  ->onDelete('set null');
 
         });
 

@@ -2042,4 +2042,281 @@ if (mybutton) {
 		document.body.scrollTop = 0;
 		document.documentElement.scrollTop = 0;
 	}
+
+	$(document).ready(function() {
+		// Inisialisasi CKEditor untuk modal create
+		const isiSuratElementCreate = document.querySelector('#isi_surat');
+		let createEditorInstance; // Menyimpan instance editor
+	
+		if (isiSuratElementCreate) {
+			ClassicEditor
+				.create(isiSuratElementCreate, {
+					toolbar: {
+						items: [
+							'heading',
+							'|',
+							'bold',
+							'italic',
+							'bulletedList',
+							'numberedList',
+							'|',
+							'outdent',
+							'indent',
+							'|',
+							'blockQuote',
+							'undo',
+							'redo'
+						]
+					}
+				})
+				.then(editor => {
+					createEditorInstance = editor;
+					editor.model.document.on('change:data', () => {
+						isiSuratElementCreate.value = editor.getData();
+					});
+				})
+				.catch(error => {
+					console.error(error);
+				});
+		}
+	
+		$('#createSuratKeluarForm').on('submit', function(event) {
+			if (createEditorInstance) {
+				isiSuratElementCreate.value = createEditorInstance.getData();
+				console.log('Nilai isi_surat dari CKEditor:', isiSuratElementCreate.value); // Untuk debugging
+			} else {
+				console.log('CKEditor belum diinisialisasi untuk form create.');
+			}
+			console.log('Form create akan disubmit.'); // Untuk debugging
+			// Biarkan form disubmit secara default
+		});
+	
+		$('#editSuratKeluarModal').on('show.bs.modal', function(e) {
+			const button = $(e.relatedTarget);
+			const surat = button.data();
+	
+			if (surat.id) {
+				const updateUrl = `/surat-keluar/${surat.id}`;
+				$(this).find('#editSuratKeluarForm').attr('action', updateUrl);
+				$(this).find('#edit_id').val(surat.id);
+				$('#edit_nomor_surat').val(surat.nomor_surat);
+				$('#edit_dari').val(surat.dari);
+				$('#edit_tujuan').val(surat.tujuan || '');
+				$('#edit_tanggal_surat').val(surat.tanggal_surat || '');
+				$('#edit_tanggal_pengiriman').val(surat.tanggal_pengiriman || '');
+				$('#edit_catatan').val(surat.catatan || '');
+				$('#edit_isi_surat').val(surat.isi_surat || '');
+	
+				 $('#current_lampiran').html('');
+	
+				 const attachments = JSON.parse(button.attr('data-attachments'));
+				 if (attachments && attachments.length > 0) {
+					 attachments.forEach(attachment => {
+						 $('.existing-attachments').append(`
+							 <div class="d-flex justify-content-between align-items-center mb-1">
+								 <div>
+									 <i class="bx bx-file me-2"></i> ${attachment.filename}
+								 </div>
+								 <div>
+									 <input type="checkbox" name="removed_attachments[]" value="${attachment.id}" id="removeAttachment${attachment.id}">
+									 <label for="removeAttachment${attachment.id}">Hapus</label>
+								 </div>
+							 </div>
+						 `);
+					 });
+				 } else {
+					 $('.existing-attachments').append('<p class="text-muted">Tidak ada lampiran.</p>');
+				 }
+			 } else {
+				 console.error('ID surat masuk tidak ditemukan');
+			 }
+	
+			 // Inisialisasi CKEditor untuk modal edit (jika belum ada)
+			 const isiSuratElementEdit = document.querySelector('#edit_isi_surat');
+			 if (isiSuratElementEdit && !isiSuratElementEdit.ckeditorInstance) {
+				 ClassicEditor
+					 .create(isiSuratElementEdit, {
+						 toolbar: {
+							 items: [
+								 'heading',
+								 '|',
+								 'bold',
+								 'italic',
+								 'bulletedList',
+								 'numberedList',
+								 '|',
+								 'outdent',
+								 'indent',
+								 '|',
+								 'blockQuote',
+								 'undo',
+								 'redo'
+							 ]
+						 }
+					 })
+					 .then(editor => {
+						 isiSuratElementEdit.ckeditorInstance = editor;
+						 editor.model.document.on('change:data', () => {
+							 isiSuratElementEdit.value = editor.getData();
+						 });
+					 })
+					 .catch(error => {
+						 console.error(error);
+					 });
+			 } else if (isiSuratElementEdit && isiSuratElementEdit.ckeditorInstance) {
+				 isiSuratElementEdit.ckeditorInstance.setData($(this).find('#edit_isi_surat').val());
+			 }
+		 });
+	
+		$('#editSuratKeluarForm').on('submit', function(event) {
+			const isiSuratElementEdit = document.querySelector('#edit_isi_surat');
+			if (isiSuratElementEdit && isiSuratElementEdit.ckeditorInstance) {
+				isiSuratElementEdit.value = isiSuratElementEdit.ckeditorInstance.getData();
+				console.log('Nilai isi_surat dari CKEditor (edit):', isiSuratElementEdit.value); // Untuk debugging
+			} else {
+				console.log('CKEditor belum diinisialisasi atau tidak ditemukan untuk form edit.');
+			}
+			console.log('Form edit akan disubmit.'); // Untuk debugging
+			// Biarkan form disubmit secara default
+		});
+	
+		$('#hapus-surat-keluar').on('show.bs.modal', function(e) {
+			const button = $(e.relatedTarget);
+			const form = button.closest('form');
+			const action = form.attr('action');
+	
+			$(this).find('.btn-hapus-surat-keluar').off('click').on('click', function() {
+				form.submit();
+			});
+		});
+	});
+
+
+
+	$(document).ready(function() {
+		$('#editSuratMasukModal').on('show.bs.modal', function(e) {
+const button = $(e.relatedTarget);
+const surat = button.data();
+
+if (surat.id) {
+	const updateUrl = `/surat-masuk/${surat.id}`;
+	$(this).find('#editSuratMasukForm').attr('action', updateUrl);
+	$(this).find('#edit_id').val(surat.id);
+	$('#edit_nomor_surat').val(surat.nomor_surat);
+	$('#edit_kode_surat').val(surat.kode_surat);
+	$('#edit_dari').val(surat.dari);
+	$('#edit_tujuan').val(surat.tujuan || '');
+	$('#edit_tanggal_surat').val(surat.tanggal_surat || '');
+	$('#edit_tanggal_diterima').val(surat.tanggal_diterima || '');
+	$('#edit_catatan').val(surat.catatan || '');
+	$('#edit_ringkasan').val(surat.ringkasan);
+
+	// Clear existing attachments
+	$('.existing-attachments').empty();
+	
+	// Add attachments if they exist
+			const attachments = JSON.parse(button.attr('data-attachments'));
+			if (attachments && attachments.length > 0) {
+				attachments.forEach(attachment => {
+					$('.existing-attachments').append(`
+						<div class="d-flex justify-content-between align-items-center mb-1">
+							<div>
+								<i class="bx bx-file me-2"></i> ${attachment.filename}
+							</div>
+							<div>
+								<input type="checkbox" name="removed_attachments[]" value="${attachment.id}" id="removeAttachment${attachment.id}">
+								<label for="removeAttachment${attachment.id}">Hapus</label>
+							</div>
+						</div>
+					`);
+				});
+			} else {
+				$('.existing-attachments').append('<p class="text-muted">Tidak ada lampiran.</p>');
+			}
+		} else {
+			console.error('ID surat masuk tidak ditemukan');
+		}
+	});
+
+		$('#hapus-surat-masuk').on('show.bs.modal', function(e) {
+			const button = $(e.relatedTarget);
+			const form = button.closest('form');
+			const action = form.attr('action');
+
+			$(this).find('.btn-hapus-surat-masuk').off('click').on('click', function() {
+				form.submit();
+			});
+		});
+	});
+
+
+
+	$(document).ready(function() {
+		$('#editPendudukModal').on('show.bs.modal', function(e) {
+			const button = $(e.relatedTarget);
+			const penduduk = button.data();
+	
+			if (penduduk.id) {
+				const updateUrl = `/penduduk/${penduduk.id}`;
+				$(this).find('#editPendudukForm').attr('action', updateUrl);
+				$(this).find('#edit_id').val(penduduk.id);
+				$(this).find('#edit_nik').val(penduduk.nik);
+				$(this).find('#edit_nama').val(penduduk.nama);
+				$(this).find('#edit_email').val(penduduk.email);
+				$(this).find('#edit_jenis_kelamin').val(penduduk.jenis_kelamin);
+				$(this).find('#edit_tempat_lahir').val(penduduk.tempat_lahir);
+				$(this).find('#edit_tanggal_lahir').val(penduduk.tanggal_lahir);
+				$(this).find('#edit_alamat_sekarang').val(penduduk.alamat_sekarang);
+				$(this).find('#edit_alamat_sebelumnya').val(penduduk.alamat_sebelumnya || '');
+				$(this).find('#edit_ayah_nik').val(penduduk.ayah_nik || '');
+				$(this).find('#edit_ibu_nik').val(penduduk.ibu_nik || '');
+				$(this).find('#edit_nama_ayah').val(penduduk.nama_ayah || '');
+				$(this).find('#edit_nama_ibu').val(penduduk.nama_ibu || '');
+				$(this).find('#edit_no_kk_sebelumnya').val(penduduk.no_kk_sebelumnya || '');
+				$(this).find('#edit_tempat_cetak_ktp').val(penduduk.tempat_cetak_ktp || '');
+				$(this).find('#edit_tanggal_cetak_ktp').val(penduduk.tanggal_cetak_ktp || '');
+				$(this).find('#edit_note').val(penduduk.note || '');
+				$(this).find('#edit_agama').val(penduduk.agama || '');
+				$(this).find('#edit_status_kawin').val(penduduk.status_kawin || '');
+				$(this).find('#edit_warga_negara').val(penduduk.warga_negara || '');
+				$(this).find('#edit_pendidikan_terakhir').val(penduduk.pendidikan_terakhir || '');
+				$(this).find('#edit_pekerjaan').val(penduduk.pekerjaan || '');
+				$(this).find('#edit_hubungan_warga').val(penduduk.hubungan_warga || '');
+				$(this).find('#edit_golongan_darah').val(penduduk.golongan_darah || '');
+				$(this).find('#edit_suku').val(penduduk.suku || '');
+				$(this).find('#edit_ktp_el').val(penduduk.ktp_el ? '1' : '0');
+				$(this).find('#edit_status_rekam').val(penduduk.status_rekam || '');
+				$(this).find('#edit_status_keadaan').val(penduduk.status_keadaan || '');
+			} else {
+				console.error('ID penduduk tidak ditemukan');
+			}
+		});
+	
+		// Script lainnya tetap sama
+	});
+		flatpickr("#tanggal_cetak_ktp", {
+			dateFormat: "Y-m-d"
+		});
+	
+		flatpickr("#tanggal_lahir", {
+			dateFormat: "Y-m-d"
+		});
+	
+		$(document).ready(function() {
+		$('#hapus-penduduk').on('show.bs.modal', function(e) {
+			const button = $(e.relatedTarget);
+			const form = button.closest('form');
+			const action = form.attr('action');
+	
+			$(this).find('.btn-hapus-penduduk').off('click').on('click', function() {
+				form.submit();
+			});
+		});
+	});
+
+
+
+
+
+
 }

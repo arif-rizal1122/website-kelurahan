@@ -5,3 +5,12 @@
 #hapus-surat-masuk .modal-backdrop {
     z-index: 1054;
 }
+
+
+#hapus-surat-keluar {
+    z-index: 1055;
+}
+
+#hapus-surat-keluar .modal-backdrop {
+    z-index: 1054;
+}

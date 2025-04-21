@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Surat;
 
+use App\Enums\Surat;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreSuratKeluarRequest extends FormRequest
@@ -14,17 +15,15 @@ class StoreSuratKeluarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nomor_surat' => 'nullable|string|max:35',
-            'kode_surat' => 'nullable|string|max:10',
-            'dari' => 'nullable|string',
-            'tujuan' => 'nullable|string',
-            'tanggal_surat' => 'nullable|date',
-            'tanggal_pengiriman' => 'nullable|date',
-            'tanggal_diterima' => 'nullable|date',
-            'isi_surat' => 'nullable|string',
-            'catatan' => 'nullable|string',
-            'ringkasan' => 'nullable|string',
-            'ekspedisi' => 'nullable|boolean',
+            'nomor_surat' => 'required|string|max:35',
+            'dari' => 'required|string',
+            'tujuan' => 'required|string',
+            'tanggal_surat' => 'required|date',
+            'tanggal_pengiriman' => 'required|date',
+            'catatan' => 'required|string',
+            'isi_surat' => 'required|string',
+            'attachments' => 'nullable|array', 
+            'attachments.*' => ['nullable', 'file', 'mimes:pdf', 'max:2048'], 
         ];
     }
 }

@@ -14,17 +14,17 @@ class UpdateSuratKeluarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nomor_surat' => 'nullable|string|max:35',
-            'kode_surat' => 'nullable|string|max:10',
-            'dari' => 'nullable|string',
-            'tujuan' => 'nullable|string',
-            'tanggal_surat' => 'nullable|date',
-            'tanggal_pengiriman' => 'nullable|date',
-            'tanggal_diterima' => 'nullable|date',
-            'isi_surat' => 'nullable|string',
+            'nomor_surat' => 'sometimes|required|string|max:35',
+            'dari' => 'sometimes|required|string',
+            'tujuan' => 'sometimes|required|string',
+            'tanggal_surat' => 'sometimes|required|date',
+            'tanggal_pengiriman' => 'sometimes|required|date',
             'catatan' => 'nullable|string',
-            'ringkasan' => 'nullable|string',
-            'ekspedisi' => 'nullable|boolean',
+            'isi_surat' => 'sometimes|required|string',
+            'removed_attachments' => 'nullable|array', 
+            'attachments' => 'nullable|array',
+            'attachments.*' => ['nullable', 'file', 'mimes:pdf', 'max:2048'],
         ];
     }
+
 }

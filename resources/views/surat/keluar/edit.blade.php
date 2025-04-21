@@ -1,7 +1,7 @@
 <div class="modal fade" id="editSuratKeluarModal" tabindex="-1" aria-labelledby="editSuratMasukModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <form id="editSuratKeluarForm" method="POST" action="">
+            <form id="editSuratKeluarForm" method="POST" action="" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="modal-header">
@@ -19,44 +19,57 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label for="edit_pengirim" class="form-label text-secondary">Pengirim</label>
-                            <input type="text" name="pengirim" class="form-control" id="edit_pengirim" required value="{{ old('pengirim') }}" placeholder="Masukkan Nama Pengirim">
-                            @error('pengirim') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                            <label for="edit_dari" class="form-label text-secondary">Pengirim</label>
+                            <input type="text" name="dari" class="form-control" id="edit_dari" required value="{{ old('dari') }}" placeholder="Masukkan Nama Pengirim">
+                            @error('dari') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="edit_perihal" class="form-label text-secondary">Perihal</label>
-                        <input type="text" name="perihal" class="form-control" id="edit_perihal" required value="{{ old('perihal') }}" placeholder="Masukkan Perihal Surat">
-                        @error('perihal') <div class="text-danger mt-1">{{ $message }}</div> @enderror
-                    </div>
-
                     <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_tujuan" class="form-label text-secondary">Tujuan</label>
+                            <input type="text" name="tujuan" class="form-control" id="edit_tujuan" required value="{{ old('tujuan') }}" placeholder="Masukkan Tujuan Surat">
+                            @error('tujuan') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                        </div>
+
                         <div class="col-md-6 mb-3">
                             <label for="edit_tanggal_surat" class="form-label text-secondary">Tanggal Surat</label>
                             <input type="date" name="tanggal_surat" class="form-control" id="edit_tanggal_surat" required value="{{ old('tanggal_surat') }}">
                             @error('tanggal_surat') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                         </div>
+                    </div>
 
+                    <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="edit_tanggal_diterima" class="form-label text-secondary">Tanggal Diterima</label>
-                            <input type="date" name="tanggal_diterima" class="form-control" id="edit_tanggal_diterima" required value="{{ old('tanggal_diterima') }}">
-                            @error('tanggal_diterima') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                            <label for="edit_tanggal_pengiriman" class="form-label text-secondary">Tanggal Pengiriman</label>
+                            <input type="date" name="tanggal_pengiriman" class="form-control" id="edit_tanggal_pengiriman" required value="{{ old('tanggal_pengiriman') }}">
+                            @error('tanggal_pengiriman') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_attachments" class="form-label text-secondary">Ubah/Tambah File Lampiran</label>
+                            <input type="file" name="attachments[]" class="form-control" id="edit_attachments" multiple>
+                            @error('attachments') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                            @error('attachments.*') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                            <small class="text-muted">Format file yang diizinkan: pdf. Maksimal ukuran per file: 2MB. Anda dapat memilih beberapa file.</small>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="existing_attachments" class="form-label text-secondary">Lampiran Saat Ini</label>
+                        <div class="existing-attachments">
+                            <!-- Akan diisi melalui JavaScript -->
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="edit_lampiran" class="form-label text-secondary">File Lampiran (Kosongkan jika tidak ingin diubah)</label>
-                        <input type="file" name="lampiran" class="form-control" id="edit_lampiran">
-                        @error('lampiran') <div class="text-danger mt-1">{{ $message }}</div> @enderror
-                        <small class="text-muted">Format file yang diizinkan: pdf, doc, docx. Maksimal ukuran: 2MB.</small>
-                        <p class="mt-1">File saat ini: <span id="current_lampiran"></span></p>
+                        <label for="edit_isi_surat" class="form-label text-secondary">Isi Surat</label>
+                        <textarea name="isi_surat" class="form-control" id="edit_isi_surat" rows="5" required placeholder="Masukkan Isi Surat">{{ old('isi_surat') }}</textarea>
+                        @error('isi_surat') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                     </div>
 
                     <div class="mb-3">
-                        <label for="edit_keterangan" class="form-label text-secondary">Keterangan (Opsional)</label>
-                        <textarea name="keterangan" class="form-control" id="edit_keterangan" rows="2" placeholder="Masukkan keterangan tambahan jika ada">{{ old('keterangan') }}</textarea>
-                        @error('keterangan') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                        <label for="edit_catatan" class="form-label text-secondary">Catatan</label>
+                        <textarea name="catatan" class="form-control" id="edit_catatan" rows="3" required placeholder="Masukkan Catatan">{{ old('catatan') }}</textarea>
+                        @error('catatan') <div class="text-danger mt-1">{{ $message }}</div> @enderror
                     </div>
 
                 </div>
@@ -77,39 +90,3 @@
         });
     </script>
 @endif
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const editSuratKeluarModal = document.getElementById('editSuratKeluarModal');
-        if (editSuratKeluarModal) {
-            editSuratKeluarModal.addEventListener('show.bs.modal', event => {
-                const button = event.relatedTarget;
-                const id = button.getAttribute('data-id');
-                const nomorSurat = button.getAttribute('data-nomor_surat');
-                const pengirim = button.getAttribute('data-pengirim');
-                const perihal = button.getAttribute('data-perihal');
-                const tanggalSurat = button.getAttribute('data-tanggal_surat');
-                const tanggalDiterima = button.getAttribute('data-tanggal_diterima');
-                const lampiran = button.getAttribute('data-lampiran'); // Nama file saja
-
-                const modalForm = editSuratKeluarModal.querySelector('#editSuratKeluarForm');
-                const modalId = editSuratKeluarModal.querySelector('#edit_id');
-                const modalNomorSurat = editSuratKeluarModal.querySelector('#edit_nomor_surat');
-                const modalPengirim = editSuratKeluarModal.querySelector('#edit_pengirim');
-                const modalPerihal = editSuratKeluarModal.querySelector('#edit_perihal');
-                const modalTanggalSurat = editSuratKeluarModal.querySelector('#edit_tanggal_surat');
-                const modalTanggalDiterima = editSuratKeluarModal.querySelector('#edit_tanggal_diterima');
-                const currentLampiranSpan = editSuratKeluarModal.querySelector('#current_lampiran');
-
-                modalForm.action = `/surat-keluar/${id}`; // Set URL edit yang benar
-                modalId.value = id;
-                modalNomorSurat.value = nomorSurat;
-                modalPengirim.value = pengirim;
-                modalPerihal.value = perihal;
-                modalTanggalSurat.value = tanggalSurat;
-                modalTanggalDiterima.value = tanggalDiterima;
-                currentLampiranSpan.textContent = lampiran ? lampiran.split('/').pop() : 'Tidak ada file'; // Tampilkan nama file saja
-            });
-        }
-    });
-</script>

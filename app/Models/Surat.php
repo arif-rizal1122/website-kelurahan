@@ -24,7 +24,6 @@ class Surat extends Model
         'catatan',
         'ringkasan',
         'tipe_surat',
-        'config_id',
     ];
 
     protected $casts = [
