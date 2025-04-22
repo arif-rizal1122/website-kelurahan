@@ -69,7 +69,11 @@
                     </div>
                 </li>
 
-
+                <li class="nav-item">
+                    <a href="<?php echo e(route('units.index')); ?>" class="nav-link" role="button" aria-expanded="false" aria-controls="sidebarCalendar" data-key="t-calender">
+                        <i class="las la-chart-pie"></i> <span>Units</span>
+                    </a>
+                </li>
 
                 
 

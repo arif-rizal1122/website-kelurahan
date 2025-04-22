@@ -69,7 +69,11 @@
                     </div>
                 </li>
 
-
+                <li class="nav-item">
+                    <a href="{{ route('units.index') }}" class="nav-link" role="button" aria-expanded="false" aria-controls="sidebarCalendar" data-key="t-calender">
+                        <i class="las la-chart-pie"></i> <span>Units</span>
+                    </a>
+                </li>
 
                 {{-- <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarCharts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarCharts">

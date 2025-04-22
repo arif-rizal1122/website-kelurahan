@@ -14,7 +14,7 @@ class TwebPendudukSeeder extends Seeder
         $faker = Faker::create('id_ID');
         $configId = Config::first()->id ?? 1; // Asumsi ada minimal satu Config, jika tidak buat default
 
-        foreach (range(1, 40) as $i) {
+        foreach (range(1, 10) as $i) {
             $ayahNik = $faker->optional()->numerify('################');
             $ibuNik = $faker->optional()->numerify('################');
             $noKkSebelumnya = $faker->optional()->numerify('##########');

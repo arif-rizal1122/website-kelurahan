@@ -164,5 +164,4 @@ unset($__errorArgs, $__bag); ?>
             <?php endif; ?>
         });
     </script>
-<?php endif; ?>
-<?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/surat/masuk/create.blade.php ENDPATH**/ ?>
+<?php endif; ?><?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/surat/masuk/create.blade.php ENDPATH**/ ?>
