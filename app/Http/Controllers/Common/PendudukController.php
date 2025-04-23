@@ -5,12 +5,9 @@ namespace App\Http\Controllers\Common;
 use App\Enums\Suku;
 use App\Http\Controllers\Controller;
 use App\Models\TwebPenduduk;
-use Illuminate\Http\Request;
 use App\Http\Requests\Common\StorePendudukRequest;
 use App\Http\Requests\Common\UpdatePendudukRequest;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Contracts\View\View;
-use Illuminate\Validation\ValidationException;
 
 
 class PendudukController extends Controller
@@ -35,7 +32,6 @@ class PendudukController extends Controller
             TwebPenduduk::create($request->validated());
             return redirect()->route('penduduk.index')->with('success', 'Data penduduk berhasil ditambahkan.');
         } catch (\Exception $e) {
-            Log::error('Gagal menambahkan penduduk: ' . $e->getMessage());
             return redirect()->route('penduduk.index')->with('error', 'Gagal menambahkan data penduduk: ' . $e->getMessage());
         }
     }
@@ -59,7 +55,6 @@ class PendudukController extends Controller
                 return redirect()->route('penduduk.index')->with('error', 'Gagal memperbarui data penduduk.');
             }
         } catch (\Exception $e) {
-            Log::error('Gagal memperbarui penduduk dengan ID ' . $penduduk->id . ': ' . $e->getMessage());
             return redirect()->route('penduduk.index')->with('error', 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage());
         }
     }
@@ -71,7 +66,6 @@ class PendudukController extends Controller
             $penduduk->delete();
             return redirect()->route('penduduk.index')->with('success', 'Data penduduk berhasil dihapus.');
         } catch (\Exception $e) {
-            Log::error('Gagal menghapus penduduk dengan ID ' . $penduduk->id . ': ' . $e->getMessage());
             return redirect()->route('penduduk.index')->with('error', 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage());
         }
     }
