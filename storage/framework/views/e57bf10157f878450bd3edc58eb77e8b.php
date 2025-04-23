@@ -1,8 +1,5 @@
-<!-- ========== App Menu ========== -->
 <div class="app-menu navbar-menu">
-    <!-- LOGO -->
     <div class="navbar-brand-box">
-        <!-- Dark Logo-->
         <a href="index" class="logo logo-dark">
             <span class="logo-sm">
                 <img src="<?php echo e(URL::asset('build/images/logo-sm.png')); ?>" alt="" height="22">
@@ -11,7 +8,6 @@
                 <img src="<?php echo e(URL::asset('build/images/logo-dark.png')); ?>" alt="" height="17">
             </span>
         </a>
-        <!-- Light Logo-->
         <a href="index" class="logo logo-light">
             <span class="logo-sm">
                 <img src="<?php echo e(URL::asset('build/images/logo-sm.png')); ?>" alt="" height="22">
@@ -33,39 +29,35 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span><?php echo app('translator')->get('translation.menu'); ?></span></li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                        <i class="las la-tachometer-alt"></i> <span><?php echo app('translator')->get('translation.dashboards'); ?></span>
+                    <a class="nav-link menu-link" href="#sidebarKependudukan" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarKependudukan">
+                        <i class="bx bxs-user-check"></i> <span>Kependudukan</span>
                     </a>
-                    <div class="menu-dropdown" id="sidebarDashboards">
+                    <div class="menu-dropdown collapse" id="sidebarKependudukan">
                         <ul class="nav nav-sm flex-column">
-                            
                             <li class="nav-item">
-                                <a href="<?php echo e(route('penduduk.index')); ?>" class="m-2"><i class="bx bxs-user-check m-2">Kependudukan</i></a>
+                                <a href="<?php echo e(route('penduduk.index')); ?>" class="nav-link" data-key="t-kependudukan">
+                                     Data Penduduk
+                                </a>
                             </li>
-                            
-                        </ul>
+                            </ul>
                     </div>
-                </li> <!-- end Dashboard Menu -->
-                <li class="nav-item">
+                </li> <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class="bx bx-envelope"></i></i> <span>Persuratan</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarApps">
                         <ul class="nav nav-sm flex-column">
-                            <!-- end Dashboard Menu -->
                             <li class="nav-item">
                                 <a href="<?php echo e(route('surat-masuk.index')); ?>" class="nav-link" role="button" aria-expanded="false" aria-controls="sidebarCalendar" data-key="t-calender">
                                      Surat Masuk
                                 </a>
-                            </li>    
+                            </li>
                             <li class="nav-item">
                                 <a href="<?php echo e(route('surat-keluar.index')); ?>" class="nav-link" role="button" aria-expanded="false" aria-controls="sidebarCalendar" data-key="t-calender">
                                      Surat Keluar
                                 </a>
                             </li>
-                            <!-- end Dashboard Menu -->
-                            
-                        </ul>
+                            </ul>
                     </div>
                 </li>
 
@@ -75,15 +67,11 @@
                     </a>
                 </li>
 
-                
+
 
             </ul>
         </div>
-        <!-- Sidebar -->
-    </div>
+        </div>
     <div class="sidebar-background"></div>
 </div>
-<!-- Left Sidebar End -->
-<!-- Vertical Overlay-->
-<div class="vertical-overlay"></div>
-<?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/layouts/sidebar.blade.php ENDPATH**/ ?>
+<div class="vertical-overlay"></div><?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/layouts/sidebar.blade.php ENDPATH**/ ?>

@@ -1,15 +1,14 @@
-@extends('layouts.master')
-@section('title') @lang('translation.create') Tambah Surat Keluar @endsection
-@section('css')
+<?php $__env->startSection('title'); ?> <?php echo app('translator')->get('translation.create'); ?> Tambah Surat Keluar <?php $__env->stopSection(); ?>
+<?php $__env->startSection('css'); ?>
     <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
-@endsection
-@section('content')
-    @component('components.breadcrumb')
-        @slot('li_1') Surat @endslot
-        @slot('title') Tambah Surat Keluar @endslot
-    @endcomponent
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
+    <?php $__env->startComponent('components.breadcrumb'); ?>
+        <?php $__env->slot('li_1'); ?> Surat <?php $__env->endSlot(); ?>
+        <?php $__env->slot('title'); ?> Tambah Surat Keluar <?php $__env->endSlot(); ?>
+    <?php echo $__env->renderComponent(); ?>
 
     <div class="row justify-content-center">
         <div class="col-lg-10">
@@ -21,18 +20,18 @@
                     </div>
                 </div>
                 <div class="card-body p-4">
-                    @if ($errors->any())
+                    <?php if($errors->any()): ?>
                         <div class="alert alert-danger mb-4">
                             <ul class="mb-0">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
+                                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <li><?php echo e($error); ?></li>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </ul>
                         </div>
-                    @endif
+                    <?php endif; ?>
 
-                    <form action="{{ route('surat-keluar.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
+                    <form action="<?php echo e(route('surat-keluar.store')); ?>" method="POST" enctype="multipart/form-data">
+                        <?php echo csrf_field(); ?>
                         
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -41,16 +40,30 @@
                                         <i class="bx bx-hash me-1"></i>Nomor Surat <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" 
-                                           class="form-control @error('nomor_surat') is-invalid @enderror" 
+                                           class="form-control <?php $__errorArgs = ['nomor_surat'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                            id="nomor_surat" 
                                            name="nomor_surat" 
-                                           value="{{ old('nomor_surat') }}" 
+                                           value="<?php echo e(old('nomor_surat')); ?>" 
                                            placeholder="Masukkan nomor surat" 
                                            maxlength="35"
                                            required>
-                                    @error('nomor_surat')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                    <?php $__errorArgs = ['nomor_surat'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                             
@@ -60,14 +73,28 @@
                                         <i class="bx bx-calendar me-1"></i>Tanggal Surat <span class="text-danger">*</span>
                                     </label>
                                     <input type="date" 
-                                           class="form-control @error('tanggal_surat') is-invalid @enderror" 
+                                           class="form-control <?php $__errorArgs = ['tanggal_surat'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                            id="tanggal_surat" 
                                            name="tanggal_surat" 
-                                           value="{{ old('tanggal_surat') }}" 
+                                           value="<?php echo e(old('tanggal_surat')); ?>" 
                                            required>
-                                    @error('tanggal_surat')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                    <?php $__errorArgs = ['tanggal_surat'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                         </div>
@@ -79,15 +106,29 @@
                                         <i class="bx bx-user-voice me-1"></i>Dari <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" 
-                                           class="form-control @error('dari') is-invalid @enderror" 
+                                           class="form-control <?php $__errorArgs = ['dari'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                            id="dari" 
                                            name="dari" 
-                                           value="{{ old('dari') }}" 
+                                           value="<?php echo e(old('dari')); ?>" 
                                            placeholder="Masukkan pengirim surat"
                                            required>
-                                    @error('dari')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                    <?php $__errorArgs = ['dari'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                             
@@ -97,15 +138,29 @@
                                         <i class="bx bx-target-lock me-1"></i>Tujuan <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" 
-                                           class="form-control @error('tujuan') is-invalid @enderror" 
+                                           class="form-control <?php $__errorArgs = ['tujuan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                            id="tujuan" 
                                            name="tujuan" 
-                                           value="{{ old('tujuan') }}" 
+                                           value="<?php echo e(old('tujuan')); ?>" 
                                            placeholder="Masukkan tujuan surat"
                                            required>
-                                    @error('tujuan')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                    <?php $__errorArgs = ['tujuan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                         </div>
@@ -116,14 +171,28 @@
                                     <i class="bx bx-send me-1"></i>Tanggal Pengiriman <span class="text-danger">*</span>
                                 </label>
                                 <input type="date" 
-                                       class="form-control @error('tanggal_pengiriman') is-invalid @enderror" 
+                                       class="form-control <?php $__errorArgs = ['tanggal_pengiriman'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                        id="tanggal_pengiriman" 
                                        name="tanggal_pengiriman" 
-                                       value="{{ old('tanggal_pengiriman') }}" 
+                                       value="<?php echo e(old('tanggal_pengiriman')); ?>" 
                                        required>
-                                @error('tanggal_pengiriman')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                <?php $__errorArgs = ['tanggal_pengiriman'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -132,15 +201,29 @@
                                 <label for="isi_surat" class="form-label fw-bold text-primary">
                                     <i class="bx bx-notepad me-1"></i>Isi Surat <span class="text-danger">*</span>
                                 </label>
-                                <textarea class="form-control @error('isi_surat') is-invalid @enderror" 
+                                <textarea class="form-control <?php $__errorArgs = ['isi_surat'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                           id="isi_surat" 
                                           name="isi_surat" 
                                           rows="5" 
                                           placeholder="Masukkan isi surat"
-                                          required>{{ old('isi_surat') }}</textarea>
-                                @error('isi_surat')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                          required><?php echo e(old('isi_surat')); ?></textarea>
+                                <?php $__errorArgs = ['isi_surat'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -149,15 +232,29 @@
                                 <label for="catatan" class="form-label fw-bold text-primary">
                                     <i class="bx bx-comment-detail me-1"></i>Catatan <span class="text-danger">*</span>
                                 </label>
-                                <textarea class="form-control @error('catatan') is-invalid @enderror" 
+                                <textarea class="form-control <?php $__errorArgs = ['catatan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                           id="catatan" 
                                           name="catatan" 
                                           rows="3" 
                                           placeholder="Masukkan catatan surat"
-                                          required>{{ old('catatan') }}</textarea>
-                                @error('catatan')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                          required><?php echo e(old('catatan')); ?></textarea>
+                                <?php $__errorArgs = ['catatan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
 
@@ -181,16 +278,23 @@
                                                    accept="application/pdf"
                                                    multiple>
                                         </div>
-                                        @error('attachments.*')
-                                            <div class="text-danger small mt-2">{{ $message }}</div>
-                                        @enderror
+                                        <?php $__errorArgs = ['attachments.*'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <div class="text-danger small mt-2"><?php echo e($message); ?></div>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="d-flex justify-content-between mt-4">
-                            <a href="{{ route('surat-keluar.index') }}" class="btn btn-secondary">
+                            <a href="<?php echo e(route('surat-keluar.index')); ?>" class="btn btn-secondary">
                                 <i class="bx bx-arrow-back me-1"></i> Kembali
                             </a>
                             <button type="submit" class="btn btn-primary">
@@ -202,9 +306,9 @@
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('css')
+<?php $__env->startSection('css'); ?>
 <style>
     .dropzone-wrapper {
         border: 2px dashed #ccc;
@@ -242,9 +346,9 @@
         font-size: 24px !important;
     }
 </style>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
+<?php $__env->startSection('script'); ?>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script>
@@ -270,8 +374,9 @@
             $('#tanggal_pengiriman').val(today);
         });
     </script>
-@endsection
-@section('script-bottom')
-    <script src="{{ URL::asset('build/js/pages/form-validation.init.js') }}"></script>
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('script-bottom'); ?>
+    <script src="<?php echo e(URL::asset('build/js/pages/form-validation.init.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/app.js')); ?>"></script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/surat/keluar/create.blade.php ENDPATH**/ ?>
