@@ -82,11 +82,7 @@ class SuratKeluarController extends Controller
      */
     public function edit(Surat $surat)
     {
-        if ($surat->tipe_surat !== 'Keluar') {
-            abort(404); // Surat tidak ditemukan jika bukan tipe 'Keluar'
-        }
-
-        $attachments = $surat->attachments; // Ambil semua lampiran terkait
+        $attachments = $surat->attachments;
         return view('surat.keluar.edit', compact('surat', 'attachments'));
     }
 

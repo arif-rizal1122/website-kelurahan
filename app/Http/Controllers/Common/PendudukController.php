@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Common\StorePendudukRequest;
 use App\Http\Requests\Common\UpdatePendudukRequest;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Contracts\View\View;
 use Illuminate\Validation\ValidationException;
 
 
@@ -20,6 +21,8 @@ class PendudukController extends Controller
         $penduduks = TwebPenduduk::all();
         return view('penduduk.index', compact('penduduks', 'suku'));
     }
+
+
 
     public function create()
     {
@@ -44,10 +47,8 @@ class PendudukController extends Controller
     }
 
 
-    public function update(UpdatePendudukRequest $request, $id)
+    public function update(UpdatePendudukRequest $request, TwebPenduduk $penduduk)
     {
-        $penduduk = TwebPenduduk::findOrFail($id);
-
         try {
             $validatedData = $request->validated();
             $updated = $penduduk->update($validatedData);
@@ -58,21 +59,25 @@ class PendudukController extends Controller
                 return redirect()->route('penduduk.index')->with('error', 'Gagal memperbarui data penduduk.');
             }
         } catch (\Exception $e) {
-            Log::error('Gagal memperbarui penduduk dengan ID ' . $id . ': ' . $e->getMessage());
+            Log::error('Gagal memperbarui penduduk dengan ID ' . $penduduk->id . ': ' . $e->getMessage());
             return redirect()->route('penduduk.index')->with('error', 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage());
         }
     }
 
 
-    public function destroy(TwebPenduduk $penduduk, $id) // Pastikan type hint benar
+    public function destroy(TwebPenduduk $penduduk) // Type hint sudah benar
     {
         try {
-            $penduduk = TwebPenduduk::findOrFail($id);
             $penduduk->delete();
             return redirect()->route('penduduk.index')->with('success', 'Data penduduk berhasil dihapus.');
         } catch (\Exception $e) {
-            Log::error('Gagal menghapus penduduk dengan ID ' . $id . ': ' . $e->getMessage());
+            Log::error('Gagal menghapus penduduk dengan ID ' . $penduduk->id . ': ' . $e->getMessage());
             return redirect()->route('penduduk.index')->with('error', 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage());
         }
+    }
+
+    public function show(TwebPenduduk $penduduk): View
+    {
+        return view('penduduk.show', compact('penduduk'));
     }
 }

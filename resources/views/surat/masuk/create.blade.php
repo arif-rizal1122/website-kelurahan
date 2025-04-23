@@ -1,97 +1,277 @@
-<div class="modal fade" id="createSuratMasukModal" tabindex="-1" aria-labelledby="createSuratMasukModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <form action="{{ route('surat-masuk.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createSuratMasukModalLabel">Tambah Surat Masuk</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+@extends('layouts.master')
+@section('title') @lang('translation.create') Tambah Surat Masuk @endsection
+@section('css')
+    <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+@endsection
+@section('content')
+    @component('components.breadcrumb')
+        @slot('li_1') Surat @endslot
+        @slot('title') Tambah Surat Masuk @endslot
+    @endcomponent
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-success text-white">
+                    <div class="d-flex align-items-center">
+                        <i class="bx bx-envelope-open font-size-24 me-2"></i>
+                        <h4 class="card-title mb-0">Form Surat Masuk</h4>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="nomor_surat" class="form-label text-secondary">Nomor Surat (Wajib)</label>
-                            <input type="text" name="nomor_surat" class="form-control" id="nomor_surat" value="{{ old('nomor_surat') }}" placeholder="Masukkan Nomor Surat" required>
-                            @error('nomor_surat') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                <div class="card-body p-4">
+                    @if ($errors->any())
+                        <div class="alert alert-danger mb-4">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <form action="{{ route('surat-masuk.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="nomor_surat" class="form-label fw-bold text-success">
+                                        <i class="bx bx-hash me-1"></i>Nomor Surat <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text"
+                                           class="form-control @error('nomor_surat') is-invalid @enderror"
+                                           id="nomor_surat"
+                                           name="nomor_surat"
+                                           value="{{ old('nomor_surat') }}"
+                                           placeholder="Masukkan nomor surat"
+                                           maxlength="35"
+                                           required>
+                                    @error('nomor_surat')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="tanggal_surat" class="form-label fw-bold text-success">
+                                        <i class="bx bx-calendar me-1"></i>Tanggal Surat <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="date"
+                                           class="form-control @error('tanggal_surat') is-invalid @enderror"
+                                           id="tanggal_surat"
+                                           name="tanggal_surat"
+                                           value="{{ old('tanggal_surat') }}"
+                                           required>
+                                    @error('tanggal_surat')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="col-md-6 mb-3">
-                            <label for="kode_surat" class="form-label text-secondary">Kode Surat (Wajib)</label>
-                            <input type="text" name="kode_surat" class="form-control" id="kode_surat" value="{{ old('kode_surat') }}" placeholder="Masukkan Kode Surat" required>
-                            @error('kode_surat') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="dari" class="form-label fw-bold text-success">
+                                        <i class="bx bx-user-voice me-1"></i>Dari <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text"
+                                           class="form-control @error('dari') is-invalid @enderror"
+                                           id="dari"
+                                           name="dari"
+                                           value="{{ old('dari') }}"
+                                           placeholder="Masukkan pengirim surat"
+                                           required>
+                                    @error('dari')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="tujuan" class="form-label fw-bold text-success">
+                                        <i class="bx bx-target-lock me-1"></i>Tujuan <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text"
+                                           class="form-control @error('tujuan') is-invalid @enderror"
+                                           id="tujuan"
+                                           name="tujuan"
+                                           value="{{ old('tujuan') }}"
+                                           placeholder="Masukkan tujuan surat"
+                                           required>
+                                    @error('tujuan')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="mb-3">
-                        <label for="dari" class="form-label text-secondary">Dari (Wajib)</label>
-                        <input type="text" name="dari" class="form-control" id="dari" value="{{ old('dari') }}" placeholder="Masukkan Nama Pengirim" required>
-                        @error('dari') <div class="text-danger mt-1">{{ $message }}</div> @enderror
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="tujuan" class="form-label text-secondary">Tujuan (Wajib)</label>
-                        <input type="text" name="tujuan" class="form-control" id="tujuan" value="{{ old('tujuan') }}" placeholder="Masukkan Tujuan Surat" required>
-                        @error('tujuan') <div class="text-danger mt-1">{{ $message }}</div> @enderror
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="tanggal_surat" class="form-label text-secondary">Tanggal Surat (Wajib)</label>
-                            <input type="date" name="tanggal_surat" class="form-control" id="tanggal_surat" value="{{ old('tanggal_surat') }}" required>
-                            @error('tanggal_surat') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <label for="tanggal_diterima" class="form-label fw-bold text-success">
+                                    <i class="bx bx-inbox me-1"></i>Tanggal Diterima <span class="text-danger">*</span>
+                                </label>
+                                <input type="date"
+                                       class="form-control @error('tanggal_diterima') is-invalid @enderror"
+                                       id="tanggal_diterima"
+                                       name="tanggal_diterima"
+                                       value="{{ old('tanggal_diterima') }}"
+                                       required>
+                                @error('tanggal_diterima')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
 
-                        <div class="col-md-6 mb-3">
-                            <label for="tanggal_diterima" class="form-label text-secondary">Tanggal Diterima (Wajib)</label>
-                            <input type="date" name="tanggal_diterima" class="form-control" id="tanggal_diterima" value="{{ old('tanggal_diterima') }}" required>
-                            @error('tanggal_diterima') <div class="text-danger mt-1">{{ $message }}</div> @enderror
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <label for="ringkasan" class="form-label fw-bold text-success">
+                                    <i class="bx bx-notepad me-1"></i>Ringkasan <span class="text-danger">*</span>
+                                </label>
+                                <textarea class="form-control @error('ringkasan') is-invalid @enderror"
+                                          id="ringkasan"
+                                          name="ringkasan"
+                                          rows="5"
+                                          placeholder="Masukkan ringkasan surat"
+                                          required>{{ old('ringkasan') }}</textarea>
+                                @error('ringkasan')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="mb-3">
-                        <label for="catatan" class="form-label text-secondary">Catatan (Opsional)</label>
-                        <textarea name="catatan" class="form-control" id="catatan" rows="2" placeholder="Masukkan catatan tambahan jika ada">{{ old('catatan') }}</textarea>
-                        @error('catatan') <div class="text-danger mt-1">{{ $message }}</div> @enderror
-                    </div>
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <label for="catatan" class="form-label fw-bold text-success">
+                                    <i class="bx bx-comment-detail me-1"></i>Catatan
+                                </label>
+                                <textarea class="form-control @error('catatan') is-invalid @enderror"
+                                          id="catatan"
+                                          name="catatan"
+                                          rows="3"
+                                          placeholder="Masukkan catatan surat">{{ old('catatan') }}</textarea>
+                                @error('catatan')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="ringkasan" class="form-label text-secondary">Ringkasan (Wajib)</label>
-                        <textarea name="ringkasan" class="form-control" id="ringkasan" rows="2" placeholder="Masukkan ringkasan surat jika ada" required>{{ old('ringkasan') }}</textarea>
-                        @error('ringkasan') <div class="text-danger mt-1">{{ $message }}</div> @enderror
-                    </div>
+                        <div class="mb-4">
+                            <div class="form-group">
+                                <label for="attachments" class="form-label fw-bold text-success">
+                                    <i class="bx bx-paperclip me-1"></i>Lampiran
+                                </label>
+                                <div class="card shadow-none border">
+                                    <div class="card-body">
+                                        <div class="dropzone-wrapper">
+                                            <div class="dropzone-desc">
+                                                <i class="bx bx-upload font-size-24 mb-2 d-block text-muted"></i>
+                                                <p class="text-muted mb-1">Klik atau seret file ke sini untuk mengunggah</p>
+                                                <p class="small text-muted mb-0">Format file yang diizinkan: PDF (Maks: 2MB)</p>
+                                            </div>
+                                            <input type="file"
+                                                   class="form-control dropzone-input"
+                                                   id="attachments"
+                                                   name="attachments[]"
+                                                   accept="application/pdf"
+                                                   multiple>
+                                        </div>
+                                        @error('attachments.*')
+                                            <div class="text-danger small mt-2">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-
-                    <div class="mb-3">
-                        <label for="attachments" class="form-label text-secondary">File Lampiran</label>
-                        <input type="file" name="attachments[]" class="form-control" id="attachments" multiple required>
-                        @error('attachments') <div class="text-danger mt-1">{{ $message }}</div> @enderror
-                        @error('attachments.*') <div class="text-danger mt-1">{{ $message }}</div> @enderror
-                        <small class="text-muted">Format file yang diizinkan: pdf. Maksimal ukuran per file: 2MB.</small>
-                    </div>
-
-                    {{-- Field 'surat' akan diisi otomatis di controller --}}
-                    <input type="hidden" name="tipe_surat" value="{{ \App\Enums\Surat::MASUK->value }}">
-
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ route('surat-masuk.index') }}" class="btn btn-secondary">
+                                <i class="bx bx-arrow-back me-1"></i> Kembali
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bx bx-paper-plane me-1"></i> Simpan
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
+@endsection
 
-@if ($errors->any())
+@section('css')
+<style>
+    .dropzone-wrapper {
+        border: 2px dashed #ccc;
+        color: #777;
+        position: relative;
+        min-height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .dropzone-desc {
+        position: absolute;
+        text-align: center;
+        width: 100%;
+        transition: all .2s ease;
+    }
+
+    .dropzone-input {
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .dropzone-wrapper:hover {
+        border-color: #28a745; /* Warna hijau untuk surat masuk */
+    }
+
+    .font-size-24 {
+        font-size: 24px !important;
+    }
+</style>
+@endsection
+
+@section('script')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            @if ($errors->hasAny(['nomor_surat', 'dari', 'tujuan', 'tanggal_surat', 'tanggal_diterima', 'catatan', 'ringkasan', 'ekspedisi', 'attachments']))
-                var createModal = new bootstrap.Modal(document.getElementById('createSuratMasukModal'));
-                createModal.show();
-            @elseif ($errors->has('id'))
-                var editModal = new bootstrap.Modal(document.getElementById('editSuratMasukModal'));
-                editModal.show();
-            @endif
+        $(document).ready(function() {
+            // Preview filename ketika file dipilih
+            $('input[type="file"]').change(function(e) {
+                var files = e.target.files;
+                if (files.length > 0) {
+                    var fileList = '';
+                    for (var i = 0; i < files.length; i++) {
+                        fileList += '<p class="small mb-1 text-primary">' +
+                                    '<i class="bx bxs-file-pdf me-1"></i>' +
+                                    files[i].name + '</p>';
+                    }
+                    $('.dropzone-desc').html('<div class="text-center">' + fileList +
+                                           '<p class="small text-muted mt-2">Klik lagi untuk mengganti file</p></div>');
+                }
+            });
+
+            // Default tanggal hari ini untuk tanggal diterima
+            var today = new Date().toISOString().split('T')[0];
+            $('#tanggal_surat').val(today);
+            $('#tanggal_diterima').val(today);
         });
     </script>
-@endif
+@endsection
+
+@section('script-bottom')
+    <script src="{{ URL::asset('build/js/pages/form-validation.init.js') }}"></script>
+    <script src="{{ URL::asset('build/js/app.js') }}"></script>
+@endsection

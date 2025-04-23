@@ -17,7 +17,6 @@ class StoreSuratMasukRequest extends FormRequest
     {
         return [
             'nomor_surat' => 'required|string|max:35',
-            'kode_surat' => 'required|string|max:35',
             'dari' => ['required_if:surat,' . Surat::MASUK->value],
             'tujuan' => 'required|string',
             'tanggal_surat' => 'required|date',

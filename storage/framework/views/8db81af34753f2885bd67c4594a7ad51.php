@@ -16,9 +16,9 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">Data Surat Keluar</h5>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createSuratKeluarModal">
+                        <a href="<?php echo e(route('surat-keluar.create')); ?>" class="btn btn-primary">
                             Tambah Surat Keluar
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -57,20 +57,9 @@
                                         <td>
                                             <div class="d-flex flex-wrap gap-2">
                                                 <a href="<?php echo e(route('surat-keluar.show', $surat->id)); ?>" class="btn btn-sm btn-info">Detail</a>
-                                                <button class="btn btn-sm btn-warning edit-btn"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#editSuratKeluarModal"
-                                                    data-id="<?php echo e($surat->id); ?>"
-                                                    data-nomor_surat="<?php echo e($surat->nomor_surat); ?>"
-                                                    data-dari="<?php echo e($surat->dari); ?>"
-                                                    data-tujuan="<?php echo e($surat->tujuan); ?>"
-                                                    data-tanggal_surat="<?php echo e($surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->format('Y-m-d') : ''); ?>"
-                                                    data-tanggal_pengiriman="<?php echo e($surat->tanggal_pengiriman ? \Carbon\Carbon::parse($surat->tanggal_pengiriman)->format('Y-m-d') : ''); ?>"
-                                                    data-catatan="<?php echo e($surat->catatan); ?>"
-                                                    data-isi_surat="<?php echo e($surat->isi_surat); ?>"
-                                                    data-attachments="<?php echo e(json_encode($surat->attachments)); ?>">
+                                                <a href="<?php echo e(route('surat-keluar.edit', $surat->id)); ?>" class="btn btn-sm btn-warning">
                                                     Edit
-                                                </button>
+                                                </a>
                                                 <form action="<?php echo e(route('surat-keluar.destroy', $surat->id)); ?>" method="POST" style="display: inline-block;">
                                                     <?php echo csrf_field(); ?>
                                                     <?php echo method_field('DELETE'); ?>
@@ -88,8 +77,6 @@
         </div>
     </div>
 
-    <?php echo $__env->make('surat.keluar.create', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-    <?php echo $__env->make('surat.keluar.edit', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
     <div id="hapus-surat-keluar" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-dialog-centered">

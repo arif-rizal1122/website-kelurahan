@@ -43,10 +43,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/data', [PendudukController::class, 'getData'])->name('penduduk.data');
         Route::get('/create', [PendudukController::class, 'create'])->name('penduduk.create');
         Route::post('/', [PendudukController::class, 'store'])->name('penduduk.store');
-        Route::get('/{id}/detail', [PendudukController::class, 'show'])->name('penduduk.show');
-        Route::get('/{id}/edit', [PendudukController::class, 'edit'])->name('penduduk.edit'); // Baris ini ditambahkan
-        Route::put('/{id}', [PendudukController::class, 'update'])->name('penduduk.update');
-        Route::delete('/{id}', [PendudukController::class, 'destroy'])->name('penduduk.destroy');
+        Route::get('/{penduduk}', [PendudukController::class, 'show'])->name('penduduk.show');
+        Route::get('/{penduduk}/edit', [PendudukController::class, 'edit'])->name('penduduk.edit'); 
+        Route::put('/{penduduk}', [PendudukController::class, 'update'])->name('penduduk.update');
+        Route::delete('/{penduduk}', [PendudukController::class, 'destroy'])->name('penduduk.destroy');
     });
 
     // Surat Masuk
@@ -54,8 +54,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [SuratMasukController::class, 'index'])->name('surat-masuk.index');
         Route::get('/create', [SuratMasukController::class, 'create'])->name('surat-masuk.create');
         Route::post('/', [SuratMasukController::class, 'store'])->name('surat-masuk.store');
-        Route::get('/{surat}', [SuratMasukController::class, 'show'])->name('surat-masuk.show');
         Route::get('/{surat}/edit', [SuratMasukController::class, 'edit'])->name('surat-masuk.edit');
+        Route::get('/{surat}', [SuratMasukController::class, 'show'])->name('surat-masuk.show');
         Route::put('/{surat}', [SuratMasukController::class, 'update'])->name('surat-masuk.update');
         Route::delete('/{surat}', [SuratMasukController::class, 'destroy'])->name('surat-masuk.destroy');
         Route::delete('/attachments/{attachment}', [SuratMasukController::class, 'destroyAttachment'])->name('surat-masuk.attachments.destroy');
@@ -66,8 +66,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [SuratKeluarController::class, 'index'])->name('surat-keluar.index');
         Route::get('/create', [SuratKeluarController::class, 'create'])->name('surat-keluar.create');
         Route::post('/', [SuratKeluarController::class, 'store'])->name('surat-keluar.store');
+        Route::get('/{surat}/edit', [SuratKeluarController::class, 'edit'])->name('surat-keluar.edit'); // Route edit dipindahkan ke atas
         Route::get('/{surat}', [SuratKeluarController::class, 'show'])->name('surat-keluar.show');
-        Route::get('/{surat}/edit', [SuratKeluarController::class, 'edit'])->name('surat-keluar.edit');
         Route::put('/{surat}', [SuratKeluarController::class, 'update'])->name('surat-keluar.update');
         Route::delete('/{surat}', [SuratKeluarController::class, 'destroy'])->name('surat-keluar.destroy');
     });

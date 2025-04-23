@@ -15,13 +15,13 @@ class UpdatePendudukRequest extends FormRequest
 
     public function rules(): array
     {
-        $pendudukId = $this->input('id');
+        $pendudukId = $this->input('penduduk');
         return [
             'nik' => [
                 'required',
                 'string',
                 'max:16',
-                'unique:tweb_penduduks,nik,' . $pendudukId, // Abaikan NIK dari record yang sedang di-update
+                'unique:tweb_penduduks,nik,' . $pendudukId, 
             ],
             'no_kk_sebelumnya' => [
                 'nullable',
@@ -36,13 +36,13 @@ class UpdatePendudukRequest extends FormRequest
                 'max:255',
                 'unique:tweb_penduduks,email,' . $pendudukId,
             ],
-            'jenis_kelamin' => ['required', new Enum(\App\Enums\JenisKelamin::class)], // Asumsi Anda punya Enum
+            'jenis_kelamin' => ['required', new Enum(\App\Enums\JenisKelamin::class)], 
             'tempat_lahir' => 'nullable|string|max:100',
             'tanggal_lahir' => 'required|date',
-            'agama' => ['required', new Enum(\App\Enums\Agama::class)], // Asumsi Anda punya Enum
-            'status_kawin' => ['required', new Enum(\App\Enums\StatusKawin::class)], // Asumsi Anda punya Enum
+            'agama' => ['required', new Enum(\App\Enums\Agama::class)], 
+            'status_kawin' => ['required', new Enum(\App\Enums\StatusKawin::class)], 
             'warga_negara' => 'required|string|max:50',
-            'pendidikan_terakhir' => ['required', new Enum(\App\Enums\Pendidikan::class)], // Asumsi Anda punya Enum
+            'pendidikan_terakhir' => ['required', new Enum(\App\Enums\Pendidikan::class)], 
             'pekerjaan' => 'required|string|max:255',
             'alamat_sekarang' => 'required|string|max:255',
             'alamat_sebelumnya' => 'nullable|string|max:255',
@@ -60,14 +60,14 @@ class UpdatePendudukRequest extends FormRequest
             ],
             'nama_ayah' => 'nullable|string|max:100',
             'nama_ibu' => 'nullable|string|max:100',
-            'hubungan_warga' => ['required', new Enum(\App\Enums\HubunganWarga::class)], // Asumsi Anda punya Enum
-            'golongan_darah' => ['required', new Enum(\App\Enums\GolonganDarah::class)], // Asumsi Anda punya Enum
+            'hubungan_warga' => ['required', new Enum(\App\Enums\HubunganWarga::class)], 
+            'golongan_darah' => ['required', new Enum(\App\Enums\GolonganDarah::class)], 
             'suku' => ['required', 'string', 'max:50', new Enum(Suku::class)],
             'ktp_el' => 'required|boolean',
-            'status_rekam' => ['required', new Enum(\App\Enums\StatusRekam::class)], // Asumsi Anda punya Enum
+            'status_rekam' => ['required', new Enum(\App\Enums\StatusRekam::class)], 
             'tempat_cetak_ktp' => 'nullable|string|max:100',
             'tanggal_cetak_ktp' => 'nullable|date',
-            'status_keadaan' => ['required', new Enum(\App\Enums\StatusKeadaan::class)], // Asumsi Anda punya Enum
+            'status_keadaan' => ['required', new Enum(\App\Enums\StatusKeadaan::class)], 
             'note' => 'nullable|string',
         ];
     }

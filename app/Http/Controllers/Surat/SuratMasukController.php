@@ -89,11 +89,7 @@ class SuratMasukController extends Controller
      */
     public function edit(Surat $surat)
     {
-        if ($surat->tipe_surat !== 'Masuk') {
-            abort(404);
-        }
-
-        $attachments = $surat->attachments()->get();
+        $attachments = $surat->attachments;
         return view('surat.masuk.edit', compact('surat', 'attachments'));
     }
 

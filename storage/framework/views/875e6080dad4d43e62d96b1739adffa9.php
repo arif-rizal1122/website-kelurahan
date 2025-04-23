@@ -16,9 +16,9 @@
             <div class="card-header">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">Data Penduduk</h5>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPendudukModal">
-                        Tambah Penduduk
-                    </button>
+                    <a href="<?php echo e(route('penduduk.create')); ?>" class="btn btn-primary">
+                        Tambah Data Kependudukan
+                    </a>
                 </div>
 
             </div>
@@ -51,39 +51,9 @@
                                     <td><?php echo e($penduduk->email); ?></td>
                                     <td>
                                         <a href="<?php echo e(route('penduduk.show', $penduduk->id)); ?>" class="btn btn-sm btn-info">Detail</a>
-                                        <button class="btn btn-sm btn-warning edit-btn"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#editPendudukModal"
-                                            data-id="<?php echo e($penduduk->id); ?>"
-                                            data-nik="<?php echo e($penduduk->nik); ?>"
-                                            data-nama="<?php echo e($penduduk->nama); ?>"
-                                            data-email="<?php echo e($penduduk->email); ?>"
-                                            data-jenis_kelamin="<?php echo e($penduduk->jenis_kelamin); ?>"
-                                            data-tempat_lahir="<?php echo e($penduduk->tempat_lahir); ?>"
-                                            data-tanggal_lahir="<?php echo e($penduduk->tanggal_lahir); ?>"
-                                            data-alamat_sekarang="<?php echo e($penduduk->alamat_sekarang); ?>"
-                                            data-alamat_sebelumnya="<?php echo e($penduduk->alamat_sebelumnya); ?>"
-                                            data-agama="<?php echo e($penduduk->agama); ?>"
-                                            data-status_kawin="<?php echo e($penduduk->status_kawin); ?>"
-                                            data-status_keadaan="<?php echo e($penduduk->status_keadaan); ?>"
-                                            data-warga_negara="<?php echo e($penduduk->warga_negara); ?>"
-                                            data-pendidikan_terakhir="<?php echo e($penduduk->pendidikan_terakhir); ?>"
-                                            data-pekerjaan="<?php echo e($penduduk->pekerjaan); ?>"
-                                            data-ayah_nik="<?php echo e($penduduk->ayah_nik); ?>"
-                                            data-ibu_nik="<?php echo e($penduduk->ibu_nik); ?>"
-                                            data-nama_ayah="<?php echo e($penduduk->nama_ayah); ?>"
-                                            data-nama_ibu="<?php echo e($penduduk->nama_ibu); ?>"
-                                            data-hubungan_warga="<?php echo e($penduduk->hubungan_warga); ?>"
-                                            data-no_kk_sebelumnya="<?php echo e($penduduk->no_kk_sebelumnya); ?>"
-                                            data-golongan_darah="<?php echo e($penduduk->golongan_darah); ?>"
-                                            data-suku="<?php echo e($penduduk->suku); ?>"
-                                            data-ktp_el="<?php echo e($penduduk->ktp_el); ?>"
-                                            data-status_rekam="<?php echo e($penduduk->status_rekam); ?>"
-                                            data-tempat_cetak_ktp="<?php echo e($penduduk->tempat_cetak_ktp); ?>"
-                                            data-tanggal_cetak_ktp="<?php echo e($penduduk->tanggal_cetak_ktp); ?>"
-                                            data-note="<?php echo e($penduduk->note); ?>">
+                                        <a href="<?php echo e(route('penduduk.edit', $penduduk->id)); ?>" class="btn btn-sm btn-warning">
                                             Edit
-                                        </button>
+                                        </a>
 
                                         <form action="<?php echo e(route('penduduk.destroy', $penduduk->id)); ?>" method="POST" style="display: inline-block;">
                                             <?php echo csrf_field(); ?>
@@ -102,8 +72,6 @@
     </div>
 </div>
 
-<?php echo $__env->make('penduduk.create', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-<?php echo $__env->make('penduduk.edit', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
 <div id="hapus-penduduk" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered">

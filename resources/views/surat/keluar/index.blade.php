@@ -17,9 +17,9 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">Data Surat Keluar</h5>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createSuratKeluarModal">
+                        <a href="{{ route('surat-keluar.create') }}" class="btn btn-primary">
                             Tambah Surat Keluar
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -58,20 +58,9 @@
                                         <td>
                                             <div class="d-flex flex-wrap gap-2">
                                                 <a href="{{ route('surat-keluar.show', $surat->id) }}" class="btn btn-sm btn-info">Detail</a>
-                                                <button class="btn btn-sm btn-warning edit-btn"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#editSuratKeluarModal"
-                                                    data-id="{{ $surat->id }}"
-                                                    data-nomor_surat="{{ $surat->nomor_surat }}"
-                                                    data-dari="{{ $surat->dari }}"
-                                                    data-tujuan="{{ $surat->tujuan }}"
-                                                    data-tanggal_surat="{{ $surat->tanggal_surat ? \Carbon\Carbon::parse($surat->tanggal_surat)->format('Y-m-d') : '' }}"
-                                                    data-tanggal_pengiriman="{{ $surat->tanggal_pengiriman ? \Carbon\Carbon::parse($surat->tanggal_pengiriman)->format('Y-m-d') : '' }}"
-                                                    data-catatan="{{ $surat->catatan }}"
-                                                    data-isi_surat="{{ $surat->isi_surat }}"
-                                                    data-attachments="{{ json_encode($surat->attachments) }}">
+                                                <a href="{{ route('surat-keluar.edit', $surat->id) }}" class="btn btn-sm btn-warning">
                                                     Edit
-                                                </button>
+                                                </a>
                                                 <form action="{{ route('surat-keluar.destroy', $surat->id) }}" method="POST" style="display: inline-block;">
                                                     @csrf
                                                     @method('DELETE')
@@ -89,8 +78,6 @@
         </div>
     </div>
 
-    @include('surat.keluar.create')
-    @include('surat.keluar.edit')
 
     <div id="hapus-surat-keluar" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-dialog-centered">

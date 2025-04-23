@@ -17,9 +17,9 @@
             <div class="card-header">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">Data Penduduk</h5>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPendudukModal">
-                        Tambah Penduduk
-                    </button>
+                    <a href="{{ route('penduduk.create') }}" class="btn btn-primary">
+                        Tambah Data Kependudukan
+                    </a>
                 </div>
 
             </div>
@@ -51,39 +51,9 @@
                                     <td>{{ $penduduk->email }}</td>
                                     <td>
                                         <a href="{{ route('penduduk.show', $penduduk->id) }}" class="btn btn-sm btn-info">Detail</a>
-                                        <button class="btn btn-sm btn-warning edit-btn"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#editPendudukModal"
-                                            data-id="{{ $penduduk->id }}"
-                                            data-nik="{{ $penduduk->nik }}"
-                                            data-nama="{{ $penduduk->nama }}"
-                                            data-email="{{ $penduduk->email }}"
-                                            data-jenis_kelamin="{{ $penduduk->jenis_kelamin }}"
-                                            data-tempat_lahir="{{ $penduduk->tempat_lahir }}"
-                                            data-tanggal_lahir="{{ $penduduk->tanggal_lahir }}"
-                                            data-alamat_sekarang="{{ $penduduk->alamat_sekarang }}"
-                                            data-alamat_sebelumnya="{{ $penduduk->alamat_sebelumnya }}"
-                                            data-agama="{{ $penduduk->agama }}"
-                                            data-status_kawin="{{ $penduduk->status_kawin }}"
-                                            data-status_keadaan="{{ $penduduk->status_keadaan }}"
-                                            data-warga_negara="{{ $penduduk->warga_negara }}"
-                                            data-pendidikan_terakhir="{{ $penduduk->pendidikan_terakhir }}"
-                                            data-pekerjaan="{{ $penduduk->pekerjaan }}"
-                                            data-ayah_nik="{{ $penduduk->ayah_nik }}"
-                                            data-ibu_nik="{{ $penduduk->ibu_nik }}"
-                                            data-nama_ayah="{{ $penduduk->nama_ayah }}"
-                                            data-nama_ibu="{{ $penduduk->nama_ibu }}"
-                                            data-hubungan_warga="{{ $penduduk->hubungan_warga }}"
-                                            data-no_kk_sebelumnya="{{ $penduduk->no_kk_sebelumnya }}"
-                                            data-golongan_darah="{{ $penduduk->golongan_darah }}"
-                                            data-suku="{{ $penduduk->suku }}"
-                                            data-ktp_el="{{ $penduduk->ktp_el }}"
-                                            data-status_rekam="{{ $penduduk->status_rekam }}"
-                                            data-tempat_cetak_ktp="{{ $penduduk->tempat_cetak_ktp }}"
-                                            data-tanggal_cetak_ktp="{{ $penduduk->tanggal_cetak_ktp }}"
-                                            data-note="{{ $penduduk->note }}">
+                                        <a href="{{ route('penduduk.edit', $penduduk->id) }}" class="btn btn-sm btn-warning">
                                             Edit
-                                        </button>
+                                        </a>
 
                                         <form action="{{ route('penduduk.destroy', $penduduk->id) }}" method="POST" style="display: inline-block;">
                                             @csrf
@@ -102,8 +72,6 @@
     </div>
 </div>
 
-@include('penduduk.create')
-@include('penduduk.edit')
 
 <div id="hapus-penduduk" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered">
