@@ -70,6 +70,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{surat}', [SuratKeluarController::class, 'show'])->name('surat-keluar.show');
         Route::put('/{surat}', [SuratKeluarController::class, 'update'])->name('surat-keluar.update');
         Route::delete('/{surat}', [SuratKeluarController::class, 'destroy'])->name('surat-keluar.destroy');
+        Route::get('/{surat}/print-word', [SuratKeluarController::class, 'print'])->name('surat-keluar.print-word');
     });
 
 

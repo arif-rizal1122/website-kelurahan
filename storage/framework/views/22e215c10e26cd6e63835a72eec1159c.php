@@ -124,9 +124,9 @@
                             <a href="<?php echo e(route('surat-keluar.edit', $surat->id)); ?>" class="btn btn-warning me-2">
                                 <i class="bx bx-edit me-1"></i> Edit
                             </a>
-                            <button type="button" class="btn btn-primary" onclick="window.print()">
-                                <i class="bx bx-printer me-1"></i> Cetak
-                            </button>
+                            <a href="<?php echo e(route('surat-keluar.print-word', $surat->id)); ?>" class="btn me-2 btn-secondary" target="_blank">
+                                <i class="bx bx-printer me-1"></i> Print Word
+                            </a>
                         </div>
                     </div>
                 </div>

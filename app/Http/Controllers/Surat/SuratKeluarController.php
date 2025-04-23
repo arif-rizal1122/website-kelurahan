@@ -8,6 +8,10 @@ use App\Http\Requests\Surat\UpdateSuratKeluarRequest;
 use App\Models\Attachment;
 use App\Models\Surat;
 use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Writer\Word2007;
+use PhpOffice\PhpWord\SimpleType\Jc;
+use PhpOffice\PhpWord\Element\Table;
 
 /**
  * Controller untuk mengelola data Surat Keluar.
@@ -154,5 +158,66 @@ class SuratKeluarController extends Controller
         } catch (\Throwable $exception) {
             return back()->with('error', 'Gagal menghapus lampiran: ' . $exception->getMessage());
         }
+    }
+
+    public function print(Surat $surat)
+    {
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
+    
+        // Setting Styles
+        $fontStyleHeader = ['size' => 10, 'bold' => true];
+        $fontStyleNormal = ['size' => 12];
+        $parStyleCenter = ['align' => Jc::CENTER];
+        $parStyleLeft = ['align' => Jc::LEFT];
+    
+        // Header (Modifikasi)
+        $header = $section->addHeader();
+        $header->addText('MAJELIS DIKTILITBANG PIMPINAN PUSAT MUHAMMADIYAH', $fontStyleHeader, $parStyleCenter);
+        $header->addText('UNIVERSITAS MUHAMMADIYAH BUTON', $fontStyleHeader, $parStyleCenter);
+        $header->addText('AKREDITASI INSTITUSI NOMOR : 902/SK/BAN-PT/Ak/PT/XI/2023', ['size' => 8], $parStyleCenter);
+        $header->addTextBreak(1);
+        $header->addSeparator();
+    
+        // Footer
+        $footer = $section->addFooter();
+        $footer->addPreserveText('Halaman {PAGE} dari {NUMPAGES}.', ['size' => 8], ['align' => Jc::RIGHT]);
+    
+        // Tanggal dan Tempat (Modifikasi)
+        $section->addText('Bau-bau, ' . ($surat->tanggal_surat ? $surat->tanggal_surat->format('d F Y') : '_____, __ _________ ____'), $fontStyleNormal, $parStyleRight = ['align' => \PhpOffice\PhpWord\SimpleType\Jc::RIGHT]);
+        $section->addTextBreak(1);
+    
+        // Nomor, Lampiran, Perihal (Modifikasi)
+        $section->addText('Nomor: ' . ($surat->nomor_surat ?? '____________________'), $fontStyleNormal, $parStyleLeft);
+        $section->addText('Lampiran: ' . '001', $fontStyleNormal, $parStyleLeft); //TODO: dari database
+        $section->addText('Perihal: ' . ($surat->perihal ?? '____________________'), $fontStyleNormal, $parStyleLeft); //TODO: dari database
+        $section->addTextBreak(2);
+    
+        // Dari dan Tujuan (Modifikasi - dalam paragraf)
+        $section->addText('Dari: ' . ($surat->dari ?? '____________________'), $fontStyleNormal, $parStyleLeft);
+        $section->addText('Tujuan: ' . ($surat->tujuan ?? '____________________'), $fontStyleNormal, $parStyleLeft);
+        $section->addTextBreak(2);
+    
+        // Isi Surat (Modifikasi)
+        $section->addText('Isi Surat:', ['bold' => true], $parStyleLeft);
+        $section->addText($surat->isi_surat ?? '____________________', $fontStyleNormal, $parStyleLeft);
+        $section->addTextBreak(2);
+    
+        // Penutup dan Tanda Tangan (Modifikasi)
+        $section->addText('Hormat kami,', $fontStyleNormal, $parStyleLeft);
+        $section->addTextBreak(3); // Spasi untuk tanda tangan
+        $section->addText('Dr. Wa Ode Al Zarliani, S.P.,M.M.', ['size' => 12, 'bold' => true], $parStyleLeft); //TODO: dari database
+        $section->addText('NIDN: 0907117404324', ['size' => 10], $parStyleLeft);  //TODO: dari database
+    
+        // Nama File
+        $filename = 'Surat Keluar - ' . ($surat->nomor_surat ?? $surat->id) . '.docx';
+    
+        // Save
+        $writer = new Word2007($phpWord);
+        header("Content-Disposition: attachment;filename=\"".$filename."\"");
+        header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+        header('Cache-Control: max-age=0');
+        $writer->save("php://output");
+        exit;
     }
 }
