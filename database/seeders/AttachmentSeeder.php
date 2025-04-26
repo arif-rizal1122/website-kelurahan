@@ -24,13 +24,13 @@ class AttachmentSeeder extends Seeder
             return;
         }
 
-        foreach ($surats->shuffle()->take(15) as $surat) { // Membuat hingga 15 attachment secara acak untuk surat yang ada
-            for ($i = 0; $i < $faker->numberBetween(1, 3); $i++) { // Setiap surat bisa memiliki 1 hingga 3 attachment
+        foreach ($surats->shuffle()->take(15) as $surat) {
+            for ($i = 0; $i < $faker->numberBetween(1, 3); $i++) {
                 $filename = Str::random(10) . '_' . $faker->word . '.pdf';
                 $path = 'attachments/' . $filename;
 
-                // Simulasikan pembuatan file (opsional, hanya untuk keperluan contoh)
-                Storage::disk('local')->put($path, $faker->paragraph());
+                // Simpan file dummy di disk 'public'
+                Storage::disk('public')->put($path, $faker->paragraph());
 
                 Attachment::create([
                     'surat_id' => $surat->id,

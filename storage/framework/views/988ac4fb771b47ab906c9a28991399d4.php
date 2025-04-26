@@ -1,4 +1,4 @@
-<?php $__env->startSection('title'); ?> <?php echo app('translator')->get('translation.detail'); ?> Detail Surat Masuk <?php $__env->stopSection(); ?>
+<?php $__env->startSection('title'); ?> Detail Surat Masuk <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <?php $__env->startComponent('components.breadcrumb'); ?>
         <?php $__env->slot('li_1'); ?> Surat <?php $__env->endSlot(); ?>
@@ -30,19 +30,19 @@
                                         <td class="fw-bold text-primary" style="width: 30%;">
                                             <i class="bx bx-user-voice me-2"></i>Dari
                                         </td>
-                                        <td class="text-dark"><?php echo e($surat->dari ?? '-'); ?></td>
+                                        <td class="text-primary"><?php echo e($surat->dari ?? '-'); ?></td>
                                     </tr>
                                     <tr>
                                         <td class="fw-bold text-primary">
                                             <i class="bx bx-target-lock me-2"></i>Tujuan
                                         </td>
-                                        <td class="text-dark"><?php echo e($surat->tujuan ?? '-'); ?></td>
+                                        <td class="text-primary"><?php echo e($surat->tujuan ?? '-'); ?></td>
                                     </tr>
                                     <tr>
                                         <td class="fw-bold text-primary">
                                             <i class="bx bx-calendar me-2"></i>Tanggal Surat
                                         </td>
-                                        <td class="text-dark">
+                                        <td class="text-primary">
                                             <?php if($surat->tanggal_surat): ?>
                                                 <span class="badge bg-soft-success text-success">
                                                     <?php echo e(\Carbon\Carbon::parse($surat->tanggal_surat)->format('d F Y')); ?>
@@ -57,7 +57,7 @@
                                         <td class="fw-bold text-primary">
                                             <i class="bx bx-calendar-check me-2"></i>Tanggal Diterima
                                         </td>
-                                        <td class="text-dark">
+                                        <td class="text-primary">
                                             <?php if($surat->tanggal_diterima): ?>
                                                 <span class="badge bg-soft-info text-info">
                                                     <?php echo e(\Carbon\Carbon::parse($surat->tanggal_diterima)->format('d F Y')); ?>
@@ -107,8 +107,8 @@
                                     <div class="col-md-6 mb-2">
                                         <div class="p-2 border rounded d-flex align-items-center">
                                             <i class="bx bxs-file-pdf text-danger font-size-24 me-2"></i>
-                                            <a href="<?php echo e(asset('storage/' . $attachment->path)); ?>" 
-                                               class="text-reset text-decoration-none stretched-link" 
+                                            <a href="<?php echo e(asset('storage/' . $attachment->path)); ?>"
+                                               class="text-reset text-decoration-none stretched-link"
                                                target="_blank">
                                                 <?php echo e($attachment->filename); ?>
 
@@ -122,62 +122,27 @@
                     </div>
                     <?php endif; ?>
 
-                    <div class="d-flex justify-content-between mt-4">
-                        <a href="<?php echo e(route('surat-masuk.index')); ?>" class="btn btn-secondary">
-                            <i class="bx bx-arrow-back me-1"></i> Kembali
-                        </a>
-                        <div>
-                            <a href="<?php echo e(route('surat-masuk.edit', $surat->id)); ?>" class="btn btn-warning me-2">
+                    <div class="row mt-4 align-items-center gy-2">
+                        <div class="col-12 col-md-auto">
+                            <a href="<?php echo e(route('surat-masuk.index')); ?>" class="btn btn-secondary w-100">
+                                <i class="bx bx-arrow-back me-1"></i> Kembali
+                            </a>
+                        </div>
+                        <div class="col-12 col-md d-flex justify-content-md-end gap-2 flex-wrap">
+                            <a href="<?php echo e(route('surat-masuk.edit', $surat->id)); ?>" class="btn btn-warning">
                                 <i class="bx bx-edit me-1"></i> Edit
                             </a>
                             <button type="button" class="btn btn-primary" onclick="window.print()">
                                 <i class="bx bx-printer me-1"></i> Cetak
                             </button>
                         </div>
-                    </div>
+                    </div> 
+                                        
                 </div>
             </div>
         </div>
     </div>
 <?php $__env->stopSection(); ?>
 
-<?php $__env->startSection('css'); ?>
-<style>
-    .bg-soft-success {
-        background-color: rgba(10, 179, 156, 0.18) !important;
-    }
-    
-    .bg-soft-info {
-        background-color: rgba(41, 156, 219, 0.18) !important;
-    }
-    
-    .font-size-24 {
-        font-size: 24px !important;
-    }
-    
-    @media print {
-        .btn, .breadcrumb {
-            display: none !important;
-        }
-        
-        .card {
-            border: none !important;
-            box-shadow: none !important;
-        }
-        
-        .card-header {
-            background-color: #f8f9fa !important;
-            color: #000 !important;
-        }
-    }
-</style>
-<?php $__env->stopSection(); ?>
 
-<?php $__env->startSection('script'); ?>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
-    <script src="<?php echo e(URL::asset('build/js/app.js')); ?>"></script>
-<?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/surat/masuk/show.blade.php ENDPATH**/ ?>

@@ -1,6 +1,6 @@
 @extends('layouts.master-without-nav')
 @section('title')
-@lang('translation.reset-mail')
+   Reset Email
 @endsection
 @section('content')
 

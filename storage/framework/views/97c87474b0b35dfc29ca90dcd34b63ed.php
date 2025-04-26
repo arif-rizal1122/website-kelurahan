@@ -804,5 +804,4 @@
             </div>
         </div>
     </div>
-</div>
-<?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/layouts/customizer.blade.php ENDPATH**/ ?>
+</div><?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/layouts/customizer.blade.php ENDPATH**/ ?>

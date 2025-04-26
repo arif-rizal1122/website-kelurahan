@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\Warga;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -29,9 +30,9 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = RouteServiceProvider::GUEST;
 
-    /**
+  /**
      * Create a new controller instance.
      *
      * @return void
@@ -42,7 +43,7 @@ class RegisterController extends Controller
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Get a validator for an incoming registration request for Warga.
      *
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
@@ -50,34 +51,28 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'avatar' => ['required', 'image' ,'mimes:jpg,jpeg,png','max:1024'],
+            'nama' => ['required', 'string', 'max:255'],
+            'nik' => ['required', 'string', 'max:255', 'unique:wargas'],
+            'alamat' => ['nullable', 'string'],
         ]);
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * Create a new Warga instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\Models\User
+     * @return \App\Models\Warga
      */
     protected function create(array $data)
     {
-        // return request()->file('avatar');
-        if (request()->has('avatar')) {
-            $avatar = request()->file('avatar');
-            $avatarName = time() . '.' . $avatar->getClientOriginalExtension();
-            $avatarPath = public_path('/images/');
-            $avatar->move($avatarPath, $avatarName);
-        }
-
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'avatar' =>  $avatarName,
+        return Warga::create([
+            'nama' => $data['nama'],
+            'nik' => $data['nik'],
+            'alamat' => $data['alamat'],
         ]);
     }
+
+
+
+
 }

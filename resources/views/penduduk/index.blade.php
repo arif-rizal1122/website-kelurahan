@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title') @lang('translation.datatables') @endsection
+@section('title') Index Kependudukan @endsection
 @section('css')
 <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
 <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -15,12 +15,12 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">Data Penduduk</h5>
+                <div class="card-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
+                    <h5 class="card-title mb-0">Data Kependudukan</h5>
                     <a href="{{ route('penduduk.create') }}" class="btn btn-primary">
-                        Tambah Data Kependudukan
+                        Tambah Data +
                     </a>
-                </div>
+                </div>               
 
             </div>
             <div class="card-body">
@@ -50,17 +50,18 @@
                                     <td>{{ $penduduk->alamat_sekarang }}</td>
                                     <td>{{ $penduduk->email }}</td>
                                     <td>
-                                        <a href="{{ route('penduduk.show', $penduduk->id) }}" class="btn btn-sm btn-info">Detail</a>
-                                        <a href="{{ route('penduduk.edit', $penduduk->id) }}" class="btn btn-sm btn-warning">
-                                            Edit
-                                        </a>
-
-                                        <form action="{{ route('penduduk.destroy', $penduduk->id) }}" method="POST" style="display: inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapus-penduduk">Hapus</button>
-                                        </form>
+                                        <div class="d-flex gap-1 overflow-auto">
+                                            <a href="{{ route('penduduk.show', $penduduk->id) }}" class="btn btn-sm btn-info">Detail</a>
+                                            <a href="{{ route('penduduk.edit', $penduduk->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                    
+                                            <form action="{{ route('penduduk.destroy', $penduduk->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapus-penduduk">Hapus</button>
+                                            </form>
+                                        </div>
                                     </td>
+                                                                       
                                 </tr>
                             @endforeach
                         </tbody>
@@ -103,11 +104,19 @@
 <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
 <script src="{{ URL::asset('build/js/app.js') }}"></script>
 
-
+<script>
+    $('#hapus-penduduk').on('show.bs.modal', function(e) {
+			const button = $(e.relatedTarget);
+			const form = button.closest('form');
+			const action = form.attr('action');
+	
+			$(this).find('.btn-hapus-penduduk').off('click').on('click', function() {
+				form.submit();
+			});
+		});
+</script>
 @endsection

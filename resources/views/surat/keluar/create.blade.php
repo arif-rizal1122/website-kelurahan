@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title') @lang('translation.create') Tambah Surat Keluar @endsection
+@section('title') Tambah Surat Keluar @endsection
 @section('css')
     <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -204,74 +204,5 @@
     </div>
 @endsection
 
-@section('css')
-<style>
-    .dropzone-wrapper {
-        border: 2px dashed #ccc;
-        color: #777;
-        position: relative;
-        min-height: 150px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-    }
-    
-    .dropzone-desc {
-        position: absolute;
-        text-align: center;
-        width: 100%;
-        transition: all .2s ease;
-    }
-    
-    .dropzone-input {
-        position: absolute;
-        opacity: 0;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        cursor: pointer;
-    }
-    
-    .dropzone-wrapper:hover {
-        border-color: #007bff;
-    }
-    
-    .font-size-24 {
-        font-size: 24px !important;
-    }
-</style>
-@endsection
 
-@section('script')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(function() {
-            // Preview filename ketika file dipilih
-            $('input[type="file"]').change(function(e) {
-                var files = e.target.files;
-                if (files.length > 0) {
-                    var fileList = '';
-                    for (var i = 0; i < files.length; i++) {
-                        fileList += '<p class="small mb-1 text-primary">' + 
-                                    '<i class="bx bxs-file-pdf me-1"></i>' + 
-                                    files[i].name + '</p>';
-                    }
-                    $('.dropzone-desc').html('<div class="text-center">' + fileList + 
-                                           '<p class="small text-muted mt-2">Klik lagi untuk mengganti file</p></div>');
-                }
-            });
-            
-            // Default tanggal hari ini
-            var today = new Date().toISOString().split('T')[0];
-            $('#tanggal_surat').val(today);
-            $('#tanggal_pengiriman').val(today);
-        });
-    </script>
-@endsection
-@section('script-bottom')
-    <script src="{{ URL::asset('build/js/pages/form-validation.init.js') }}"></script>
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
-@endsection
+

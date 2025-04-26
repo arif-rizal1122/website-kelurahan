@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title') @lang('translation.datatables') @endsection
+@section('title') Index Surat Masuk @endsection
 @section('css')
     <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -15,7 +15,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="card-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
                         <h5 class="card-title mb-0">Data Surat Masuk</h5>
                         <a href="{{ route('surat-masuk.create') }}" class="btn btn-primary">
                             Tambah Surat Masuk
@@ -56,7 +56,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <div class="d-flex flex-wrap gap-1">
+                                            <div class="d-flex gap-1 overflow-auto">
                                                 <a href="{{ route('surat-masuk.show', $surat->id) }}" class="btn btn-sm btn-info">Detail</a>
                                                 <a href="{{ route('surat-masuk.edit', $surat->id) }}" class="btn btn-sm btn-warning">
                                                     Edit
@@ -116,6 +116,17 @@
     <script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
 
+    <script>
+        $('#hapus-surat-masuk').on('show.bs.modal', function(e) {
+			const button = $(e.relatedTarget);
+			const form = button.closest('form');
+			const action = form.attr('action');
+
+			$(this).find('.btn-hapus-surat-masuk').off('click').on('click', function() {
+				form.submit();
+			});
+		});
+    </script>
 @endsection
 
 @if ($errors->any())

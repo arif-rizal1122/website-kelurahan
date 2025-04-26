@@ -34,8 +34,7 @@ class SuratKeluarSeeder extends Seeder
                 'updated_at' => now(),
             ]);
 
-            // Membuat data dummy untuk lampiran secara opsional
-            if ($faker->boolean(50)) { // Peluang 50% untuk membuat lampiran
+            if ($faker->boolean(50)) {
                 $jumlahLampiran = $faker->numberBetween(1, 2);
                 for ($j = 0; $j < $jumlahLampiran; $j++) {
                     $filename = 'sk_lampiran_' . $faker->unique()->randomNumber(3) . '.pdf';

@@ -1,4 +1,4 @@
-<?php $__env->startSection('title'); ?> <?php echo app('translator')->get('translation.units'); ?> <?php $__env->stopSection(); ?>
+<?php $__env->startSection('title'); ?> Unit Kerja <?php $__env->stopSection(); ?>
 <?php $__env->startSection('css'); ?>
     <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />

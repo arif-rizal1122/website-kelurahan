@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title') @lang('translation.detail') Detail Surat Keluar @endsection
+@section('title') Detail Surat Keluar @endsection
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1') Surat @endslot
@@ -9,9 +9,9 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card shadow-lg border-0">
-                <div class="card-header bg-primary text-white">
+                <div class="card-header bg-success text-white">
                     <div class="d-flex align-items-center">
-                        <i class="bx bx-envelope-open font-size-24 me-2"></i>
+                        <i class="bx bx-envelope font-size-24 me-2"></i>
                         <h4 class="card-title mb-0">Detail Surat Keluar</h4>
                     </div>
                 </div>
@@ -19,25 +19,31 @@
                     <div class="mb-4">
                         <div class="p-3 bg-light rounded mb-3">
                             <div class="d-flex justify-content-between">
-                                <span class="badge bg-primary">No. {{ $surat->nomor_surat ?? '-' }}</span>
-                                <span class="badge bg-info">Tujuan: {{ $surat->tujuan ?? '-' }}</span>
+                                <span class="badge bg-success">No. {{ $surat->nomor_surat ?? '-' }}</span>
+                                <span class="badge bg-info">Kode: {{ $surat->kode_surat ?? '-' }}</span>
                             </div>
                         </div>
-
+                        
                         <div class="table-responsive">
                             <table class="table table-borderless table-hover">
                                 <tbody>
                                     <tr>
-                                        <td class="fw-bold text-primary" style="width: 30%;">
-                                            <i class="bx bx-user-voice me-2"></i>Dari
+                                        <td class="fw-bold text-success" style="width: 30%;">
+                                            <i class="bx bx-user me-2"></i>Dari
                                         </td>
-                                        <td class="text-dark">{{ $surat->dari ?? '-' }}</td>
+                                        <td class="text-primary">{{ $surat->dari ?? '-' }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bold text-primary">
+                                        <td class="fw-bold text-success">
+                                            <i class="bx bx-send me-2"></i>Tujuan
+                                        </td>
+                                        <td class="text-primary">{{ $surat->tujuan ?? '-' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-success">
                                             <i class="bx bx-calendar me-2"></i>Tanggal Surat
                                         </td>
-                                        <td class="text-dark">
+                                        <td class="text-primary">
                                             @if($surat->tanggal_surat)
                                                 <span class="badge bg-soft-success text-success">
                                                     {{ \Carbon\Carbon::parse($surat->tanggal_surat)->format('d F Y') }}
@@ -48,13 +54,27 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bold text-primary">
-                                            <i class="bx bx-send me-2"></i>Tanggal Pengiriman
+                                        <td class="fw-bold text-success">
+                                            <i class="bx bx-paper-plane me-2"></i>Tanggal Pengiriman
                                         </td>
-                                        <td class="text-dark">
+                                        <td class="text-primary">
                                             @if($surat->tanggal_pengiriman)
                                                 <span class="badge bg-soft-info text-info">
                                                     {{ \Carbon\Carbon::parse($surat->tanggal_pengiriman)->format('d F Y') }}
+                                                </span>
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold text-success">
+                                            <i class="bx bx-check-circle me-2"></i>Tanggal Diterima
+                                        </td>
+                                        <td class="text-primary">
+                                            @if($surat->tanggal_diterima)
+                                                <span class="badge bg-soft-warning text-warning">
+                                                    {{ \Carbon\Carbon::parse($surat->tanggal_diterima)->format('d F Y') }}
                                                 </span>
                                             @else
                                                 -
@@ -69,10 +89,21 @@
                     <div class="mb-4">
                         <div class="card">
                             <div class="card-header bg-light">
-                                <h5 class="mb-0"><i class="bx bx-notepad me-2"></i>Isi Surat</h5>
+                                <h5 class="mb-0"><i class="bx bx-file-blank me-2"></i>Isi Surat</h5>
                             </div>
                             <div class="card-body">
-                                <p class="card-text text-muted" style="white-space: pre-line;">{{ $surat->isi_surat ?? '-' }}</p>
+                                <p class="card-text text-muted">{{ $surat->isi_surat ?? '-' }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0"><i class="bx bx-notepad me-2"></i>Ringkasan</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text text-muted">{{ $surat->ringkasan ?? '-' }}</p>
                             </div>
                         </div>
                     </div>
@@ -83,7 +114,7 @@
                                 <h5 class="mb-0"><i class="bx bx-comment-detail me-2"></i>Catatan</h5>
                             </div>
                             <div class="card-body">
-                                <p class="card-text text-muted" style="white-space: pre-line;">{{ $surat->catatan ?? '-' }}</p>
+                                <p class="card-text text-muted">{{ $surat->catatan ?? '-' }}</p>
                             </div>
                         </div>
                     </div>
@@ -114,61 +145,26 @@
                     </div>
                     @endif
 
-                    <div class="d-flex justify-content-between mt-4">
-                        <a href="{{ route('surat-keluar.index') }}" class="btn btn-secondary">
-                            <i class="bx bx-arrow-back me-1"></i> Kembali
-                        </a>
-                        <div>
-                            <a href="{{ route('surat-keluar.edit', $surat->id) }}" class="btn btn-warning me-2">
-                                <i class="bx bx-edit me-1"></i> Edit
-                            </a>
-                            <a href="{{ route('surat-keluar.print-word', $surat->id) }}" class="btn me-2 btn-secondary" target="_blank">
-                                <i class="bx bx-printer me-1"></i> Print Word
+                    <div class="row mt-4 align-items-center gy-2">
+                        <div class="col-12 col-md-auto">
+                            <a href="{{ route('surat-keluar.index') }}" class="btn btn-secondary w-100">
+                                <i class="bx bx-arrow-back me-1"></i> Kembali
                             </a>
                         </div>
-                    </div>
+                        <div class="col-12 col-md d-flex justify-content-md-end gap-2 flex-wrap">
+                            <a href="{{ route('surat-keluar.edit', $surat->id) }}" class="btn btn-warning">
+                                <i class="bx bx-edit me-1"></i> Edit
+                            </a>
+                            <button type="button" class="btn btn-primary" onclick="window.print()">
+                                <i class="bx bx-printer me-1"></i> Cetak
+                            </button>
+                        </div>
+                    </div> 
+                                        
                 </div>
             </div>
         </div>
     </div>
 @endsection
 
-@section('css')
-<style>
-    .bg-soft-success {
-        background-color: rgba(10, 179, 156, 0.18) !important;
-    }
 
-    .bg-soft-info {
-        background-color: rgba(41, 156, 219, 0.18) !important;
-    }
-
-    .font-size-24 {
-        font-size: 24px !important;
-    }
-
-    @media print {
-        .btn, .breadcrumb {
-            display: none !important;
-        }
-
-        .card {
-            border: none !important;
-            box-shadow: none !important;
-        }
-
-        .card-header {
-            background-color: #f8f9fa !important;
-            color: #000 !important;
-        }
-    }
-</style>
-@endsection
-
-@section('script')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
-@endsection

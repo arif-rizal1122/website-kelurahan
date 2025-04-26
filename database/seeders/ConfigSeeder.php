@@ -16,7 +16,7 @@ class ConfigSeeder extends Seeder
             [
                 'app_key' => 'desa_default_123',
                 'nama_desa' => 'Desa Maju Jaya',
-                'kode_desa' => '32.01.01.2001',
+                'kode_desa' => '32.2001',
                 'kode_pos' => 12345,
                 'nama_kecamatan' => 'Kecamatan Ciputat',
                 'kode_kecamatan' => '32.01.01',

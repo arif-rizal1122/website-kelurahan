@@ -44,20 +44,16 @@ class ConfigController extends Controller
             'nomor_operator' => 'nullable|string|max:20',
         ]);
         $data = $request->except(['_token', '_method']);
-        // Handle logo upload
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
             $filename = Str::slug($request->nama_desa) . '-' . time() . '.' . $file->getClientOriginalExtension();
             $file->storeAs('public/config', $filename);
             $data['logo'] = $filename;
         }
-        // Generate app_key if not exists
         if (empty($data['app_key'])) {
             $data['app_key'] = Str::random(32);
         }
-        // Ambil config pertama dan update
         $config = Config::first();
-        // dd($request->all());
         if ($config) {
             $config->update($data);
         } else {
@@ -67,8 +63,6 @@ class ConfigController extends Controller
     }
 
 
-
-
-
     
+
 }

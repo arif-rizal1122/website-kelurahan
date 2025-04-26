@@ -1,6 +1,6 @@
 @extends('layouts.master-without-nav')
 @section('title')
-@lang('translation.signin')
+  Login
 @endsection
 @section('content')
 <div class="auth-page-wrapper pt-5">
@@ -23,10 +23,10 @@
                     <div class="text-center mt-sm-5 mb-4 text-white-50">
                         <div>
                             <a href="index" class="d-inline-block auth-logo">
-                                <img src="{{ URL::asset('build/images/logo-light.png')}}" alt="" height="20">
+                                <img src="{{ URL::asset('build/images/logo-light.png')}}" alt="" height="30">
                             </a>
                         </div>
-                        <p class="mt-3 fs-15 fw-medium">Premium Admin & Dashboard Template</p>
+                        <p class="mt-3 fs-15 fw-medium">Sistem Aplikasi SMART LURAH</p>
                     </div>
                 </div>
             </div>

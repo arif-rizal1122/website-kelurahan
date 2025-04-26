@@ -1,4 +1,4 @@
-<?php $__env->startSection('title'); ?> <?php echo app('translator')->get('translation.datatables'); ?> <?php $__env->stopSection(); ?>
+<?php $__env->startSection('title'); ?> Index Kependudukan <?php $__env->stopSection(); ?>
 <?php $__env->startSection('css'); ?>
 <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
 <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -14,12 +14,12 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">Data Penduduk</h5>
+                <div class="card-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
+                    <h5 class="card-title mb-0">Data Kependudukan</h5>
                     <a href="<?php echo e(route('penduduk.create')); ?>" class="btn btn-primary">
-                        Tambah Data Kependudukan
+                        Tambah Data +
                     </a>
-                </div>
+                </div>               
 
             </div>
             <div class="card-body">
@@ -50,17 +50,18 @@
                                     <td><?php echo e($penduduk->alamat_sekarang); ?></td>
                                     <td><?php echo e($penduduk->email); ?></td>
                                     <td>
-                                        <a href="<?php echo e(route('penduduk.show', $penduduk->id)); ?>" class="btn btn-sm btn-info">Detail</a>
-                                        <a href="<?php echo e(route('penduduk.edit', $penduduk->id)); ?>" class="btn btn-sm btn-warning">
-                                            Edit
-                                        </a>
-
-                                        <form action="<?php echo e(route('penduduk.destroy', $penduduk->id)); ?>" method="POST" style="display: inline-block;">
-                                            <?php echo csrf_field(); ?>
-                                            <?php echo method_field('DELETE'); ?>
-                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapus-penduduk">Hapus</button>
-                                        </form>
+                                        <div class="d-flex gap-1 overflow-auto">
+                                            <a href="<?php echo e(route('penduduk.show', $penduduk->id)); ?>" class="btn btn-sm btn-info">Detail</a>
+                                            <a href="<?php echo e(route('penduduk.edit', $penduduk->id)); ?>" class="btn btn-sm btn-warning">Edit</a>
+                                    
+                                            <form action="<?php echo e(route('penduduk.destroy', $penduduk->id)); ?>" method="POST">
+                                                <?php echo csrf_field(); ?>
+                                                <?php echo method_field('DELETE'); ?>
+                                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapus-penduduk">Hapus</button>
+                                            </form>
+                                        </div>
                                     </td>
+                                                                       
                                 </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
@@ -103,12 +104,20 @@
 <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script src="<?php echo e(URL::asset('build/js/pages/datatables.init.js')); ?>"></script>
 <script src="<?php echo e(URL::asset('build/js/app.js')); ?>"></script>
 
-
+<script>
+    $('#hapus-penduduk').on('show.bs.modal', function(e) {
+			const button = $(e.relatedTarget);
+			const form = button.closest('form');
+			const action = form.attr('action');
+	
+			$(this).find('.btn-hapus-penduduk').off('click').on('click', function() {
+				form.submit();
+			});
+		});
+</script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/penduduk/index.blade.php ENDPATH**/ ?>

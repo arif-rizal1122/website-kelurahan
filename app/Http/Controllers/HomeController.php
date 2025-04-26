@@ -11,15 +11,15 @@ use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // /**
+    //  * Create a new controller instance.
+    //  *
+    //  * @return void
+    //  */
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
 
     /**
      * Show the application dashboard.
@@ -34,7 +34,7 @@ class HomeController extends Controller
         return abort(404);
     }
 
-    public function root()
+    public function mainPage()
     {
         return view('index');
     }

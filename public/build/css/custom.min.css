@@ -14,3 +14,54 @@
 #hapus-surat-keluar .modal-backdrop {
     z-index: 1054;
 }
+
+
+.font-size-24 {
+    font-size: 24px !important;
+}
+
+.bg-soft-success {
+    background-color: rgba(10, 179, 156, 0.18) !important;
+}
+
+.bg-soft-info {
+    background-color: rgba(41, 156, 219, 0.18) !important;
+}
+
+.bg-soft-primary {
+    background-color: rgba(64, 81, 137, 0.18) !important;
+}
+
+.bg-soft-danger {
+    background-color: rgba(243, 86, 93, 0.18) !important;
+}
+
+.font-size-24 {
+    font-size: 24px !important;
+}
+
+.card .card-header {
+    padding: 0.75rem 1.25rem;
+}
+
+.fs-6 {
+    font-size: 1rem !important;
+}
+
+@media print {
+    .btn, .breadcrumb {
+        display: none !important;
+    }
+    
+    .card {
+        border: none !important;
+        box-shadow: none !important;
+    }
+    
+    .card-header {
+        background-color: #f8f9fa !important;
+        color: #000 !important;
+    }
+}
+
+

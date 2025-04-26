@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    @lang('translation.edit') Edit Data Penduduk
+     Edit Data Penduduk
 @endsection
 
 @section('css')
@@ -651,35 +651,18 @@
                                 </div>
                             </div>
                             
-                            <div class="d-flex justify-content-between mt-4">
-                                <a href="{{ route('penduduk.index') }}" class="btn btn-secondary">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center mt-4 gap-2">
+                                <a href="{{ route('penduduk.index') }}" class="btn btn-sm btn-secondary flex-grow-1 flex-md-grow-0">
                                     <i class="bx bx-arrow-back me-1"></i> Kembali
                                 </a>
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-sm btn-primary flex-grow-1 flex-md-grow-0">
                                     <i class="bx bx-save me-1"></i> Simpan Perubahan
                                 </button>
-                            </div>
+                            </div>                            
                             </form>
                             </div>
                             </div>
                             </div>
                             @endsection
                             
-                            @section('script')
-                            <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-                            <script src="{{ URL::asset('build/js/app.js') }}"></script>
-                            
-                            <script>
-                            $(document).ready(function() {
-                                // Default tanggal hari ini untuk tanggal lahir
-                                var today = new Date().toISOString().split('T')[0];
-                                // Jika tanggal lahir belum diisi, default ke 18 tahun yang lalu
-                                if (!$('#tanggal_lahir').val()) {
-                                    var defaultDate = new Date();
-                                    defaultDate.setFullYear(defaultDate.getFullYear() - 18);
-                                    $('#tanggal_lahir').val(defaultDate.toISOString().split('T')[0]);
-                                }
-                            });
-                            </script>
-                            @endsection
+ 
