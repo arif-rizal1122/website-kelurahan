@@ -37,7 +37,7 @@
 
                         <div class="card-body p-4">
                             <div class="text-center mt-2">
-                                <h5 class="text-primary">Welcome Back !</h5>
+                                <h5 class="text-primary">Silakan Login !</h5>
                                 <p class="text-muted">Sign in to continue to Velzon.</p>
                             </div>
                             <div class="p-2 mt-4">
@@ -111,10 +111,7 @@ unset($__errorArgs, $__bag); ?>
                                             <h5 class="fs-13 mb-4 title">Sign In with</h5>
                                         </div>
                                         <div>
-                                            <button type="button" class="btn btn-primary btn-icon waves-effect waves-light"><i class="ri-facebook-fill fs-16"></i></button>
-                                            <button type="button" class="btn btn-danger btn-icon waves-effect waves-light"><i class="ri-google-fill fs-16"></i></button>
-                                            <button type="button" class="btn btn-dark btn-icon waves-effect waves-light"><i class="ri-github-fill fs-16"></i></button>
-                                            <button type="button" class="btn btn-info btn-icon waves-effect waves-light"><i class="ri-twitter-fill fs-16"></i></button>
+                                            <a href="<?php echo e(route('login.warga')); ?>">Masuk Sebagai Warga</a>
                                         </div>
                                     </div>
                                 </form>

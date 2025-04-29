@@ -76,6 +76,22 @@
                                         </div>
 
                                         <div class="mb-3">
+                                            <label for="email" class="form-label">Alamat Email Anda <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" class="form-control @error('email') is-invalid @enderror"
+                                                name="email" value="{{ old('email') }}" id="nik"
+                                                placeholder="Masukkan Email" required>
+                                            @error('email')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                            <div class="invalid-feedback">
+                                                Silakan masukkan Email.
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
                                             <label for="alamat" class="form-label">Alamat</label>
                                             <textarea class="form-control @error('alamat') is-invalid @enderror"
                                                 name="alamat" id="alamat" rows="3"
@@ -87,6 +103,33 @@
                                             @enderror
                                             <div class="invalid-feedback">
                                                 Silakan masukkan alamat.
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="password" class="form-label">Kata Sandi <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="password"
+                                                class="form-control @error('password') is-invalid @enderror" name="password"
+                                                id="password" placeholder="Masukkan Kata Sandi" required>
+                                            @error('password')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                            <div class="invalid-feedback">
+                                                Silakan masukkan kata sandi.
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="password_confirmation" class="form-label">Konfirmasi Kata Sandi <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="password" class="form-control"
+                                                name="password_confirmation" id="password_confirmation"
+                                                placeholder="Konfirmasi Kata Sandi" required>
+                                            <div class="invalid-feedback">
+                                                Silakan konfirmasi kata sandi.
                                             </div>
                                         </div>
 

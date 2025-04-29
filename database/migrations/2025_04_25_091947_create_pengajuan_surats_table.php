@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('jenis_surat_id'); 
             $table->timestamp('tanggal_pengajuan')->useCurrent()->useCurrentOnUpdate(); 
             $table->text('keperluan')->nullable(); 
-            $table->string('status', 50);
+            $table->string('status', 50)->nullable();
             $table->timestamp('tanggal_diproses')->nullable(); 
             $table->unsignedBigInteger('user_id')->nullable(); 
             $table->timestamp('tanggal_selesai')->nullable(); 

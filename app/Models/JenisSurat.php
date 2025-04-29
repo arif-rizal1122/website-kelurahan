@@ -14,6 +14,7 @@ class JenisSurat extends Model
 
     protected $fillable = [
         'nama',
+        'template_surat',
         'deskripsi',
     ];
 

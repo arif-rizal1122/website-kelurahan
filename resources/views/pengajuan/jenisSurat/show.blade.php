@@ -42,6 +42,12 @@
                                         </td>
                                         <td class="text-primary">{{ $jenisSurat->deskripsi ?? '-' }}</td>
                                     </tr>
+                                    <tr>
+                                        <td class="fw-bold text-primary">
+                                            <i class="bx bx-notepad me-2"></i>Template Surat
+                                        </td>
+                                        <td class="text-primary">{{ $jenisSurat->template_surat ?? '-' }}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

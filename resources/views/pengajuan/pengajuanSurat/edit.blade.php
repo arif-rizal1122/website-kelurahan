@@ -107,26 +107,7 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
-                            <label for="status" class="form-label fw-bold text-info">
-                                <i class="bx bx-label me-1"></i>Status <span class="text-danger">*</span>
-                            </label>
-                            <select class="form-control @error('status') is-invalid @enderror"
-                                id="status"
-                                name="status"
-                                required>
-                                <option value="">Pilih Status</option>
-                                @foreach (\App\Enums\Status::cases() as $status)
-                                    <option value="{{ $status->value }}" {{ old('status', $pengajuanSurat->status?->value) == $status->value ? 'selected' : '' }}>
-                                        {{ $status->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('status')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
+                        
                         <div class="mb-3">
                             <label for="tanggal_diproses" class="form-label fw-bold text-info">
                                 <i class="bx bx-calendar-check me-1"></i>Tanggal Diproses
@@ -173,6 +154,27 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+
+                        <div class="mb-3">
+                            <label for="status_pengajuan" class="form-label fw-bold text-info">
+                                <i class="bx bx-label me-1"></i>Status <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-control @error('status') is-invalid @enderror"
+                                id="status_pengajuan"
+                                name="status"
+                                required>
+                                <option value="">Pilih Status</option>
+                                @foreach (\App\Enums\Status::cases() as $status)
+                                    <option value="{{ $status->value }}" {{ old('status', $pengajuanSurat->status?->value) == $status->value ? 'selected' : '' }}>
+                                        {{ $status->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('status')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
 
                         <div class="mb-3">
                             <label for="keterangan_penolakan" class="form-label fw-bold text-info">

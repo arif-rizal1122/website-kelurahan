@@ -103,6 +103,36 @@ unset($__errorArgs, $__bag); ?>
                                         </div>
 
                                         <div class="mb-3">
+                                            <label for="email" class="form-label">Alamat Email Anda <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" class="form-control <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                                name="email" value="<?php echo e(old('email')); ?>" id="nik"
+                                                placeholder="Masukkan Email" required>
+                                            <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong><?php echo e($message); ?></strong>
+                                                </span>
+                                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                            <div class="invalid-feedback">
+                                                Silakan masukkan Email.
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
                                             <label for="alamat" class="form-label">Alamat</label>
                                             <textarea class="form-control <?php $__errorArgs = ['alamat'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -128,6 +158,47 @@ endif;
 unset($__errorArgs, $__bag); ?>
                                             <div class="invalid-feedback">
                                                 Silakan masukkan alamat.
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="password" class="form-label">Kata Sandi <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="password"
+                                                class="form-control <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" name="password"
+                                                id="password" placeholder="Masukkan Kata Sandi" required>
+                                            <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong><?php echo e($message); ?></strong>
+                                                </span>
+                                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                            <div class="invalid-feedback">
+                                                Silakan masukkan kata sandi.
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="password_confirmation" class="form-label">Konfirmasi Kata Sandi <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="password" class="form-control"
+                                                name="password_confirmation" id="password_confirmation"
+                                                placeholder="Konfirmasi Kata Sandi" required>
+                                            <div class="invalid-feedback">
+                                                Silakan konfirmasi kata sandi.
                                             </div>
                                         </div>
 

@@ -53,7 +53,9 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'nama' => ['required', 'string', 'max:255'],
             'nik' => ['required', 'string', 'max:255', 'unique:wargas'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:wargas'], // Tambahkan validasi email
             'alamat' => ['nullable', 'string'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
 
@@ -68,11 +70,11 @@ class RegisterController extends Controller
         return Warga::create([
             'nama' => $data['nama'],
             'nik' => $data['nik'],
+            'email' => $data['email'],
             'alamat' => $data['alamat'],
+            'password' => Hash::make($data['password']), 
         ]);
     }
-
-
 
 
 }

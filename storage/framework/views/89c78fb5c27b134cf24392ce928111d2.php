@@ -164,41 +164,7 @@ endif;
 unset($__errorArgs, $__bag); ?>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="status" class="form-label fw-bold text-info">
-                                <i class="bx bx-label me-1"></i>Status <span class="text-danger">*</span>
-                            </label>
-                            <select class="form-control <?php $__errorArgs = ['status'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>"
-                                id="status"
-                                name="status"
-                                required>
-                                <option value="">Pilih Status</option>
-                                <?php $__currentLoopData = \App\Enums\Status::cases(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $status): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($status->value); ?>" <?php echo e(old('status', $pengajuanSurat->status?->value) == $status->value ? 'selected' : ''); ?>>
-                                        <?php echo e($status->name); ?>
-
-                                    </option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            </select>
-                            <?php $__errorArgs = ['status'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                <div class="invalid-feedback"><?php echo e($message); ?></div>
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                        </div>
-
+                        
                         <div class="mb-3">
                             <label for="tanggal_diproses" class="form-label fw-bold text-info">
                                 <i class="bx bx-calendar-check me-1"></i>Tanggal Diproses
@@ -287,6 +253,42 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                         </div>
+
+                        <div class="mb-3">
+                            <label for="status_pengajuan" class="form-label fw-bold text-info">
+                                <i class="bx bx-label me-1"></i>Status <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-control <?php $__errorArgs = ['status'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                id="status_pengajuan"
+                                name="status"
+                                required>
+                                <option value="">Pilih Status</option>
+                                <?php $__currentLoopData = \App\Enums\Status::cases(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $status): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($status->value); ?>" <?php echo e(old('status', $pengajuanSurat->status?->value) == $status->value ? 'selected' : ''); ?>>
+                                        <?php echo e($status->name); ?>
+
+                                    </option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                            <?php $__errorArgs = ['status'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="invalid-feedback"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+
 
                         <div class="mb-3">
                             <label for="keterangan_penolakan" class="form-label fw-bold text-info">

@@ -57,7 +57,7 @@
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="btn-getstarted" href="<?php echo e(url('/login')); ?>">Get Started</a>
+      <a class="btn-getstarted" href="<?php echo e(route('warga.login')); ?>">Get Started</a>
 
     </div>
   </header>

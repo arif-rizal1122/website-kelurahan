@@ -72,6 +72,19 @@
                             </div>
                         </div>
 
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <label for="template_surat" class="form-label fw-bold text-success">
+                                    <i class="bx bx-notepad me-1"></i>Template Surat
+                                </label>
+                                <textarea class="form-control @error('template_surat') is-invalid @enderror" id="template_surat"
+                                    name="template_surat" rows="5" placeholder="Masukkan template_surat">{{ old('template_surat') }}</textarea>
+                                @error('template_surat')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="d-flex flex-wrap justify-content-between align-items-center mt-4 gap-2">
                             <a href="{{ route('jenis-surat.index') }}"
                                 class="btn btn-sm btn-secondary flex-grow-1 flex-md-grow-0">

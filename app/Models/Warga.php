@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Warga extends Model
+class Warga extends Authenticatable
 {
     use HasFactory;
 
@@ -15,9 +15,20 @@ class Warga extends Model
     protected $fillable = [
         'nama',
         'nik',
+        'email', 
+        'password',
         'alamat',
     ];
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'password' => 'hashed',
+        'email_verified_at' => 'datetime',
+    ];
     /**
      * Get all of the pengajuanSurats for the Warga
      *

@@ -24,6 +24,7 @@ class UpdateJenisSuratRequest extends FormRequest
     {
         return [
             'nama' => ['required', 'string', 'max:255', Rule::unique('jenis_surats', 'nama')->ignore($this->route('jenisSurat'))],
+            'template_surat' => 'nullable|string',
             'deskripsi' => 'nullable|string',
         ];
     }

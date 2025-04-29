@@ -36,4 +36,5 @@ class StorePengajuanSuratRequest extends FormRequest
             'file_pendukung' => 'nullable|file|mimes:pdf,doc,docx|max:2048', 
         ];
     }
+    
 }

@@ -20,13 +20,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <div
-                        class="card-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
-                        <h5 class="card-title mb-0">Data Pengajuan Surat</h5>
-                        <a href="<?php echo e(route('pengajuan-surat.create')); ?>" class="btn btn-primary">
-                            Tambah Pengajuan Surat
-                        </a>
-                    </div>
+                    
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -38,10 +32,7 @@
                                     <th>Tanggal Pengajuan</th>
                                     <th>Keperluan</th>
                                     <th>Status</th>
-                                    <th>Tanggal Diproses</th>
                                     <th>Petugas</th>
-                                    <th>Tanggal Selesai</th>
-                                    <th>Keterangan Penolakan</th>
                                     <th>File Pendukung</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -51,13 +42,23 @@
                                     <tr>
                                         <td><?php echo e($pengajuanSurat->warga->nama ?? '-'); ?></td>
                                         <td><?php echo e($pengajuanSurat->jenisSurat->nama ?? '-'); ?></td>
-                                        <td><?php echo e($pengajuanSurat->tanggal_pengajuan); ?></td>
+                                        <td><?php echo e(\Carbon\Carbon::parse($pengajuanSurat->tanggal_pengajuan)->format('d-m-Y')); ?></td>
                                         <td><?php echo e($pengajuanSurat->keperluan); ?></td>
-                                        <td><?php echo e($pengajuanSurat->status); ?></td>
-                                        <td><?php echo e($pengajuanSurat->tanggal_diproses); ?></td>
+                                        <td>
+                                            <?php if($pengajuanSurat->status == \App\Enums\Status::DIAJUKAN): ?>
+                                                <span class="badge bg-info"><?php echo e($pengajuanSurat->status); ?></span>
+                                            <?php elseif($pengajuanSurat->status == \App\Enums\Status::DIPROSES): ?>
+                                                <span class="badge bg-warning"><?php echo e($pengajuanSurat->status); ?></span>
+                                            <?php elseif($pengajuanSurat->status == \App\Enums\Status::SELESAI): ?>
+                                                <span class="badge bg-success"><?php echo e($pengajuanSurat->status); ?></span>
+                                            <?php elseif($pengajuanSurat->status == \App\Enums\Status::DITOLAK): ?>
+                                                <span class="badge bg-danger"><?php echo e($pengajuanSurat->status); ?></span>
+                                            <?php else: ?>
+                                                <?php echo e($pengajuanSurat->status); ?>
+
+                                            <?php endif; ?>
+                                        </td>
                                         <td><?php echo e($pengajuanSurat->user->name ?? '-'); ?></td>
-                                        <td><?php echo e($pengajuanSurat->tanggal_selesai); ?></td>
-                                        <td><?php echo e($pengajuanSurat->keterangan_penolakan); ?></td>
                                         <td>
                                             <?php if($pengajuanSurat->file_pendukung): ?>
                                                 <a href="<?php echo e(asset('storage/' . $pengajuanSurat->file_pendukung)); ?>"
@@ -72,18 +73,68 @@
                                         <td>
                                             <div class="d-flex gap-1 overflow-auto">
                                                 <a href="<?php echo e(route('pengajuan-surat.show', $pengajuanSurat->id)); ?>"
-                                                    class="btn btn-sm btn-info">Detail</a>
-                                                <a href="<?php echo e(route('pengajuan-surat.edit', $pengajuanSurat->id)); ?>"
-                                                    class="btn btn-sm btn-warning">
-                                                    Edit
+                                                    class="btn btn-sm btn-info" title="Lihat Detail">
+                                                    <i class="bx bx-detail"></i> Detail
                                                 </a>
-                                                <form action="<?php echo e(route('pengajuan-surat.destroy', $pengajuanSurat->id)); ?>"
-                                                    method="POST">
-                                                    <?php echo csrf_field(); ?>
-                                                    <?php echo method_field('DELETE'); ?>
-                                                    <button type="button" class="btn btn-sm btn-danger"
-                                                        data-bs-toggle="modal" data-bs-target="#hapus-pengajuan-surat">Hapus</button>
-                                                </form>
+                                        
+                                                <?php if($pengajuanSurat->status == \App\Enums\Status::DIAJUKAN): ?>
+                                                    <form action="<?php echo e(route('pengajuan-surat.process', $pengajuanSurat->id)); ?>" method="POST">
+                                                        <?php echo csrf_field(); ?>
+                                                        <?php echo method_field('PATCH'); ?>
+                                                        <button type="submit" class="btn btn-sm btn-warning" title="Proses Pengajuan">
+                                                            <i class="bx bx-task"></i> Proses
+                                                        </button>
+                                                    </form>
+                                                    <a href="<?php echo e(route('pengajuan-surat.reject', $pengajuanSurat->id)); ?>"
+                                                        class="btn btn-sm btn-danger" title="Tolak Pengajuan">
+                                                        <i class="bx bx-x-circle"></i> Tolak
+                                                    </a>
+                                                <?php elseif($pengajuanSurat->status == \App\Enums\Status::DIPROSES): ?>
+                                                    <form action="<?php echo e(route('pengajuan-surat.complete', $pengajuanSurat->id)); ?>" method="POST">
+                                                        <?php echo csrf_field(); ?>
+                                                        <?php echo method_field('PATCH'); ?>
+                                                        <button type="submit" class="btn btn-sm btn-success" title="Selesaikan Pengajuan">
+                                                            <i class="bx bx-check-circle"></i> Selesaikan
+                                                        </button>
+                                                    </form>
+                                                    <a href="<?php echo e(route('pengajuan-surat.reject', $pengajuanSurat->id)); ?>"
+                                                        class="btn btn-sm btn-danger" title="Tolak Pengajuan">
+                                                        <i class="bx bx-x-circle"></i> Tolak
+                                                    </a>
+                                                <?php elseif($pengajuanSurat->status == \App\Enums\Status::SELESAI): ?>
+                                                    <a href="<?php echo e(route('pengajuan-surat.print', $pengajuanSurat->id)); ?>" class="btn btn-primary">
+                                                        Cetak Word
+                                                    </a>
+                                                <?php elseif($pengajuanSurat->status == \App\Enums\Status::DITOLAK): ?>
+                                                    <?php endif; ?>
+                                        
+                                                <?php if(auth()->guard()->check()): ?>
+                                                    <?php if(Auth::user()->role === 'admin'): ?>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-sm btn-secondary dropdown-toggle"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="bx bx-cog"></i> Admin
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li>
+                                                                    <a class="dropdown-item" href="<?php echo e(route('pengajuan-surat.edit', $pengajuanSurat->id)); ?>">
+                                                                        <i class="bx bx-edit"></i> Edit
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <form action="<?php echo e(route('pengajuan-surat.destroy', $pengajuanSurat->id)); ?>"
+                                                                        method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengajuan ini?')">
+                                                                        <?php echo csrf_field(); ?>
+                                                                        <?php echo method_field('DELETE'); ?>
+                                                                        <button type="submit" class="dropdown-item">
+                                                                            <i class="bx bx-trash"></i> Hapus
+                                                                        </button>
+                                                                    </form>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
                                             </div>
                                         </td>
                                     </tr>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\WargaController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\Common\PendudukController;
 use App\Http\Controllers\Surat\SuratKeluarController;
@@ -31,7 +32,27 @@ Route::get('/', [HomeController::class, 'mainPage'])->name('homepage');
 
 Route::get('index/{locale}', [HomeController::class, 'lang']);
 
+
+
+Route::get('/login/warga', [WargaController::class, 'showLoginForm'])->name('login.warga');
+Route::post('/login/warga', [WargaController::class, 'loginWarga'])->name('warga.login');
+
+
+Route::middleware(['auth:warga'])->group(function () {
+    Route::get('/formulir-warga', [WargaController::class, 'showFormulirWarga'])->name('formulir.warga');
+    Route::post('/formulir-warga', [WargaController::class, 'storePengajuanWarga'])->name('pengajuan-surat.store');
+    Route::get('/menu-warga', [WargaController::class, 'showMenuWarga'])->name('menu.warga');
+    Route::post('/logout/warga', [WargaController::class, 'logoutWarga'])->name('warga.logout');
+
+});
+
+
+
+
+
+
 Route::middleware(['auth'])->group(function () {
+
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('root'); 
 
@@ -115,12 +136,20 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('pengajuan-surat')->group(function () {
         Route::get('/', [PengajuanSuratController::class, 'index'])->name('pengajuan-surat.index');
         Route::get('/create', [PengajuanSuratController::class, 'create'])->name('pengajuan-surat.create');
-        Route::post('/', [PengajuanSuratController::class, 'store'])->name('pengajuan-surat.store');
+    
         Route::get('/{pengajuanSurat}', [PengajuanSuratController::class, 'show'])->name('pengajuan-surat.show');
         Route::get('/{pengajuanSurat}/edit', [PengajuanSuratController::class, 'edit'])->name('pengajuan-surat.edit');
         Route::put('/{pengajuanSurat}', [PengajuanSuratController::class, 'update'])->name('pengajuan-surat.update');
         Route::delete('/{pengajuanSurat}', [PengajuanSuratController::class, 'destroy'])->name('pengajuan-surat.destroy');
+    
+        Route::patch('/{pengajuanSurat}/process', [PengajuanSuratController::class, 'process'])->name('pengajuan-surat.process');
+        Route::patch('/{pengajuanSurat}/complete', [PengajuanSuratController::class, 'complete'])->name('pengajuan-surat.complete');
+        Route::get('/{pengajuanSurat}/reject', [PengajuanSuratController::class, 'reject'])->name('pengajuan-surat.reject');
+        Route::post('/{pengajuanSurat}/reject', [PengajuanSuratController::class, 'storeRejection'])->name('pengajuan-surat.storeRejection');
+        Route::get('/{pengajuanSurat}/print', [PengajuanSuratController::class, 'print'])->name('pengajuan-surat.print');
     });
+
+    
 });
 
 // Catch-all route (Mungkin untuk menampilkan halaman statis lain tanpa login)

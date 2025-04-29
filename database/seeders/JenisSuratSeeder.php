@@ -16,22 +16,27 @@ class JenisSuratSeeder extends Seeder
         $jenisSurats = [
             [
                 'nama' => 'Surat Keterangan Domisili',
+                'template_surat' => 'Surat yang menerangkan alamat tempat tinggal seseorang.',
                 'deskripsi' => 'Surat yang menerangkan alamat tempat tinggal seseorang.',
             ],
             [
                 'nama' => 'Surat Keterangan Tidak Mampu',
+                'template_surat' => 'Surat yang menerangkan bahwa seseorang atau keluarga termasuk golongan tidak mampu.',
                 'deskripsi' => 'Surat yang menerangkan bahwa seseorang atau keluarga termasuk golongan tidak mampu.',
             ],
             [
                 'nama' => 'Surat Keterangan Usaha',
+                'template_surat' => 'Surat yang menerangkan jenis dan lokasi usaha seseorang.',
                 'deskripsi' => 'Surat yang menerangkan jenis dan lokasi usaha seseorang.',
             ],
             [
                 'nama' => 'Surat Pengantar RT/RW',
+                'template_surat' => 'Surat pengantar dari ketua RT/RW untuk keperluan tertentu.',
                 'deskripsi' => 'Surat pengantar dari ketua RT/RW untuk keperluan tertentu.',
             ],
             [
                 'nama' => 'Surat Keterangan Kelahiran',
+                'template_surat' => 'Surat yang menerangkan kelahiran seseorang.',
                 'deskripsi' => 'Surat yang menerangkan kelahiran seseorang.',
             ],
             // Anda bisa menambahkan data jenis surat lainnya di sini
