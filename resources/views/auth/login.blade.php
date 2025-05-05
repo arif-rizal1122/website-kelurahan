@@ -1,12 +1,13 @@
 @extends('layouts.master-without-nav')
 @section('title')
-  Login
+  Login Admin
 @endsection
 @section('content')
-<div class="auth-page-wrapper pt-5">
+<div class="auth-page-wrapper min-vh-100 d-flex align-items-center bg-light py-5">
     <!-- auth page bg -->
-    <div class="auth-one-bg-position auth-one-bg"  id="auth-particles">
-        <div class="bg-overlay"></div>
+    <div class="auth-one-bg-position auth-one-bg">
+        {{-- <div class="auth-one-bg-position auth-one-bg" id="auth-particles"> --}}
+        <div class="bg-overlay bg-primary bg-opacity-75"></div>
 
         <div class="shape">
             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1440 120">
@@ -16,17 +17,17 @@
     </div>
 
     <!-- auth page content -->
-    <div class="auth-page-content">
+    <div class="auth-page-content w-100">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="text-center mt-sm-5 mb-4 text-white-50">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="text-center mb-5">
                         <div>
                             <a href="index" class="d-inline-block auth-logo">
-                                <img src="{{ URL::asset('build/images/logo-light.png')}}" alt="" height="30">
+                                <img src="{{ URL::asset('build/images/logo-light.png')}}" alt="Logo SMART LURAH" height="40">
                             </a>
                         </div>
-                        <p class="mt-3 fs-15 fw-medium">Sistem Aplikasi SMART LURAH</p>
+                        <h3 class="mt-4 text-white fw-semibold">Sistem Aplikasi SMART LURAH</h3>
                     </div>
                 </div>
             </div>
@@ -34,68 +35,76 @@
 
             <div class="row justify-content-center">
                 <div class="col-md-8 col-lg-6 col-xl-5">
-                    <div class="card mt-4">
-
-                        <div class="card-body p-4">
-                            <div class="text-center mt-2">
-                                <h5 class="text-primary">Silakan Login !</h5>
-                                <p class="text-muted">Sign in to continue to Velzon.</p>
+                    <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                        <div class="card-header bg-primary bg-opacity-10 border-bottom-0 py-4">
+                            <div class="text-center">
+                                <h4 class="text-primary mb-2">Selamat Datang Admin!</h4>
+                                <p class="text-muted mb-0">Silakan login untuk mengakses sistem admin</p>
                             </div>
-                            <div class="p-2 mt-4">
-                                <form action="{{ route('login') }}" method="POST">
-                                    @csrf
-                                    <div class="mb-3">
-                                        <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', 'admin@themesbrand.com') }}" id="username" name="email" placeholder="Enter username">
+                        </div>
+
+                        <div class="card-body p-4 p-md-5">
+                            <form action="{{ route('login') }}" method="POST">
+                                @csrf
+                                <div class="mb-4">
+                                    <label for="username" class="form-label fw-medium">Username <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0"><i class="ri-user-3-line"></i></span>
+                                        <input type="text" class="form-control form-control-lg border-start-0 @error('email') is-invalid @enderror" value="{{ old('email') }}" id="username" name="email" placeholder="Masukkan username">
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
+                                </div>
 
+                                <div class="mb-4">
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <label class="form-label fw-medium" for="password-input">Password <span class="text-danger">*</span></label>
+                                        <a href="{{ route('password.update') }}" class="text-primary fw-medium text-decoration-none fs-13">Lupa password?</a>
+                                    </div>
+                                    <div class="input-group auth-pass-inputgroup">
+                                        <span class="input-group-text bg-light border-end-0"><i class="ri-lock-2-line"></i></span>
+                                        <input type="password" class="form-control form-control-lg border-start-0 pe-5 @error('password') is-invalid @enderror" name="password" placeholder="Masukkan password" id="password-input">
+                                        <button class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-decoration-none text-muted px-3" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
+                                        @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" value="" id="auth-remember-check">
+                                    <label class="form-check-label" for="auth-remember-check">Ingat saya</label>
+                                </div>
+
+                                <div class="mb-4">
+                                    <button class="btn btn-primary btn-lg w-100 waves-effect waves-light" type="submit">
+                                        <i class="ri-login-circle-fill me-1 align-middle"></i> Masuk
+                                    </button>
+                                </div>
+
+                                <div class="text-center">
+                                    <div class="signin-other-title position-relative mb-4">
+                                        <span class="bg-white px-3 position-relative z-1 text-muted">atau</span>
+                                        <hr class="position-absolute top-50 start-0 end-0 z-0 m-0">
+                                    </div>
                                     <div class="mb-3">
-                                        <div class="float-end">
-                                            <a href="{{ route('password.update') }}" class="text-muted">Forgot password?</a>
-                                        </div>
-                                        <label class="form-label" for="password-input">Password <span class="text-danger">*</span></label>
-                                        <div class="position-relative auth-pass-inputgroup mb-3">
-                                            <input type="password" class="form-control pe-5 password-input @error('password') is-invalid @enderror" name="password" placeholder="Enter password" id="password-input" value="12345678">
-                                            <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
-                                            @error('password')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
+                                        <a href="{{ route('warga.login.form') }}" class="btn btn-outline-secondary btn-lg w-100">
+                                            <i class="ri-group-line me-1"></i> Masuk Sebagai Warga
+                                        </a>
                                     </div>
-
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="auth-remember-check">
-                                        <label class="form-check-label" for="auth-remember-check">Remember me</label>
-                                    </div>
-
-                                    <div class="mt-4">
-                                        <button class="btn btn-success w-100" type="submit">Sign In</button>
-                                    </div>
-
-                                    <div class="mt-4 text-center">
-                                        <div class="signin-other-title">
-                                            <h5 class="fs-13 mb-4 title">Sign In with</h5>
-                                        </div>
-                                        <div>
-                                            <a href="{{ route('login.warga') }}">Masuk Sebagai Warga</a>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+                                </div>
+                            </form>
                         </div>
-                        <!-- end card body -->
                     </div>
                     <!-- end card -->
 
                     <div class="mt-4 text-center">
-                        <p class="mb-0">Don't have an account ? <a href="{{ route('register') }}" class="fw-semibold text-primary text-decoration-underline"> Signup </a> </p>
+                        <p class="mb-0 text-white">Belum punya akun? <a href="{{ route('register') }}" class="fw-semibold text-white text-decoration-underline"> Daftar </a> </p>
                     </div>
 
                 </div>
@@ -107,12 +116,12 @@
     <!-- end auth page content -->
 
     <!-- footer -->
-    <footer class="footer">
+    <footer class="footer position-absolute bottom-0 start-0 end-0">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <p class="mb-0 text-muted">&copy; <script>document.write(new Date().getFullYear())</script> Velzon. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                        <p class="mb-0 text-white">&copy; <script>document.write(new Date().getFullYear())</script> Sistem Aplikasi SMART LURAH. Hak Cipta Dilindungi.</p>
                     </div>
                 </div>
             </div>
@@ -125,5 +134,4 @@
 <script src="{{ URL::asset('build/libs/particles.js/particles.js') }}"></script>
 <script src="{{ URL::asset('build/js/pages/particles.app.js') }}"></script>
 <script src="{{ URL::asset('build/js/pages/password-addon.init.js') }}"></script>
-
 @endsection

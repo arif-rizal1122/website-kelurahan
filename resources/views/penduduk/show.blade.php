@@ -301,9 +301,12 @@
                             </a>
                         </div>
                         <div class="col-12 col-md d-flex justify-content-md-end gap-2 flex-wrap">
-                            <a href="{{ route('penduduk.edit', $penduduk->id) }}" class="btn btn-warning">
+                            @if (Auth::user()->role === 'admin')
+                                <a href="{{ route('penduduk.edit', $penduduk->id) }}" class="btn btn-warning">
                                 <i class="bx bx-edit me-1"></i> Edit
-                            </a>
+                                </a> 
+                            @endif
+                           
                             <button type="button" class="btn btn-primary" onclick="window.print()">
                                 <i class="bx bx-printer me-1"></i> Cetak
                             </button>

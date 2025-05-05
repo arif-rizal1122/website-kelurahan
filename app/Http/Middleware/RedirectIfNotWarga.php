@@ -20,7 +20,7 @@ class RedirectIfNotWarga
     public function handle(Request $request, Closure $next, ...$guards): Response
     {
         if (!Auth::guard('warga')->check()) {
-            return redirect()->route('login.warga');
+            return redirect()->route('warga.login.form');
         }
 
         return $next($request);

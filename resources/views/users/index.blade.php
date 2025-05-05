@@ -46,7 +46,12 @@
                             <tbody>
                                 @foreach ($users as $user)
                                     <tr>
-                                        <td>{{ $user->name }}</td>
+                                        <td>
+                                            {{ $user->name }}
+                                            @if (Auth::id() == $user->id)
+                                                <span class="badge bg-primary ms-2">Anda</span>
+                                            @endif
+                                        </td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->role }}</td>
                                         <td>{{ $user->nip }}</td>
@@ -67,12 +72,14 @@
                                                     class="btn btn-sm btn-warning">
                                                     Edit
                                                 </a>
-                                                <form action="{{ route('users.destroy', $user->id) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="btn btn-sm btn-danger"
-                                                        data-bs-toggle="modal" data-bs-target="#hapus-user">Hapus</button>
-                                                </form>
+                                                @if (Auth::id() != $user->id)
+                                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="btn btn-sm btn-danger"
+                                                            data-bs-toggle="modal" data-bs-target="#hapus-user">Hapus</button>
+                                                    </form>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

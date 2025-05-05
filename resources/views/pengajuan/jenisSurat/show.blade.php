@@ -37,6 +37,12 @@
                                         <td class="text-primary">{{ $jenisSurat->nama ?? '-' }}</td>
                                     </tr>
                                     <tr>
+                                        <td class="fw-bold text-primary" style="width: 30%;">
+                                            <i class="bx bx-file-alt me-2"></i>Code Surat
+                                        </td>
+                                        <td class="text-primary">{{ $jenisSurat->code ?? '-' }}</td>
+                                    </tr>
+                                    <tr>
                                         <td class="fw-bold text-primary">
                                             <i class="bx bx-notepad me-2"></i>Deskripsi
                                         </td>
@@ -60,10 +66,13 @@
                             </a>
                         </div>
                         <div class="col-12 col-md d-flex justify-content-md-end gap-2 flex-wrap">
+                        @if (Auth::user()->role === 'admin')
                             <a href="{{ route('jenis-surat.edit', $jenisSurat->id) }}" class="btn btn-warning">
                                 <i class="bx bx-edit me-1"></i> Edit
                             </a>
                         </div>
+                        @endif
+                        
                     </div>
 
                 </div>

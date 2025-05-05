@@ -12,7 +12,7 @@ class UpdateJenisSuratRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true; // Atau logika otorisasi Anda
+        return true; 
     }
 
     /**
@@ -24,6 +24,7 @@ class UpdateJenisSuratRequest extends FormRequest
     {
         return [
             'nama' => ['required', 'string', 'max:255', Rule::unique('jenis_surats', 'nama')->ignore($this->route('jenisSurat'))],
+            'code' => ['required', 'string', 'max:25', Rule::unique('jenis_surats', 'code')->ignore($this->route('jenisSurat'))],
             'template_surat' => 'nullable|string',
             'deskripsi' => 'nullable|string',
         ];

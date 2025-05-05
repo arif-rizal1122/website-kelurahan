@@ -1,446 +1,571 @@
 @extends('layouts.master')
 @section('title')
-    Setting
+    Profile Pengguna
+@endsection
+@section('css')
+
 @endsection
 @section('content')
-    <div class="position-relative mx-n4 mt-n4">
-        <div class="profile-wid-bg profile-setting-img">
-            <img src="{{ URL::asset('build/images/profile-bg.jpg') }}" class="profile-wid-img" alt="">
-            <div class="overlay-content">
-                <div class="text-end p-3">
-                    <div class="p-0 ms-auto rounded-circle profile-photo-edit">
-                        <input id="profile-foreground-img-file-input" type="file" class="profile-foreground-img-file-input">
-                        <label for="profile-foreground-img-file-input" class="profile-photo-edit btn btn-light">
-                            <i class="ri-image-edit-line align-bottom me-1"></i> Change Cover
-                        </label>
-                    </div>
+    <div class="container-fluid">
+        <!-- Profile Header -->
+        <div class="profile-header mb-4">
+            <img src="{{ URL::asset('build/images/profile-bg.jpg') }}" class="img-fluid w-100 h-100 object-fit-cover" alt="Profile Background" style="object-position: center;">
+            <div class="profile-header-overlay">
+                <div class="upload-trigger">
+                    <input id="profile-foreground-img-file-input" type="file" class="d-none">
+                    <label for="profile-foreground-img-file-input" class="mb-0">
+                        <i class="ri-image-edit-line me-1"></i> Change Cover Photo
+                    </label>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-xxl-3">
-            <div class="card mt-n5">
-                <div class="card-body p-4">
-                    <div class="text-center">
-                        <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-                            <img src="@if (Auth::user()->avatar != '') {{ URL::asset('images/' . Auth::user()->avatar) }}@else{{ URL::asset('build/images/users/avatar-1.jpg') }} @endif"
-                                class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image">
-                            <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
-                                <input id="profile-img-file-input" type="file" class="profile-img-file-input">
-                                <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
-                                    <span class="avatar-title rounded-circle bg-light text-body">
-                                        <i class="ri-camera-fill"></i>
-                                    </span>
-                                </label>
+        <div class="row">
+            <!-- Left Column - User Profile -->
+            <div class="col-lg-4 mb-4">
+                <!-- Profile Card -->
+                <div class="profile-info-card card mb-4">
+                    <div class="card-body text-center pt-4">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="position-relative mb-3">
+                                <div class="profile-avatar mx-auto">
+                                    <img src="@if (Auth::user()->avatar) {{ asset('storage/' . Auth::user()->avatar) }}@else{{ asset('build/images/users/avatar-1.jpg') }} @endif"
+                                        class="img-fluid rounded-circle w-100 h-100 object-fit-cover" alt="Profile Image">
+                                    <div class="profile-avatar-badge">
+                                        <i class="ri-checkbox-circle-fill"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <h4 class="fw-bold mb-1">{{ Auth::user()->name }}</h4>
+                            <p class="text-muted mb-2">{{ Auth::user()->jabatan }}</p>
+                            <span class="user-badge bg-primary bg-opacity-10 text-primary mb-3">{{ Auth::user()->role }}</span>
+                            
+                            <div class="d-flex gap-2 mt-2">
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="ri-edit-2-line me-1"></i> Edit Profile
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary">
+                                    <i class="ri-settings-4-line me-1"></i> Settings
+                                </button>
                             </div>
                         </div>
-                        <h5 class="fs-17 mb-1">Anna Adame</h5>
-                        <p class="text-muted mb-0">Lead Designer / Developer</p>
                     </div>
                 </div>
-            </div>
-            <!--end card-->
 
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="flex-grow-1">
-                            <h5 class="card-title mb-0">Portfolio</h5>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <a href="javascript:void(0);" class="badge bg-light text-primary fs-12"><i
-                                    class="ri-add-fill align-bottom me-1"></i> Add</a>
-                        </div>
-                    </div>
-                    <div class="mb-3 d-flex">
-                        <div class="avatar-xs d-block flex-shrink-0 me-3">
-                            <span class="avatar-title rounded-circle fs-16 bg-body text-body">
-                                <i class="ri-github-fill"></i>
-                            </span>
-                        </div>
-                        <input type="email" class="form-control" id="gitUsername" placeholder="Username"
-                            value="@daveadame">
-                    </div>
-                    <div class="mb-3 d-flex">
-                        <div class="avatar-xs d-block flex-shrink-0 me-3">
-                            <span class="avatar-title rounded-circle fs-16 bg-primary">
-                                <i class="ri-global-fill"></i>
-                            </span>
-                        </div>
-                        <input type="text" class="form-control" id="websiteInput" placeholder="www.example.com"
-                            value="www.velzon.com">
-                    </div>
-                    <div class="mb-3 d-flex">
-                        <div class="avatar-xs d-block flex-shrink-0 me-3">
-                            <span class="avatar-title rounded-circle fs-16 bg-success">
-                                <i class="ri-dribbble-fill"></i>
-                            </span>
-                        </div>
-                        <input type="text" class="form-control" id="dribbleName" placeholder="Username"
-                            value="@dave_adame">
-                    </div>
-                    <div class="d-flex">
-                        <div class="avatar-xs d-block flex-shrink-0 me-3">
-                            <span class="avatar-title rounded-circle fs-16 bg-danger">
-                                <i class="ri-pinterest-fill"></i>
-                            </span>
-                        </div>
-                        <input type="text" class="form-control" id="pinterestName" placeholder="Username"
-                            value="Advance Dave">
-                    </div>
-                </div>
-            </div>
-            <!--end card-->
-        </div>
-        <!--end col-->
-        <div class="col-xxl-9">
-            <div class="card mt-xxl-n5">
-                <div class="card-header">
-                    <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#commonDetails" role="tab">
-                                <i class="fas fa-home"></i>
-                                Informasi Umum
+                <!-- Contact Information Card -->
+                <div class="profile-info-card card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <h5 class="card-title mb-0 fw-bold">Contact Information</h5>
+                            <a href="javascript:void(0);" class="btn btn-sm btn-light">
+                                <i class="ri-edit-line me-1"></i> Edit
                             </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#pengunaUser" role="tab">
-                                <i class="far fa-envelope"></i>
-                                Penguna / User
-                            </a>
-                        </li>
+                        </div>
                         
-                    </ul>
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon bg-primary bg-opacity-10 text-primary">
+                                <i class="ri-mail-line fs-4"></i>
+                            </div>
+                            <div>
+                                <p class="text-muted mb-1 small">Email Address</p>
+                                <h6 class="mb-0">{{ Auth::user()->email }}</h6>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon bg-success bg-opacity-10 text-success">
+                                <i class="ri-phone-line fs-4"></i>
+                            </div>
+                            <div>
+                                <p class="text-muted mb-1 small">Phone Number</p>
+                                <h6 class="mb-0">+62812345678</h6>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-info-item mb-0">
+                            <div class="contact-info-icon bg-info bg-opacity-10 text-info">
+                                <i class="ri-map-pin-line fs-4"></i>
+                            </div>
+                            <div>
+                                <p class="text-muted mb-1 small">Office Address</p>
+                                <h6 class="mb-0">Kantor Desa, Kec. {{ $config->nama_kecamatan ?? '-' }}, {{ $config->nama_kabupaten ?? '-' }}</h6>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-
-           {{--  --}}
-                <div class="card-body p-4">
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="commonDetails" role="tabpanel">
-
-                            <form action="{{ route('config.update') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <div class="row">
-                            
-                                    <!-- Nama Desa -->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label for="namaDesaInput" class="form-label">Nama Desa</label>
-                                            <input type="text" name="nama_desa" class="form-control"
-                                                value="{{ old('nama_desa', $config->nama_desa ?? '') }}">
+            </div>
+            
+            <!-- Right Column - Profile Details -->
+            <div class="col-lg-8">
+                <div class="profile-info-card card">
+                    <div class="card-header bg-transparent border-bottom-0 pb-0">
+                        <ul class="nav nav-tabs-custom nav-tabs gap-3 border-bottom-0" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#commonDetails" role="tab">
+                                    <i class="ri-information-line me-1 align-middle"></i>General Info
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#pengunaUser" role="tab">
+                                    <i class="ri-user-3-line me-1 align-middle"></i>User Details
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card-body p-4">
+                        <div class="tab-content">
+                            <!-- General Information Tab -->
+                            <div class="tab-pane fade" id="commonDetails" role="tabpanel">
+                                <form action="{{ route('config.update') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" name="nama_desa" class="form-control @error('nama_desa') is-invalid @enderror"
+                                                    id="namaDesaInput" placeholder="Nama Desa"
+                                                    value="{{ old('nama_desa', $config->nama_desa ?? '') }}"
+                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                <label for="namaDesaInput">Nama Desa</label>
+                                                @error('nama_desa')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                            
-                                    <!-- Kode Desa -->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label for="kodeDesaInput" class="form-label">Kode Desa</label>
-                                            <input type="text" name="kode_desa" class="form-control"
-                                                value="{{ old('kode_desa', $config->kode_desa ?? '') }}">
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" name="kode_desa" class="form-control @error('kode_desa') is-invalid @enderror"
+                                                    id="kodeDesaInput" placeholder="Kode Desa"
+                                                    value="{{ old('kode_desa', $config->kode_desa ?? '') }}"
+                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                <label for="kodeDesaInput">Kode Desa</label>
+                                                @error('kode_desa')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                            
-                                    <!-- Nama Kecamatan -->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label for="namaKecamatanInput" class="form-label">Nama Kecamatan</label>
-                                            <input type="text" name="nama_kecamatan" class="form-control"
-                                                value="{{ old('nama_kecamatan', $config->nama_kecamatan ?? '') }}">
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" name="nama_kecamatan" class="form-control @error('nama_kecamatan') is-invalid @enderror"
+                                                    id="namaKecamatanInput" placeholder="Nama Kecamatan"
+                                                    value="{{ old('nama_kecamatan', $config->nama_kecamatan ?? '') }}"
+                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                <label for="namaKecamatanInput">Nama Kecamatan</label>
+                                                @error('nama_kecamatan')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                            
-                                    <!-- Kode Kecamatan -->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label for="kodeKecamatanInput" class="form-label">Kode Kecamatan</label>
-                                            <input type="text" name="kode_kecamatan" class="form-control"
-                                                value="{{ old('kode_kecamatan', $config->kode_kecamatan ?? '') }}">
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" name="kode_kecamatan" class="form-control @error('kode_kecamatan') is-invalid @enderror"
+                                                    id="kodeKecamatanInput" placeholder="Kode Kecamatan"
+                                                    value="{{ old('kode_kecamatan', $config->kode_kecamatan ?? '') }}"
+                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                <label for="kodeKecamatanInput">Kode Kecamatan</label>
+                                                @error('kode_kecamatan')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                            
-                                    <!-- Nama Kepala Camat -->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label for="namaCamatInput" class="form-label">Nama Camat</label>
-                                            <input type="text" name="nama_kepala_camat" class="form-control"
-                                                value="{{ old('nama_kepala_camat', $config->nama_kepala_camat ?? '') }}">
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" name="nama_kepala_camat" class="form-control @error('nama_kepala_camat') is-invalid @enderror"
+                                                    id="namaCamatInput" placeholder="Nama Camat"
+                                                    value="{{ old('nama_kepala_camat', $config->nama_kepala_camat ?? '') }}"
+                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                <label for="namaCamatInput">Nama Camat</label>
+                                                @error('nama_kepala_camat')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                            
-                                    <!-- NIP Kepala Camat -->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label for="nipCamatInput" class="form-label">NIP Camat</label>
-                                            <input type="text" name="nip_kepala_camat" class="form-control"
-                                                value="{{ old('nip_kepala_camat', $config->nip_kepala_camat ?? '') }}">
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" name="nip_kepala_camat" class="form-control @error('nip_kepala_camat') is-invalid @enderror"
+                                                    id="nipCamatInput" placeholder="NIP Camat"
+                                                    value="{{ old('nip_kepala_camat', $config->nip_kepala_camat ?? '') }}"
+                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                <label for="nipCamatInput">NIP Camat</label>
+                                                @error('nip_kepala_camat')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                            
-                                    <!-- Nama Kabupaten -->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Nama Kabupaten</label>
-                                            <input type="text" name="nama_kabupaten" class="form-control"
-                                                value="{{ old('nama_kabupaten', $config->nama_kabupaten ?? '') }}">
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" name="nama_kabupaten" class="form-control @error('nama_kabupaten') is-invalid @enderror"
+                                                    id="namaKabupatenInput" placeholder="Nama Kabupaten"
+                                                    value="{{ old('nama_kabupaten', $config->nama_kabupaten ?? '') }}"
+                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                <label for="namaKabupatenInput">Nama Kabupaten</label>
+                                                @error('nama_kabupaten')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                            
-                                    <!-- Kode Kabupaten -->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Kode Kabupaten</label>
-                                            <input type="text" name="kode_kabupaten" class="form-control"
-                                                value="{{ old('kode_kabupaten', $config->kode_kabupaten ?? '') }}">
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" name="kode_kabupaten" class="form-control @error('kode_kabupaten') is-invalid @enderror"
+                                                    id="kodeKabupatenInput" placeholder="Kode Kabupaten"
+                                                    value="{{ old('kode_kabupaten', $config->kode_kabupaten ?? '') }}"
+                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                <label for="kodeKabupatenInput">Kode Kabupaten</label>
+                                                @error('kode_kabupaten')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                            
-                                    <!-- Nama Provinsi -->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Nama Provinsi</label>
-                                            <input type="text" name="nama_propinsi" class="form-control"
-                                                value="{{ old('nama_propinsi', $config->nama_propinsi ?? '') }}">
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" name="nama_propinsi" class="form-control @error('nama_propinsi') is-invalid @enderror"
+                                                    id="namaProvinsiInput" placeholder="Nama Provinsi"
+                                                    value="{{ old('nama_propinsi', $config->nama_propinsi ?? '') }}"
+                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                <label for="namaProvinsiInput">Nama Provinsi</label>
+                                                @error('nama_propinsi')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                            
-                                    <!-- Kode Provinsi -->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Kode Provinsi</label>
-                                            <input type="text" name="kode_propinsi" class="form-control"
-                                                value="{{ old('kode_propinsi', $config->kode_propinsi ?? '') }}">
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" name="kode_propinsi" class="form-control @error('kode_propinsi') is-invalid @enderror"
+                                                    id="kodeProvinsiInput" placeholder="Kode Provinsi"
+                                                    value="{{ old('kode_propinsi', $config->kode_propinsi ?? '') }}"
+                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                <label for="kodeProvinsiInput">Kode Provinsi</label>
+                                                @error('kode_propinsi')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                            
-
-                            
-                                    <!-- Email Desa -->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Email Desa</label>
-                                            <input type="email" name="email_desa" class="form-control"
-                                                value="{{ old('email_desa', $config->email_desa ?? '') }}">
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="email" name="email_desa" class="form-control @error('email_desa') is-invalid @enderror"
+                                                    id="emailDesaInput" placeholder="Email Desa"
+                                                    value="{{ old('email_desa', $config->email_desa ?? '') }}"
+                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                <label for="emailDesaInput">Email Desa</label>
+                                                @error('email_desa')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                            
-                            
-                                    <!-- Nomor Operator -->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Nomor Operator</label>
-                                            <input type="text" name="nomor_operator" class="form-control"
-                                                value="{{ old('nomor_operator', $config->nomor_operator ?? '') }}">
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" name="nomor_operator" class="form-control @error('nomor_operator') is-invalid @enderror"
+                                                    id="nomorOperatorInput" placeholder="Nomor Operator"
+                                                    value="{{ old('nomor_operator', $config->nomor_operator ?? '') }}"
+                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                <label for="nomorOperatorInput">Nomor Operator</label>
+                                                @error('nomor_operator')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                            
-                                    
-                                    <!-- Telepon -->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Telepon</label>
-                                            <input type="text" name="telepon" class="form-control"
-                                                value="{{ old('telepon', $config->telepon ?? '') }}">
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" name="telepon" class="form-control @error('telepon') is-invalid @enderror"
+                                                    id="teleponInput" placeholder="Telepon"
+                                                    value="{{ old('telepon', $config->telepon ?? '') }}"
+                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                <label for="teleponInput">Telepon</label>
+                                                @error('telepon')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                            
-                                    <!-- Logo Upload -->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
+                                        
+                                        <div class="col-md-6">
                                             <label class="form-label">Logo</label>
-                                            <input type="file" name="logo" class="form-control">
-                                        </div>
-                                    </div>
-
-                                    <!-- Alamat Kantor -->
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                        <label class="form-label">Alamat Kantor</label>
-                                        <textarea name="alamat_kantor" class="form-control" rows="2">{{ old('alamat_kantor', $config->alamat_kantor ?? '') }}</textarea>
-                                        </div>
-                                    </div>
-                            
-                            
-                                    <div class="col-lg-12">
-                                        <div class="hstack gap-2 justify-content-end">
-                                            <button type="submit" class="btn btn-primary">Simpan</button>
-                                            <a href="{{ route('config.index') }}" class="btn btn-soft-secondary">Batal</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                            
-                        </div>
-
-
-                        {{--  --}}
-                        <!--end tab-pane-->
-                        <div class="tab-pane" id="pengunaUser" role="tabpanel">
-                            <div class="table-responsive">
-                                <div class="hstack m-2 justify-content-end">
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createUser">Tambah</button>
-                                </div>
-                                <table id="userTable" class="table table-striped table-bordered nowrap" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nama</th>
-                                            <th>Email</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($users as $index => $user)
-                                            <tr>
-                                                <td>{{ $index + 1 }}</td>
-                                                <td>{{ $user->name }}</td>
-                                                <td>{{ $user->email }}</td>
-                                                <td>
-                                                    <div class="d-flex gap-2">
-                                                        <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editUser">Edit</button>
-                                                        <form action="" method="POST" onsubmit="return confirm('Yakin ingin menghapus user ini?')">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapus-user">Hapus</button>
-                                                        </form>
+                                            @if(Auth::user()->role == 'admin')
+                                                <div class="input-group">
+                                                    <input type="file" name="logo" class="form-control @error('logo') is-invalid @enderror">
+                                                    <span class="input-group-text"><i class="ri-file-upload-line"></i></span>
+                                                </div>
+                                                @if($config->logo)
+                                                    <div class="mt-2">
+                                                        <img src="{{ asset('storage/' . $config->logo) }}" alt="Logo Saat Ini" 
+                                                            class="img-thumbnail" style="max-height: 80px;">
+                                                        <small class="d-block text-muted mt-1">Logo Saat Ini</small>
                                                     </div>
-                                                </td>                                                
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                                @endif
+                                                @error('logo')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            @else
+                                                <input type="text" class="form-control" value="{{ $config->logo }}" readonly>
+                                                <small class="text-muted">Hanya admin yang dapat mengubah logo.</small>
+                                            @endif
+                                        </div>
+                                        
+                                        <div class="col-md-12">
+                                            <div class="form-floating">
+                                                <textarea name="alamat_kantor" class="form-control @error('alamat_kantor') is-invalid @enderror" 
+                                                    id="alamatKantorInput" placeholder="Alamat Kantor" style="height: 100px;"
+                                                    @if(Auth::user()->role != 'admin') readonly @endif>{{ old('alamat_kantor', $config->alamat_kantor ?? '') }}</textarea>
+                                                <label for="alamatKantorInput">Alamat Kantor</label>
+                                                @error('alamat_kantor')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-12 text-end">
+                                            <hr>
+                                            @if(Auth::user()->role == 'admin')
+                                                <button type="submit" class="btn btn-primary px-4">
+                                                    <i class="ri-save-line me-1"></i> Save Changes
+                                                </button>
+                                            @endif
+                                            <a href="{{ route('config.index') }}" class="btn btn-light ms-2">Cancel</a>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
+                            
+                            <!-- User Details Tab -->
+                            <div class="tab-pane fade show active" id="pengunaUser" role="tabpanel">
+                                <div class="user-info-box mb-4">
+                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                        <h5 class="mb-0 fw-bold">
+                                            <i class="ri-user-3-line me-2"></i> Personal Information
+                                        </h5>
+                                        <button class="btn btn-sm btn-outline-primary">
+                                            <i class="ri-edit-2-line me-1"></i> Edit
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="user-info-item">
+                                                <div class="user-info-label">Full Name</div>
+                                                <div class="user-info-value">{{ Auth::user()->name }}</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="user-info-item">
+                                                <div class="user-info-label">Email Address</div>
+                                                <div class="user-info-value">{{ Auth::user()->email }}</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="user-info-item">
+                                                <div class="user-info-label">Position</div>
+                                                <div class="user-info-value">{{ Auth::user()->jabatan }}</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="user-info-item">
+                                                <div class="user-info-label">Role</div>
+                                                <div class="user-info-value">
+                                                    <span class="badge bg-primary-subtle text-primary">{{ Auth::user()->role }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="user-info-item">
+                                                <div class="user-info-label">NIP</div>
+                                                <div class="user-info-value">{{ Auth::user()->nip }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-header bg-transparent">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <div class="avatar-xs">
+                                                    <div class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                        <i class="ri-shield-keyhole-line"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h5 class="card-title mb-0">Account Information</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <div class="border rounded p-3 text-center">
+                                                    <div class="avatar-sm bg-success-subtle text-success rounded-circle mx-auto mb-2">
+                                                        <i class="ri-check-line fs-4"></i>
+                                                    </div>
+                                                    <h6 class="mb-1">Account Status</h6>
+                                                    <span class="badge bg-success-subtle text-success">Active</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-4">
+                                                <div class="border rounded p-3 text-center">
+                                                    <div class="avatar-sm bg-primary-subtle text-primary rounded-circle mx-auto mb-2">
+                                                        <i class="ri-time-line fs-4"></i>
+                                                    </div>
+                                                    <h6 class="mb-1">Last Login</h6>
+                                                    <p class="text-muted small mb-0">{{ date('d F Y, H:i') }} WIB</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-4">
+                                                <div class="border rounded p-3 text-center">
+                                                    <div class="avatar-sm bg-info-subtle text-info rounded-circle mx-auto mb-2">
+                                                        <i class="ri-calendar-check-line fs-4"></i>
+                                                    </div>
+                                                    <h6 class="mb-1">Account Created</h6>
+                                                    <p class="text-muted small mb-0">{{ Auth::user()->created_at ? Auth::user()->created_at->format('d F Y') : '-' }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                
+                                <div class="card border-0 shadow-sm mt-4">
+                                    <div class="card-header bg-transparent">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <div class="avatar-xs">
+                                                    <div class="avatar-title bg-success-subtle text-success rounded-circle">
+                                                        <i class="ri-history-line"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h5 class="card-title mb-0">Recent Activities</h5>
+                                            </div>
+                                            <div class="flex-shrink-0">
+                                                <a href="#" class="btn btn-sm btn-link text-muted">View All</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card-body p-0">
+                                        <div class="p-3 border-bottom">
+                                            <div class="d-flex">
+                                                <div class="flex-shrink-0">
+                                                    <div class="avatar-xs">
+                                                        <div class="avatar-title bg-light text-primary rounded-circle">
+                                                            <i class="ri-login-circle-line"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <h6 class="mb-1">Login from new device</h6>
+                                                    <p class="text-muted mb-0 small">Today, 10:30 AM</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="p-3 border-bottom">
+                                            <div class="d-flex">
+                                                <div class="flex-shrink-0">
+                                                    <div class="avatar-xs">
+                                                        <div class="avatar-title bg-light text-warning rounded-circle">
+                                                            <i class="ri-file-edit-line"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <h6 class="mb-1">Profile information updated</h6>
+                                                    <p class="text-muted mb-0 small">Yesterday, 4:15 PM</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="p-3">
+                                            <div class="d-flex">
+                                                <div class="flex-shrink-0">
+                                                    <div class="avatar-xs">
+                                                        <div class="avatar-title bg-light text-success rounded-circle">
+                                                            <i class="ri-shield-check-line"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <h6 class="mb-1">Security scan completed</h6>
+                                                    <p class="text-muted mb-0 small">3 days ago</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end tab-pane-->
                         </div>
-                        
-                        <!--end tab-pane-->
-
-                        
                     </div>
-                </div>
-
-
-
-            </div>
-        </div>
-        <!--end col-->
-    </div>
-    <!--end row-->
-
-
-
-    <!--create modal user-->
-    <div class="col-xl-4 col-md-6">
-        <div id="createUser" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content border-0 overflow-hidden">
-                    <div class="alert alert-success  rounded-0 mb-0">
-                        <p class="mb-0"><span class="fw-semibold">Form Tambah User</span></p>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="mb-3">
-                                <label for="fullName" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="fullName" placeholder="Enter your name">
-                            </div>
-                            <div class="mb-3">
-                                <label for="emailInput" class="form-label">Email address</label>
-                                <input type="email" class="form-control" id="emailInput" placeholder="Enter your email">
-                            </div>
-                            <div class="mb-3">
-                                <label for="exampleInputPassword1" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter your password">
-                            </div>
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="checkTerms">
-                                <label class="form-check-label" for="checkTerms">I agree to the <span class="fw-semibold">Terms of Service</span> and Privacy Policy</label>
-                            </div>
-                            <div class="text-end">
-                                <button type="submit" class="btn btn-primary">Sign Up Now</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </form>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-    </div>
-    <!--end row-->
-
-
-    <!--edit modal user-->
-    <div class="col-xl-4 col-md-6">
-        <div id="editUser" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content border-0 overflow-hidden">
-                    <div class="alert alert-success  rounded-0 mb-0">
-                        <p class="mb-0"><span class="fw-semibold">Form Edit User</span></p>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="mb-3">
-                                <label for="fullName" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="fullName" placeholder="Enter your name">
-                            </div>
-                            <div class="mb-3">
-                                <label for="emailInput" class="form-label">Email address</label>
-                                <input type="email" class="form-control" id="emailInput" placeholder="Enter your email">
-                            </div>
-                            <div class="mb-3">
-                                <label for="exampleInputPassword1" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter your password">
-                            </div>
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="checkTerms">
-                                <label class="form-check-label" for="checkTerms">I agree to the <span class="fw-semibold">Terms of Service</span> and Privacy Policy</label>
-                            </div>
-                            <div class="text-end">
-                                <button type="submit" class="btn btn-primary">Sign Up Now</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </form>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-    </div>
-    <!--end row-->
-
-
-     <!--delete modal user-->
-    <div id="hapus-user" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body text-center p-5">
-                    <div class="text-end">
-                        <button type="button" class="btn-close text-end" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="mt-2">
-                        <lord-icon src="https://cdn.lordicon.com/tqywkdcz.json" trigger="hover"
-                            style="width:150px;height:150px">
-                        </lord-icon>
-                        <h4 class="mb-3 mt-4">Your Transaction is Successfull !</h4>
-                        <p class="text-muted fs-15 mb-4">Successful transaction is the status of operation whose result is the payment of the amount paid by the customer in favor of the merchant.</p>
-                        <div class="hstack gap-2 justify-content-center">
-                            <button class="btn btn-primary">New transaction</button>
-                            <button class="btn btn-soft-success"><i class="ri-links-line align-bottom"></i> Copy tracking link</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer bg-light p-3 justify-content-center">
-                    <p class="mb-0 text-muted">You like our service? <a href="javascript:void(0)" class="link-secondary fw-semibold">Invite Friends</a></p>
                 </div>
             </div>
+            <!--end col-->
         </div>
+        <!--end row-->
     </div>
-    
-
-
 @endsection
 @section('script')
-    <script src="{{ URL::asset('build/js/pages/profile-setting.init.js') }}"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Profile cover image change
+        const profileCoverInput = document.getElementById('profile-foreground-img-file-input');
+        if (profileCoverInput) {
+            profileCoverInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.querySelector('.profile-header img').src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+        
+        // Floating labels animation
+        const floatingInputs = document.querySelectorAll('.form-floating input, .form-floating textarea');
+        floatingInputs.forEach(input => {
+            if (input.value.trim() !== '') {
+                input.classList.add('filled');
+            }
+            
+            input.addEventListener('focus', () => {
+                input.classList.add('filled');
+            });
+            
+            input.addEventListener('blur', () => {
+                if (input.value.trim() === '') {
+                    input.classList.remove('filled');
+                }
+            });
+        });
+        
+        // Tab switching animation
+        const tabLinks = document.querySelectorAll('.nav-tabs-custom .nav-link');
+        tabLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                tabLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    });
+    </script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
-    
 @endsection

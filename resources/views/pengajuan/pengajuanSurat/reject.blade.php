@@ -1,4 +1,3 @@
-// resources/views/pengajuan-surat/reject.blade.php
 @extends('layouts.master')
 @section('title')
     Tolak Pengajuan Surat

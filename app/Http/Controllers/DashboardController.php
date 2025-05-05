@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Status;
+use App\Models\PengajuanSurat;
+use App\Models\TwebPenduduk;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -29,6 +32,22 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->path() === 'dashboard') {
+            $totalDiajukan = PengajuanSurat::where('status', Status::DIAJUKAN)->count();
+            $totalDiproses = PengajuanSurat::where('status', Status::DIPROSES)->count();
+            $totalSelesai = PengajuanSurat::where('status', Status::SELESAI)->count();
+            $totalDitolak = PengajuanSurat::where('status', Status::DITOLAK)->count();
+            $jumlahPenduduk = TwebPenduduk::count();
+
+            return view('dashboard', [
+                'totalDiajukan' => $totalDiajukan,
+                'totalDiproses' => $totalDiproses,
+                'totalSelesai' => $totalSelesai,
+                'totalDitolak' => $totalDitolak,
+                'jumlahPenduduk' => $jumlahPenduduk,
+            ]);
+        }
+
         if (view()->exists($request->path())) {
             return view($request->path());
         }

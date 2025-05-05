@@ -64,6 +64,22 @@
 
                         <div class="mb-3">
                             <div class="form-group">
+                                <label for="code" class="form-label fw-bold text-warning">
+                                    <i class="bx bx-file-alt me-1"></i>code Surat <span class="text-danger">*</span>
+                                </label>
+                                <input type="text"
+                                    class="form-control @error('code') is-invalid @enderror"
+                                    id="code" name="code"
+                                    value="{{ old('code', $jenisSurat->code) }}"
+                                    placeholder="Masukkan code surat" maxlength="255" required>
+                                @error('code')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-group">
                                 <label for="deskripsi" class="form-label fw-bold text-warning">
                                     <i class="bx bx-notepad me-1"></i>Deskripsi
                                 </label>
@@ -104,3 +120,35 @@
         </div>
     </div>
 @endsection
+@section('script')
+    <script src="https://cdn.ckeditor.com/ckeditor5/{{ env('CKEDITOR_VERSION', '39.0.1') }}/classic/ckeditor.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            ClassicEditor
+                .create(document.querySelector('#template_surat'), {
+                    toolbar: {
+                        items: [
+                            'heading', '|',
+                            'bold', 'italic', 'underline', 'strikethrough', '|',
+                            'link', '|',
+                            'bulletedList', 'numberedList', '|',
+                            'outdent', 'indent', '|',
+                            'blockQuote', '|',
+                            'undo', 'redo'
+                        ]
+                    },
+                    removePlugins: [
+                        'CKFinder', 'EasyImage', 'SimpleUploadAdapter', 'Image', 'ImageCaption',
+                        'ImageStyle', 'ImageToolbar', 'MediaEmbed', 'Table', 'TableToolbar',
+                        'TableProperties', 'TableCellProperties'
+                    ]
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    </script>
+    <script src="{{ asset('assets/js/pages/form-validation.init.js') }}"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
+@endsection
+

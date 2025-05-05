@@ -51,7 +51,7 @@
                                         <td class="text-primary">
                                             @if ($user->role)
                                                 <span class="badge bg-soft-success text-success">
-                                                    {{ ucfirst($user->role->name) }}
+                                                    {{ ucfirst($user->role) }}
                                                 </span>
                                             @else
                                                 -

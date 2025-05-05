@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'admin',
             'email' => 'admin@themesbrand.com',
-            'password' => Hash::make('12345678'),
+            'password' => Hash::make('password'),
             'email_verified_at' => now(),
             'role' => 'admin',
             'nip' => '198001012010011001',
@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Petugas Satu',
             'email' => 'petugas1@example.com',
-            'password' => Hash::make('petugas123'),
+            'password' => Hash::make('password'),
             'email_verified_at' => now(),
             'role' => 'petugas',
             'nip' => '198505052015052001',
@@ -44,7 +44,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Petugas Dua',
             'email' => 'petugas2@example.com',
-            'password' => Hash::make('petugas456'),
+            'password' => Hash::make('password'),
             'email_verified_at' => now(),
             'role' => 'petugas',
             'nip' => '199010102020102002',

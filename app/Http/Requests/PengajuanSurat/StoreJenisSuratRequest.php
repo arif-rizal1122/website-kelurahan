@@ -23,6 +23,7 @@ class StoreJenisSuratRequest extends FormRequest
      {
          return [
              'nama' => ['required', 'string', 'max:255', 'unique:jenis_surats,nama'],
+             'code' => ['required', 'string', 'max:25', 'unique:jenis_surats,code'],
              'template_surat' => 'nullable|string',
              'deskripsi' => 'nullable|string',
          ];

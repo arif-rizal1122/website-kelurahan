@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class WargaSeeder extends Seeder
 {
@@ -18,8 +19,10 @@ class WargaSeeder extends Seeder
                 'nama' => 'rizal Arif',
                 'nik' => '1234567890123456',
                 'email' => 'rizallarif32@gmail.com',
-                'alamat' => 'Jalan Mawar No. 10, Makassar',
+                'email_verified_at' => now(),
                 'password' => Hash::make('password'),
+                'alamat' => 'Jalan Mawar No. 10, Makassar',
+                'remember_token' => Str::random(10),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -27,39 +30,14 @@ class WargaSeeder extends Seeder
                 'nama' => 'arif rizal',
                 'nik' => '9876543210987654',
                 'email' => 'ariffrizal23@gmail.com',
-                'alamat' => 'Lorong Dahlia No. 5, Makassar',
+                'email_verified_at' => null,
                 'password' => Hash::make('password'),
+                'alamat' => 'Lorong Dahlia No. 5, Makassar',
+                'remember_token' => Str::random(10), // Tambahkan remember_token di sini
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            // [
-            //     'nama' => 'Rudi Hartono',
-            //     'nik' => '1122334455667788',
-            //     'email' => 'RudiHartono@gmail.com',
-            //     'alamat' => 'Perumahan Melati Blok A No. 3, Makassar',
-            //     'password' => Hash::make('password'), 
-            //     'created_at' => now(),
-            //     'updated_at' => now(),
-            // ],
-            // [
-            //     'nama' => 'Aisyah Putri',
-            //     'nik' => '9988776655443322',
-            //     'email' => 'AisyahPutri@gmail.com',
-            //     'alamat' => 'Jalan Anggrek No. 123, Makassar',
-            //     'password' => Hash::make('password'),
-            //     'created_at' => now(),
-            //     'updated_at' => now(),
-            // ],
-            // [
-            //     'nama' => 'Fahri Pratama',
-            //     'nik' => '1020304050607080',
-            //     'email' => 'FahriPratama@gmail.com',
-            //     'alamat' => 'Komplek Cemara Indah No. 7, Makassar',
-            //     'password' => Hash::make('password'),
-            //     'created_at' => now(),
-            //     'updated_at' => now(),
-            // ],
-            // Tambahkan data warga lainnya di sini jika perlu
+            // ... data warga lainnya dengan 9 elemen
         ]);
     }
 }

@@ -23,17 +23,10 @@ return new class extends Migration
             $table->enum('role', ['admin', 'petugas'])->default('petugas');
             $table->string('nip')->nullable()->unique(); 
             $table->string('jabatan')->nullable(); 
-            $table->unsignedBigInteger('config_id')->nullable();
             $table->text('avatar')->nullable();
-            $table->string('foto', 100)->nullable()->default('kuser.png');
             $table->timestamps();
             $table->rememberToken();
 
-            // Add foreign key constraints separately
-            $table->foreign('config_id')
-                  ->references('id')
-                  ->on('configs')
-                  ->onDelete('set null');
         });
     }
 

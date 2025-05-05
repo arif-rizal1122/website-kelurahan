@@ -1,95 +1,75 @@
-Berikut adalah contoh isi dari file resources/views/emails/pengajuan_selesai.blade.php:<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pengajuan Surat Selesai</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .header {
-            background-color: #f8f8f8;
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-        }
-        .content {
-            padding: 20px 0;
-        }
-        .greeting {
-            margin-bottom: 15px;
-        }
-        .info {
-            margin-bottom: 10px;
-        }
-        .regards {
-            margin-top: 20px;
-            text-align: right;
-        }
-        .important {
-            font-weight: bold;
-            color: #2c3e50; /* Darker color for emphasis */
-        }
-        .signature {
-            margin-top: 25px;
-            text-align: right;
-            font-style: italic;
-            color: #555;
-        }
-        .disclaimer {
-            margin-top: 30px;
-            padding: 10px;
-            border-top: 1px solid #eee;
-            font-size: 0.9em;
-            color: #777;
-            font-style: italic;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h2 class="important">Pemberitahuan Pengajuan Surat Selesai</h2>
-        </div>
-        <div class="content">
-            <p class="greeting">Yth. Bapak/Ibu <?php echo e($nama_warga); ?>,</p>
-            <p>
-                Kami informasikan dengan hormat bahwa pengajuan surat Anda dengan detail sebagai berikut telah selesai diproses:
-            </p>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="info"><span class="important">Jenis Surat:</span> <?php echo e($jenis_surat); ?></li>
-                <li class="info"><span class="important">Nomor Pengajuan:</span> <?php echo e($nomor_pengajuan); ?></li>
-                 <li class="info">Tanggal Pengajuan: <?php echo e($tanggal_pengajuan); ?></li> 
-            </ul>
-            <p>
-                Anda dapat mengambil surat yang telah selesai di kantor kami pada jam kerja.  Mohon membawa bukti pengajuan atau identitas diri.
-            </p>
-             <p>
-                Terima kasih atas perhatian dan kerjasamanya.
-            </p>
-
-            <div class="signature">
-                Hormat kami,<br>
-                Tim Administrasi Kelurahan/Desa
-            </div>
-
-            <div class="disclaimer">
-                <p>
-                    Ini adalah email pemberitahuan otomatis.  Mohon tidak membalas email ini.  Jika Anda memiliki pertanyaan, silakan hubungi kantor kami langsung.
-                </p>
+<?php $__env->startSection('title'); ?>
+    Pengajuan Surat Selesai
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('css'); ?>
+<link href="<?php echo e(URL::asset('build/css/email.pages.css')); ?>" rel="stylesheet" type="text/css" />
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
+    <div class="auth-page">
+        <div class="container-fluid p-0">
+            <div class="row justify-content-center align-items-center min-vh-100">
+                <div class="col-md-8 col-lg-6">
+                    <div class="card shadow-lg">
+                        <div class="card-body">
+                            <div class="text-center mb-4">
+                                <div class="status-icon success">
+                                    <i class="bx bx-check-circle"></i>
+                                </div>
+                                <h4 class="page-title text-success">Pengajuan Surat Selesai</h4>
+                                <p class="page-subtitle">Informasi status pengajuan surat Anda.</p>
+                            </div>
+                            
+                            <div class="alert alert-success" role="alert">
+                                <i class="bx bx-check-circle"></i>
+                                <span>Pengajuan surat Anda telah selesai diproses.</span>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <p class="mb-3"><span class="fw-bold">Yth. Bapak/Ibu</span> <?php echo e($nama_warga); ?>,</p>
+                                <p class="mb-3">
+                                    Kami informasikan dengan hormat bahwa pengajuan surat Anda dengan detail sebagai berikut telah selesai diproses:
+                                </p>
+                                
+                                <div class="detail-list mb-4">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Jenis Surat:</span>
+                                        <span class="detail-value"><?php echo e($jenis_surat); ?></span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Nomor Pengajuan:</span>
+                                        <span class="detail-value"><?php echo e($nomor_pengajuan); ?></span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Tanggal Pengajuan:</span>
+                                        <span class="detail-value"><?php echo e($tanggal_pengajuan); ?></span>
+                                    </div>
+                                </div>
+                                
+                                <p class="mb-3">
+                                    Anda dapat mengambil surat yang telah selesai di kantor kami pada jam kerja. Mohon membawa bukti pengajuan atau identitas diri.
+                                </p>
+                            </div>
+                            
+                            <div class="signature-box">
+                                <p>Hormat kami,<br>Tim Administrasi Kelurahan/Desa</p>
+                            </div>
+                            
+                            <div class="disclaimer-box">
+                                <p class="mb-0">
+                                    Ini adalah email pemberitahuan otomatis. Mohon tidak membalas email ini. Jika Anda memiliki pertanyaan, silakan hubungi kantor kami langsung.
+                                </p>
+                            </div>
+                            
+                            <div class="mt-4 text-center">
+                                <a href="<?php echo e(route('menu.warga')); ?>" class="btn btn-primary w-100">
+                                    <i class="bx bx-menu me-2"></i>Kembali ke Menu Utama
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</body>
-</html>
-<?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/emails/pengajuan_selesai.blade.php ENDPATH**/ ?>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.master-without-nav', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/emails/pengajuan_selesai.blade.php ENDPATH**/ ?>

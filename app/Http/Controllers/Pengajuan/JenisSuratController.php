@@ -34,12 +34,17 @@ class JenisSuratController extends Controller
     public function store(StoreJenisSuratRequest $request)
     {
         try {
-            JenisSurat::create($request->validated());
+            $data = $request->validated();
+            $data['template_surat'] = strip_tags($data['template_surat']);
+    
+            JenisSurat::create($data);
+    
             return redirect()->route('jenis-surat.index')->with('success', 'Jenis Surat created successfully.');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Failed to create Jenis Surat.')->withInput();
         }
     }
+    
 
     /**
      * Display the specified resource.
@@ -60,15 +65,21 @@ class JenisSuratController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateJenisSuratRequest $request, JenisSurat $jenisSurat)
+        public function update(UpdateJenisSuratRequest $request, JenisSurat $jenisSurat)
     {
         try {
-            $jenisSurat->update($request->validated());
+            $data = $request->validated();
+            // Hapus tag HTML dari template_surat jika ada
+            if (!empty($data['template_surat'])) {
+                $data['template_surat'] = strip_tags($data['template_surat']);
+            }
+            $jenisSurat->update($data);
             return redirect()->route('jenis-surat.index')->with('success', 'Jenis Surat updated successfully.');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Failed to update Jenis Surat.')->withInput();
         }
     }
+
 
     /**
      * Remove the specified resource from storage.

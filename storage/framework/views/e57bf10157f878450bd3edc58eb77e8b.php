@@ -38,83 +38,39 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link <?php echo e(request()->routeIs('penduduk.*') ? 'active' : ''); ?>" href="#sidebarKependudukan" data-bs-toggle="collapse" role="button" aria-expanded="<?php echo e(request()->routeIs('penduduk.*') ? 'true' : 'false'); ?>" aria-controls="sidebarKependudukan">
-                        <i class="bx bxs-user-check"></i> <span>Kependudukan</span>
+                    <a class="nav-link menu-link <?php echo e(request()->routeIs('penduduk.*') ? 'active' : ''); ?>"
+                       href="<?php echo e(route('penduduk.index')); ?>">
+                        <i class="bx bxs-user-check me-2"></i> <span>Data Penduduk</span>
                     </a>
-                    <div class="menu-dropdown collapse <?php echo e(request()->routeIs('penduduk.*') ? 'show' : ''); ?>" id="sidebarKependudukan">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="<?php echo e(route('penduduk.index')); ?>" class="nav-link <?php echo e(request()->routeIs('penduduk.index') ? 'active' : ''); ?>" data-key="t-kependudukan">
-                                     Data Penduduk
-                                </a>
-                            </li>
-                            </ul>
-                    </div>
-                </li> 
-                <li class="nav-item">
-                    <a class="nav-link menu-link <?php echo e(request()->routeIs('surat-masuk.*') || request()->routeIs('surat-keluar.*') ? 'active' : ''); ?>" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="<?php echo e(request()->routeIs('surat-masuk.*') || request()->routeIs('surat-keluar.*') ? 'true' : 'false'); ?>" aria-controls="sidebarApps">
-                        <i class="bx bx-envelope"></i></i> <span>Persuratan</span>
-                    </a>
-                    <div class="collapse menu-dropdown <?php echo e(request()->routeIs('surat-masuk.*') || request()->routeIs('surat-keluar.*') ? 'show' : ''); ?>" id="sidebarApps">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="<?php echo e(route('surat-masuk.index')); ?>" class="nav-link <?php echo e(request()->routeIs('surat-masuk.index') ? 'active' : ''); ?>" role="button" aria-expanded="false" aria-controls="sidebarCalendar" data-key="t-calender">
-                                     Surat Masuk
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="<?php echo e(route('surat-keluar.index')); ?>" class="nav-link <?php echo e(request()->routeIs('surat-keluar.index') ? 'active' : ''); ?>" role="button" aria-expanded="false" aria-controls="sidebarCalendar" data-key="t-calender">
-                                     Surat Keluar
-                                </a>
-                            </li>
-                            </ul>
-                    </div>
                 </li>
+                
 
-                <li class="nav-item">
-                    <a class="nav-link menu-link <?php echo e(request()->routeIs('jenis-surat.*') || request()->routeIs('pengajuan-surat.*') ? 'active' : ''); ?>"
-                       href="#sidebarPengajuan"
-                       data-bs-toggle="collapse"
-                       role="button"
-                       aria-expanded="<?php echo e(request()->routeIs('jenis-surat.*') || request()->routeIs('pengajuan-surat.*') ? 'true' : 'false'); ?>"
-                       aria-controls="sidebarPengajuan">
-                        <i class="bx bx-user-voice me-2"></i> <span>Pengajuan</span>
-                    </a>
-                    <div class="collapse menu-dropdown <?php echo e(request()->routeIs('jenis-surat.*') || request()->routeIs('pengajuan-surat.*') ? 'show' : ''); ?>"
-                         id="sidebarPengajuan">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="<?php echo e(route('jenis-surat.index')); ?>"
-                                   class="nav-link <?php echo e(request()->routeIs('jenis-surat.index') ? 'active' : ''); ?>"
-                                   role="button"
-                                   aria-expanded="false"
-                                   aria-controls="sidebarJenisPengajuan"
-                                   data-key="t-jenis-pengajuan">
-                                    <i class="bx bx-file-document me-2"></i> Jenis Surat
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="<?php echo e(route('pengajuan-surat.index')); ?>"
-                                   class="nav-link <?php echo e(request()->routeIs('pengajuan-surat.index') ? 'active' : ''); ?>"
-                                   role="button"
-                                   aria-expanded="false"
-                                   aria-controls="sidebarPengajuanSurat"
-                                   data-key="t-pengajuan">
-                                   <i class="bx bx-file-document me-2"></i>  Pengajuan
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                
 
 
                 
 
                 <li class="nav-item">
+                    <a class="nav-link menu-link <?php echo e(request()->routeIs('jenis-surat.*') ? 'active' : ''); ?>"
+                       href="<?php echo e(route('jenis-surat.index')); ?>">
+                        <i class="bx bx-file me-2"></i> Jenis Surat
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link <?php echo e(request()->routeIs('pengajuan-surat.*') ? 'active' : ''); ?>"
+                       href="<?php echo e(route('pengajuan-surat.index')); ?>">
+                        <i class="bx bx-send me-2"></i> Pengajuan
+                    </a>
+                </li>
+
+                <?php if(Auth::user()->role === 'admin'): ?>
+                <li class="nav-item">
                     <a class="nav-link menu-link <?php echo e(request()->routeIs('users.*') ? 'active' : ''); ?>" href="<?php echo e(route('users.index')); ?>" role="button" aria-expanded="false" aria-controls="sidebarCalendar" data-key="t-calender">
                         <i class='bx bx-grid-alt'></i> <span>User Form</span>
                     </a>
                 </li>
+                <?php endif; ?>
+                
 
             </ul>
         </div>

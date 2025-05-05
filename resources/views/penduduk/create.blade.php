@@ -450,7 +450,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label for="golongan_darah" class="form-label fw-bold text-primary">
                                         <i class="bx bx-donate-blood me-1"></i>Golongan Darah <span class="text-danger">*</span>
@@ -472,7 +472,7 @@
                                 </div>
                             </div>
                             
-                            <div class="col-md-8 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label for="suku" class="form-label fw-bold text-primary">
                                         <i class="bx bx-user-voice me-1"></i>Suku <span class="text-danger">*</span>
@@ -502,7 +502,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label fw-bold text-primary">
                                         <i class="bx bx-check-square me-1"></i>KTP Elektronik <span class="text-danger">*</span>
@@ -523,7 +523,7 @@
                                 </div>
                             </div>
                             
-                            <div class="col-md-8 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label for="status_rekam" class="form-label fw-bold text-primary">
                                         <i class="bx bx-fingerprint me-1"></i>Status Rekam <span class="text-danger">*</span>
@@ -638,15 +638,11 @@
     </div>
 @endsection
 
-@section('css')
-<style>
-    .form-label {
-        margin-bottom: 0.5rem;
-    }
-    
-    .font-size-24 {
-        font-size: 24px !important;
-    }
-</style>
-@endsection
+<script>
+    $(document).ready(function() {
+        $('#suku').select2({
+            minimumResultsForSearch: 0 
+        });
+    });
+</script>
 

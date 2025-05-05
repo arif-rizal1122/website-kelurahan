@@ -102,8 +102,16 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+        'wargas' => [
+            'provider' => 'wargas',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
     ],
-
+    'verification' => [
+        'expire' => 60, 
+    ],
     /*
     |--------------------------------------------------------------------------
     | Password Confirmation Timeout

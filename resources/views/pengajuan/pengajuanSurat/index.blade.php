@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    Data Pengajuan Surat
+  Data Pengajuan Surat
 @endsection
 @section('css')
     <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
@@ -13,21 +13,28 @@
             Pengajuan Surat
         @endslot
         @slot('title')
-            Data Pengajuan Surat
+        Semua Data Pengajuan Surat
         @endslot
     @endcomponent
 
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header">
-                    {{-- <div
-                        class="card-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
-                        <h5 class="card-title mb-0">Data Pengajuan Surat</h5>
-                        <a href="{{ route('pengajuan-surat.create') }}" class="btn btn-primary">
-                            Tambah Pengajuan Surat
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <a href="{{ route('pengajuan-surat.status', 'diajukan') }}" class="btn btn-sm btn-outline-warning me-1">
+                            <i class="bx bxs-inbox me-1"></i> Diajukan
                         </a>
-                    </div> --}}
+                        <a href="{{ route('pengajuan-surat.status', 'diproses') }}" class="btn btn-sm btn-outline-info me-1">
+                            <i class="bx bx-loader-circle me-1"></i> Diproses
+                        </a>
+                        <a href="{{ route('pengajuan-surat.status', 'selesai') }}" class="btn btn-sm btn-outline-success me-1">
+                            <i class="bx bx-check-double me-1"></i> Selesai
+                        </a>
+                        <a href="{{ route('pengajuan-surat.status', 'ditolak') }}" class="btn btn-sm btn-outline-secondary">
+                            <i class="bx bx-x-circle me-1"></i> Ditolak
+                        </a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -53,15 +60,15 @@
                                         <td>{{ $pengajuanSurat->keperluan }}</td>
                                         <td>
                                             @if ($pengajuanSurat->status == \App\Enums\Status::DIAJUKAN)
-                                                <span class="badge bg-info">{{ $pengajuanSurat->status }}</span>
+                                                <span class="badge bg-warning">{{ $pengajuanSurat->status->value }}</span>
                                             @elseif ($pengajuanSurat->status == \App\Enums\Status::DIPROSES)
-                                                <span class="badge bg-warning">{{ $pengajuanSurat->status }}</span>
+                                                <span class="badge bg-info">{{ $pengajuanSurat->status->value }}</span>
                                             @elseif ($pengajuanSurat->status == \App\Enums\Status::SELESAI)
-                                                <span class="badge bg-success">{{ $pengajuanSurat->status }}</span>
+                                                <span class="badge bg-success">{{ $pengajuanSurat->status->value }}</span>
                                             @elseif ($pengajuanSurat->status == \App\Enums\Status::DITOLAK)
-                                                <span class="badge bg-danger">{{ $pengajuanSurat->status }}</span>
+                                                <span class="badge bg-secondary">{{ $pengajuanSurat->status->value }}</span>
                                             @else
-                                                {{ $pengajuanSurat->status }}
+                                                {{ $pengajuanSurat->status->value }}
                                             @endif
                                         </td>
                                         <td>{{ $pengajuanSurat->user->name ?? '-' }}</td>
@@ -76,6 +83,7 @@
                                                 Tidak Ada
                                             @endif
                                         </td>
+
                                         <td>
                                             <div class="d-flex gap-1 overflow-auto">
                                                 <a href="{{ route('pengajuan-surat.show', $pengajuanSurat->id) }}"
@@ -87,60 +95,46 @@
                                                     <form action="{{ route('pengajuan-surat.process', $pengajuanSurat->id) }}" method="POST">
                                                         @csrf
                                                         @method('PATCH')
-                                                        <button type="submit" class="btn btn-sm btn-warning" title="Proses Pengajuan">
+                                                        <button type="submit" class="btn btn-sm btn-warning" title="Proses Pengajuan"
+                                                                data-status="{{ \App\Enums\Status::DIPROSES }}">
                                                             <i class="bx bx-task"></i> Proses
                                                         </button>
                                                     </form>
-                                                    <a href="{{ route('pengajuan-surat.reject', $pengajuanSurat->id) }}"
-                                                        class="btn btn-sm btn-danger" title="Tolak Pengajuan">
+                                                    <a href="{{ route('pengajuan-surat.reject', $pengajuanSurat->id) }}" class="btn btn-sm btn-secondary">
                                                         <i class="bx bx-x-circle"></i> Tolak
                                                     </a>
                                                 @elseif ($pengajuanSurat->status == \App\Enums\Status::DIPROSES)
                                                     <form action="{{ route('pengajuan-surat.complete', $pengajuanSurat->id) }}" method="POST">
                                                         @csrf
                                                         @method('PATCH')
-                                                        <button type="submit" class="btn btn-sm btn-success" title="Selesaikan Pengajuan">
+                                                        <button type="submit" class="btn btn-sm btn-success" title="Selesaikan Pengajuan"
+                                                                data-status="{{ \App\Enums\Status::SELESAI }}">
                                                             <i class="bx bx-check-circle"></i> Selesaikan
                                                         </button>
                                                     </form>
-                                                    <a href="{{ route('pengajuan-surat.reject', $pengajuanSurat->id) }}"
-                                                        class="btn btn-sm btn-danger" title="Tolak Pengajuan">
-                                                        <i class="bx bx-x-circle"></i> Tolak
-                                                    </a>
                                                 @elseif ($pengajuanSurat->status == \App\Enums\Status::SELESAI)
-                                                    <a href="{{ route('pengajuan-surat.print', $pengajuanSurat->id) }}" class="btn btn-primary">
+                                                    <a href="{{ route('pengajuan-surat.print', $pengajuanSurat->id) }}" class="btn btn-primary btn-sm">
                                                         Cetak Word
                                                     </a>
                                                 @elseif ($pengajuanSurat->status == \App\Enums\Status::DITOLAK)
-                                                    @endif
-                                        
+                                                    <button type="button" class="btn btn-sm btn-secondary" disabled>
+                                                        <i class="bx bx-info-circle"></i> Ditolak
+                                                    </button>
+                                                @endif
+
                                                 @auth
-                                                    @if (Auth::user()->role === 'admin')
-                                                        <div class="btn-group">
-                                                            <button type="button" class="btn btn-sm btn-secondary dropdown-toggle"
-                                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <i class="bx bx-cog"></i> Admin
-                                                            </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li>
-                                                                    <a class="dropdown-item" href="{{ route('pengajuan-surat.edit', $pengajuanSurat->id) }}">
-                                                                        <i class="bx bx-edit"></i> Edit
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <form action="{{ route('pengajuan-surat.destroy', $pengajuanSurat->id) }}"
-                                                                        method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengajuan ini?')">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <button type="submit" class="dropdown-item">
-                                                                            <i class="bx bx-trash"></i> Hapus
-                                                                        </button>
-                                                                    </form>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    @endif
+                                                @if (Auth::user()->role === 'admin')
+                                                <form action="{{ route('pengajuan-surat.destroy', $pengajuanSurat->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapus-pengajuan-surat">
+                                                        <i class="bx bx-trash"></i> Hapus
+                                                    </button>
+                                                </form>
+                                                @endif
                                                 @endauth
+
                                             </div>
                                         </td>
                                     </tr>
@@ -190,9 +184,51 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $('#hapus-pengajuan-surat').on('show.bs.modal', function(e) {
+        $(document).ready(function() {
+            $('table').on('click', 'button[data-status]', function(e) {
+                e.preventDefault();
+
+                var button = $(this);
+                var form = button.closest('form');
+                var status = button.data('status');
+                var title = '';
+                var text = '';
+                var icon = '';
+
+                if (status === '{{ \App\Enums\Status::DIPROSES }}') {
+                    title = 'Proses Pengajuan?';
+                    text = 'Anda yakin ingin memproses pengajuan ini?';
+                    icon = 'warning';
+                } else if (status === '{{ \App\Enums\Status::SELESAI }}') {
+                    title = 'Selesaikan Pengajuan?';
+                    text = 'Anda yakin ingin menyelesaikan pengajuan ini?';
+                    icon = 'success';
+                } else if (status === '{{ \App\Enums\Status::DITOLAK }}') {
+                    title = 'Tolak Pengajuan?';
+                    text = 'Anda yakin ingin menolak pengajuan ini?';
+                    icon = 'warning';
+                }
+
+                Swal.fire({
+                    title: title,
+                    text: text,
+                    icon: icon,
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, lanjutkan!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+
+            $('#hapus-pengajuan-surat').on('show.bs.modal', function(e) {
             const button = $(e.relatedTarget);
             const form = button.closest('form');
             const action = form.attr('action');
@@ -200,6 +236,7 @@
             $(this).find('.btn-hapus-pengajuan-surat').off('click').on('click', function() {
                 form.submit();
             });
+          });
         });
     </script>
 @endsection

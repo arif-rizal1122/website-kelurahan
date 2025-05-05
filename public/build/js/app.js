@@ -2080,6 +2080,176 @@ if (mybutton) {
 
 
 
-
+    // Dashboard
+    document.addEventListener("DOMContentLoaded", function() {
+        // Counter animation
+        const counterUp = window.counterUp.default;
+        
+        const callback = entries => {
+            entries.forEach(entry => {
+                const el = entry.target;
+                if (entry.isIntersecting && !el.classList.contains('counted')) {
+                    counterUp(el, {
+                        duration: 1500,
+                        delay: 15,
+                    });
+                    el.classList.add('counted');
+                }
+            });
+        };
+        
+        const IO = new IntersectionObserver(callback, { threshold: 0.2 });
+        
+        const elements = document.querySelectorAll('.counter-value');
+        elements.forEach(el => {
+            IO.observe(el);
+        });
+        
+        // Animation for stat items
+        document.querySelectorAll('.stat-item').forEach(item => {
+            item.classList.add('animate-fadeInUp');
+        });
+        
+        // Population Chart
+        if (document.getElementById('populationChart')) {
+            var populationOptions = {
+                series: [{
+                    name: 'Penduduk',
+                    data: [2342, 2450, 2580, 2690, 2788, 2901, 3012]
+                }],
+                chart: {
+                    height: 80,
+                    type: 'area',
+                    toolbar: {
+                        show: false
+                    },
+                    sparkline: {
+                        enabled: true
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'smooth',
+                    width: 2,
+                },
+                colors: ['#556ee6'],
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shadeIntensity: 1,
+                        inverseColors: false,
+                        opacityFrom: 0.45,
+                        opacityTo: 0.05,
+                        stops: [20, 100, 100, 100]
+                    },
+                },
+                tooltip: {
+                    fixed: {
+                        enabled: false
+                    },
+                    x: {
+                        show: false
+                    },
+                    marker: {
+                        show: false
+                    }
+                }
+            };
+            var populationChart = new ApexCharts(document.getElementById('populationChart'), populationOptions);
+            populationChart.render();
+        }
+        
+        // Monthly Stats Chart
+        if (document.getElementById('monthlyStatsChart')) {
+            var monthlyStatsOptions = {
+                series: [{
+                    name: 'Diajukan',
+                    data: [44, 55, 57, 56, 61, 58]
+                }, {
+                    name: 'Selesai',
+                    data: [35, 41, 36, 26, 45, 48]
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 190,
+                    stacked: false,
+                    toolbar: {
+                        show: false
+                    },
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '55%',
+                        borderRadius: 5,
+                    },
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
+                },
+                xaxis: {
+                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    axisBorder: {
+                        show: false
+                    },
+                    axisTicks: {
+                        show: false
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '11px',
+                            fontFamily: 'sans-serif',
+                        }
+                    }
+                },
+                yaxis: {
+                    labels: {
+                        style: {
+                            fontSize: '11px',
+                            fontFamily: 'sans-serif',
+                        }
+                    },
+                    min: 0,
+                    max: 80,
+                    tickAmount: 4
+                },
+                colors: ['#556ee6', '#34c38f'],
+                fill: {
+                    opacity: 1
+                },
+                legend: {
+                    position: 'bottom',
+                    horizontalAlign: 'center',
+                    offsetY: 0,
+                    fontSize: '10px',
+                    markers: {
+                        width: 10,
+                        height: 10,
+                        radius: 12
+                    },
+                    itemMargin: {
+                        horizontal: 8,
+                        vertical: 0
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return val + " dokumen"
+                        }
+                    }
+                }
+            };
+            var monthlyStatsChart = new ApexCharts(document.getElementById('monthlyStatsChart'), monthlyStatsOptions);
+            monthlyStatsChart.render();
+        }
+    });
 
 }

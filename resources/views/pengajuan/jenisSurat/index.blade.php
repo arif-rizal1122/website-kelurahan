@@ -38,6 +38,7 @@
                         <table id="buttons-datatables" class="display table table-bordered" style="width:100%">
                             <thead>
                                 <tr>
+                                    <th>Kode</th>
                                     <th>Nama Surat</th>
                                     <th>Deskripsi</th>
                                     <th>Aksi</th>
@@ -46,6 +47,7 @@
                             <tbody>
                                 @foreach ($jenisSurats as $jenisSurat)
                                     <tr>
+                                        <td>{{ $jenisSurat->code }}</td>
                                         <td>{{ $jenisSurat->nama }}</td>
                                         <td>{{ Str::limit($jenisSurat->deskripsi, 70) }}</td>
                                         <td>
@@ -54,6 +56,7 @@
                                                 <a href="{{ route('jenis-surat.show', $jenisSurat->id) }}"
                                                     class="btn btn-sm btn-info">Detail</a>
 
+                                                @if (Auth::user()->role === 'admin')
                                                 <a href="{{ route('jenis-surat.edit', $jenisSurat->id) }}"
                                                     class="btn btn-sm btn-warning">
                                                     Edit
@@ -65,6 +68,8 @@
                                                     <button type="button" class="btn btn-sm btn-danger"
                                                         data-bs-toggle="modal" data-bs-target="#hapus-jenis-surat">Hapus</button>
                                                 </form>
+                                                @endif    
+                                                
                                             </div>
                                         </td>
 

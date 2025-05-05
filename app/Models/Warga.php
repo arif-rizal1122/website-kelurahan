@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Notifications\WargaVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Warga extends Authenticatable
+class Warga extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $table = 'wargas'; 
 
@@ -18,6 +21,7 @@ class Warga extends Authenticatable
         'email', 
         'password',
         'alamat',
+        'email_verified_at',
     ];
 
     protected $hidden = [
@@ -29,6 +33,7 @@ class Warga extends Authenticatable
         'password' => 'hashed',
         'email_verified_at' => 'datetime',
     ];
+
     /**
      * Get all of the pengajuanSurats for the Warga
      *
@@ -37,5 +42,15 @@ class Warga extends Authenticatable
     public function pengajuanSurats(): HasMany
     {
         return $this->hasMany(PengajuanSurat::class, 'warga_id');
+    }
+
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new WargaVerifyEmail);
     }
 }

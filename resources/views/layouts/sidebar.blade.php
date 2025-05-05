@@ -38,20 +38,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link {{ request()->routeIs('penduduk.*') ? 'active' : '' }}" href="#sidebarKependudukan" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->routeIs('penduduk.*') ? 'true' : 'false' }}" aria-controls="sidebarKependudukan">
-                        <i class="bx bxs-user-check"></i> <span>Kependudukan</span>
+                    <a class="nav-link menu-link {{ request()->routeIs('penduduk.*') ? 'active' : '' }}"
+                       href="{{ route('penduduk.index') }}">
+                        <i class="bx bxs-user-check me-2"></i> <span>Data Penduduk</span>
                     </a>
-                    <div class="menu-dropdown collapse {{ request()->routeIs('penduduk.*') ? 'show' : '' }}" id="sidebarKependudukan">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('penduduk.index') }}" class="nav-link {{ request()->routeIs('penduduk.index') ? 'active' : '' }}" data-key="t-kependudukan">
-                                     Data Penduduk
-                                </a>
-                            </li>
-                            </ul>
-                    </div>
-                </li> 
-                <li class="nav-item">
+                </li>
+                {{-- <li class="nav-item">
                     <a class="nav-link menu-link {{ request()->routeIs('surat-masuk.*') || request()->routeIs('surat-keluar.*') ? 'active' : '' }}" href="#sidebarApps" data-bs-toggle="collapse" role="button" aria-expanded="{{ request()->routeIs('surat-masuk.*') || request()->routeIs('surat-keluar.*') ? 'true' : 'false' }}" aria-controls="sidebarApps">
                         <i class="bx bx-envelope"></i></i> <span>Persuratan</span>
                     </a>
@@ -69,9 +61,9 @@
                             </li>
                             </ul>
                     </div>
-                </li>
+                </li> --}}
 
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link menu-link {{ request()->routeIs('jenis-surat.*') || request()->routeIs('pengajuan-surat.*') ? 'active' : '' }}"
                        href="#sidebarPengajuan"
                        data-bs-toggle="collapse"
@@ -105,7 +97,7 @@
                             </li>
                         </ul>
                     </div>
-                </li>
+                </li> --}}
 
 
                 {{-- <li class="nav-item">
@@ -115,10 +107,26 @@
                 </li> --}}
 
                 <li class="nav-item">
+                    <a class="nav-link menu-link {{ request()->routeIs('jenis-surat.*') ? 'active' : '' }}"
+                       href="{{ route('jenis-surat.index') }}">
+                        <i class="bx bx-file me-2"></i> Jenis Surat
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ request()->routeIs('pengajuan-surat.*') ? 'active' : '' }}"
+                       href="{{ route('pengajuan-surat.index') }}">
+                        <i class="bx bx-send me-2"></i> Pengajuan
+                    </a>
+                </li>
+
+                @if (Auth::user()->role === 'admin')
+                <li class="nav-item">
                     <a class="nav-link menu-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}" role="button" aria-expanded="false" aria-controls="sidebarCalendar" data-key="t-calender">
                         <i class='bx bx-grid-alt'></i> <span>User Form</span>
                     </a>
                 </li>
+                @endif
+                
 
             </ul>
         </div>

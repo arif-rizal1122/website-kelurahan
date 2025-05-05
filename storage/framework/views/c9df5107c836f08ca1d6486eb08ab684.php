@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>SMARTLURAH - Sistem Pelayanan Kelurahan</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+<?php $__env->startSection('title'); ?> Menu Warga <?php $__env->stopSection(); ?>
+<?php $__env->startSection('css'); ?>
+    <link href="<?php echo e(URL::asset('build/libs/jsvectormap/css/jsvectormap.min.css')); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(URL::asset('build/libs/swiper/swiper-bundle.min.css')); ?>" rel="stylesheet" type="text/css" />
     <style>
         body {
+            /* Gaya body di sini kemungkinan akan ditimpa oleh gaya dari layout master */
             background: linear-gradient(135deg, #0f4c81 0%, #0a2e50 100%);
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -79,25 +73,15 @@
             z-index: -1;
         }
     </style>
-</head>
-<body>
-    <!-- Decorative shapes for background -->
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
     <div class="decorative-shape" style="width: 300px; height: 300px; background: radial-gradient(#ffffff, transparent); top: -100px; right: -100px;"></div>
     <div class="decorative-shape" style="width: 500px; height: 500px; background: radial-gradient(#4e73df, transparent); bottom: -200px; left: -200px;"></div>
-    
-    <div class="container d-flex flex-column min-vh-100 justify-content-center align-items-center py-4 position-relative">
-        <!-- Logo and Title -->
-        <!-- <div class="text-center mb-4">
-            <div class="app-icon mb-3">
-                <i class="bi bi-buildings-fill text-white" style="font-size: 2.5rem;"></i>
-            </div>
-            <h1 class="display-5 text-white glow">SMART<strong>LURAH</strong></h1>
-            <p class="text-white-50">Sistem Pelayanan Kelurahan</p>
-        </div> -->
-        <img src="assets/img/bannerblue.png" alt="" width="100%">
- 
 
-        <!-- Menu Buttons -->
+    <div class="container d-flex flex-column min-vh-100 justify-content-center align-items-center py-4 position-relative">
+        <img src="<?php echo e(URL::asset('assets/img/bannerblue.png')); ?>" alt="" width="100%">
+
+
         <div class="card p-4 w-100 mb-4" style="max-width: 380px;">
             <div class="d-grid gap-3">
                 <a href="<?php echo e(route('formulir.warga')); ?>" class="btn btn-danger py-3 d-flex align-items-center menu-button">
@@ -110,7 +94,7 @@
                     </div>
                     <i class="bi bi-chevron-right ms-auto"></i>
                 </a>
-                
+
                 <a href="#" class="btn btn-secondary py-3 d-flex align-items-center menu-button">
                     <div class="d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; background-color: rgba(255,255,255,0.2); border-radius: 10px;">
                         <i class="bi bi-clock-history" style="font-size: 1.2rem;"></i>
@@ -121,7 +105,7 @@
                     </div>
                     <i class="bi bi-chevron-right ms-auto"></i>
                 </a>
-                
+
                 <a href="#" class="btn btn-primary py-3 d-flex align-items-center menu-button">
                     <div class="d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; background-color: rgba(255,255,255,0.2); border-radius: 10px;">
                         <i class="bi bi-bell" style="font-size: 1.2rem;"></i>
@@ -132,7 +116,7 @@
                     </div>
                     <i class="bi bi-chevron-right ms-auto"></i>
                 </a>
-                
+
                 <a href="#" class="btn btn-info text-white py-3 d-flex align-items-center">
                     <div class="d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; background-color: rgba(255,255,255,0.2); border-radius: 10px;">
                         <i class="bi bi-person-circle" style="font-size: 1.2rem;"></i>
@@ -146,7 +130,6 @@
             </div>
         </div>
 
-        <!-- Additional options in smaller buttons -->
         <div class="d-flex flex-wrap justify-content-center gap-2 w-100" style="max-width: 380px;">
             <a href="#" class="btn btn-outline-light btn-sm px-3 py-2">
                 <i class="bi bi-question-circle me-1"></i> Bantuan
@@ -165,29 +148,17 @@
             </form>
         </div>
 
-        <!-- Footer -->
         <div class="mt-auto pt-4 text-center">
             <small class="text-white-50">Digides © 2025 | Versi 2.1.0</small>
         </div>
     </div>
 
-    <nav class="navbar fixed-bottom navbar-light bg-light">
-        <div class="container justify-content-center">
-            <a href="#" class="btn btn-sm px-3 py-2" style="outline: none; border-radius: 0;">
-                <i class="bi bi-question-circle"></i>
-            </a>
-            <a href="#" class="btn btn-sm px-3 py-2" style="outline: none; border-radius: 0;">
-                <i class="bi bi-info-circle"></i>
-            </a>
-            <a href="#" class="btn btn-sm px-3 py-2" style="outline: none; border-radius: 0;">
-                <i class="bi bi-telephone"></i>
-            </a>
-            <a href="#" class="btn btn-sm px-3 py-2" style="outline: none; border-radius: 0;">
-                <i class="bi bi-box-arrow-right"></i>
-            </a>
-        </div>
-    </nav>
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-</body>
-</html><?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/menu.blade.php ENDPATH**/ ?>
+    
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('script'); ?>
+    <script src="<?php echo e(URL::asset('build/libs/apexcharts/apexcharts.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/libs/swiper/swiper-bundle.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/dashboard-ecommerce.init.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/app.js')); ?>"></script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.master-without-nav', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/arifrizal/Desktop/bckup/laravel-modern-template/resources/views/menu.blade.php ENDPATH**/ ?>

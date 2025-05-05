@@ -52,13 +52,16 @@
                                     <td>
                                         <div class="d-flex gap-1 overflow-auto">
                                             <a href="{{ route('penduduk.show', $penduduk->id) }}" class="btn btn-sm btn-info">Detail</a>
+
+                                            @if (Auth::user()->role === 'admin')
                                             <a href="{{ route('penduduk.edit', $penduduk->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                    
                                             <form action="{{ route('penduduk.destroy', $penduduk->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#hapus-penduduk">Hapus</button>
                                             </form>
+                                            @endif
+                                            
                                         </div>
                                     </td>
                                                                        

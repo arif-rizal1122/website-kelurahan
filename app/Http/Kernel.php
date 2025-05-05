@@ -66,5 +66,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'auth.warga' => \App\Http\Middleware\RedirectIfNotWarga::class,
+        'adminAccess' => \App\Http\Middleware\AdminUserAccess::class,
+        'verified.warga' => \App\Http\Middleware\EnsureEmailIsVerifiedForWarga::class,
     ];
 }

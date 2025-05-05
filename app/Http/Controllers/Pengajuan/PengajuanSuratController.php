@@ -22,8 +22,61 @@ class PengajuanSuratController extends Controller
 
     public function index()
     {
-        $pengajuanSurats = PengajuanSurat::with('warga', 'jenisSurat', 'user')->get();
+        $pengajuanSurats = PengajuanSurat::with('warga', 'jenisSurat', 'user')
+            ->orderByRaw(
+                "CASE status
+                    WHEN '" . \App\Enums\Status::DIAJUKAN->value . "' THEN 1
+                    WHEN '" . \App\Enums\Status::DIPROSES->value . "' THEN 2
+                    WHEN '" . \App\Enums\Status::SELESAI->value . "' THEN 3
+                    WHEN '" . \App\Enums\Status::DITOLAK->value . "' THEN 4
+                    ELSE 5
+                END"
+            )
+            ->get();
+    
         return view('pengajuan.pengajuanSurat.index', compact('pengajuanSurats'));
+    }
+
+    /**
+     * Menampilkan semua pengajuan surat berdasarkan status tertentu.
+     *
+     * @param  string  $statusValue
+     * @return \Illuminate\View\View
+     */
+    public function showByStatus(string $statusValue)
+    {
+        // Validasi status yang diterima
+        $validStatuses = [Status::DIAJUKAN->value, Status::DIPROSES->value, Status::SELESAI->value, Status::DITOLAK->value];
+        if (!in_array($statusValue, $validStatuses)) {
+            abort(404, 'Status pengajuan tidak valid.');
+        }
+
+        $pengajuan = PengajuanSurat::where('status', $statusValue)
+            ->with(['warga', 'jenisSurat', 'user'])
+            ->latest()
+            ->get();
+
+        // Mengirimkan nama status yang sesuai untuk ditampilkan di view
+        $statusName = '';
+        switch ($statusValue) {
+            case Status::DIAJUKAN->value:
+                $statusName = 'Diajukan';
+                break;
+            case Status::DIPROSES->value:
+                $statusName = 'Diproses';
+                break;
+            case Status::SELESAI->value:
+                $statusName = 'Selesai';
+                break;
+            case Status::DITOLAK->value:
+                $statusName = 'Ditolak';
+                break;
+        }
+
+        return view('pengajuan.pengajuanSurat.show_by_status', [
+            'pengajuan' => $pengajuan,
+            'statusName' => $statusName,
+        ]);
     }
 
    
@@ -83,7 +136,7 @@ class PengajuanSuratController extends Controller
             $pengajuanSurat->delete();
 
             session()->flash('success', 'Pengajuan surat berhasil dihapus.');
-            return redirect()->route('pengajuan-surat.index');
+            return redirect()->back();
         } catch (\Exception $e) {
             session()->flash('error', 'Terjadi kesalahan saat menghapus pengajuan surat: ' . $e->getMessage());
             return back();
@@ -117,7 +170,7 @@ class PengajuanSuratController extends Controller
             $this->loadRelations($pengajuanSurat, ['warga', 'jenisSurat']);
             if (!$pengajuanSurat->warga || !$pengajuanSurat->warga->email) {
                 session()->flash('warning', 'Pengajuan surat berhasil diproses, namun tidak ada alamat email warga untuk mengirim pemberitahuan.');
-                return redirect()->route('pengajuan-surat.index');
+                return redirect()->back();
             }
             $this->sendEmailPemberitahuan($pengajuanSurat, new PengajuanDiproses([
                 'nama_warga' => $pengajuanSurat->warga->nama,
@@ -126,7 +179,7 @@ class PengajuanSuratController extends Controller
                 'tanggal_pengajuan' => $pengajuanSurat->tanggal_pengajuan->format('d-m-Y'),
             ]));
             session()->flash('success', 'Pengajuan surat berhasil diproses dan email pemberitahuan dikirim.');
-            return redirect()->route('pengajuan-surat.index');
+            return redirect()->back();
     
         } catch (\Exception $e) {
             session()->flash('error', $e->getMessage());
@@ -155,7 +208,7 @@ class PengajuanSuratController extends Controller
             ]));
 
             session()->flash('success', 'Pengajuan surat berhasil diselesaikan dan pemberitahuan telah dikirim ke warga.');
-            return redirect()->route('pengajuan-surat.index');
+            return redirect()->back();
         } catch (\Exception $e) {
             session()->flash('error', $e->getMessage());
             return back();
@@ -172,14 +225,14 @@ class PengajuanSuratController extends Controller
             return view('pengajuan.pengajuanSurat.reject', compact('pengajuanSurat'));
         } catch (\Exception $e) {
             session()->flash('error', $e->getMessage());
-            return redirect()->route('pengajuan-surat.index');
+            return redirect()->route('pengajuan-surat.index')->with('success', 'Pengajuan surat telah ditolak dan email pemberitahuan dikirim.');
         }
     }
 
     /**
      * Simpan penolakan dengan alasan.
      */
-    public function storeRejection(StoreRejectionRequest $request, PengajuanSurat $pengajuanSurat): RedirectResponse
+        public function storeRejection(StoreRejectionRequest $request, PengajuanSurat $pengajuanSurat): RedirectResponse
     {
         try {
             $this->authorizeStatusChange($pengajuanSurat, [Status::DIAJUKAN, Status::DIPROSES]);
@@ -200,13 +253,12 @@ class PengajuanSuratController extends Controller
                 'tanggal_pengajuan' => $pengajuanSurat->tanggal_pengajuan->format('d-m-Y'),
             ]));
 
-            session()->flash('success', 'Pengajuan surat telah ditolak dan email pemberitahuan dikirim.');
-            return redirect()->route('pengajuan-surat.index');
+            return redirect()->route('pengajuan-surat.index')->with('success', 'Pengajuan surat telah ditolak dan email pemberitahuan dikirim.');
         } catch (\Exception $e) {
-            session()->flash('error', $e->getMessage());
-            return back()->withInput();
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
     }
+
 
     /**
      * Helper function untuk memeriksa apakah status pengajuan saat ini sesuai dengan yang diharapkan.
@@ -269,132 +321,219 @@ public function print(PengajuanSurat $pengajuanSurat)
         session()->flash('error', 'Surat tidak dapat dicetak karena status saat ini adalah ' . $pengajuanSurat->status);
         return back();
     }
+    
+    // Load relationships
     $pengajuanSurat->load(['warga', 'jenisSurat', 'user']);
-
     $config = Config::first();
     $currentUser = Auth::user();
 
+    // Initialize PHPWord
     $phpWord = new \PhpOffice\PhpWord\PhpWord();
-
+    
+    // Set default font settings
     $phpWord->setDefaultFontName('Times New Roman');
     $phpWord->setDefaultFontSize(12);
-
-    $section = $phpWord->addSection();
-
-    // Create header
+    
+    // Add styles
+    $phpWord->addTitleStyle(1, ['bold' => true, 'size' => 16], ['alignment' => 'center', 'spaceAfter' => 100]);
+    $phpWord->addTitleStyle(2, ['bold' => true, 'size' => 14], ['alignment' => 'center', 'spaceAfter' => 100]);
+    
+    // Standard paragraph styles
+    $normalStyle = ['alignment' => 'both', 'spaceAfter' => 100];
+    $centerStyle = ['alignment' => 'center', 'spaceAfter' => 100];
+    $rightStyle = ['alignment' => 'right', 'spaceAfter' => 100];
+    
+    // Label styles for indentation
+    $labelStyle = [
+        'indentation' => ['left' => 0, 'firstLine' => 0],
+        'tabs' => [new \PhpOffice\PhpWord\Style\Tab('left', 1500)]
+    ];
+    
+    // Bold font style
+    $boldFontStyle = ['bold' => true];
+    
+    // Create section with margin settings (in twips)
+    $section = $phpWord->addSection([
+        'marginLeft' => 1133, // 2cm
+        'marginRight' => 1133, // 2cm
+        'marginTop' => 1133, // 2cm
+        'marginBottom' => 1133, // 2cm
+    ]);
+    
+    // Create header with proper formatting
     $header = $section->addHeader();
-
-    // Logo
+    
+    // Create a table for header (logo and text)
+    $headerTable = $header->addTable([
+        'width' => 100 * 50, // 100% of page width
+        'alignment' => 'center',
+        'cellMargin' => 80,
+    ]);
+    
+    $headerTable->addRow();
+    
+    // Logo cell
+    $logoCell = $headerTable->addCell(1500, ['valign' => 'center']);
     if (file_exists(public_path('images/logo.png'))) {
-        $header->addImage(
+        $logoCell->addImage(
             public_path('images/logo.png'),
             ['width' => 80, 'height' => 80, 'alignment' => 'left']
         );
     }
-
-    // Header text
-    $header->addText('PEMERINTAH ' . strtoupper($config->nama_kabupaten ?? 'KABUPATEN'),
-        ['bold' => true, 'size' => 14],
+    
+    // Header text cell
+    $textCell = $headerTable->addCell(8500, ['valign' => 'center']);
+    $textCell->addText('PEMERINTAH ' . strtoupper($config->nama_kabupaten ?? 'KABUPATEN'), 
+        ['bold' => true, 'size' => 14, 'allCaps' => true], 
         ['alignment' => 'center']);
-    $header->addText('KECAMATAN ' . strtoupper($config->nama_kecamatan ?? 'KECAMATAN'),
-        ['bold' => true, 'size' => 14],
+    $textCell->addText('KECAMATAN ' . strtoupper($config->nama_kecamatan ?? 'KECAMATAN'), 
+        ['bold' => true, 'size' => 14, 'allCaps' => true], 
         ['alignment' => 'center']);
-    $header->addText('DESA ' . strtoupper($config->nama_kelurahan ?? 'DESA'),
-        ['bold' => true, 'size' => 16],
+    $textCell->addText('DESA ' . strtoupper($config->nama_kelurahan ?? 'DESA'), 
+        ['bold' => true, 'size' => 16, 'allCaps' => true], 
         ['alignment' => 'center']);
-    $header->addText('Jl. Raya ' . ($config->nama_kelurahan ?? 'Desa') . ' Km ' .
-        ($config->km_jalan ?? '10') . ' ' . ($config->nama_dusun ?? 'Kerandangan') .
-        ' Kode Pos : ' . ($config->kode_pos ?? '83355'),
+    $textCell->addText('Jl. Raya ' . ($config->nama_kelurahan ?? 'Desa') . ' Km ' . 
+        ($config->km_jalan ?? '10') . ' ' . ($config->nama_dusun ?? 'Kerandangan') . 
+        ' Kode Pos : ' . ($config->kode_pos ?? '83355'), 
         ['size' => 11],
         ['alignment' => 'center']);
-
-    // Add horizontal line
-    $header->addLine(['weight' => 3, 'width' => 450, 'height' => 0]);
-
-    // Add document title
-    $section->addTextBreak(1);
+    
+    // Add horizontal line (border)
+    $header->addLine([
+        'weight' => 3, 
+        'width' => '100%', 
+        'height' => 0,
+        'color' => '000000'
+    ]);
+    
+    // Add a thinner second line for double border effect
+    $header->addLine([
+        'weight' => 1, 
+        'width' => '100%', 
+        'height' => 0,
+        'color' => '000000'
+    ]);
+    
+    // Document title with appropriate spacing
+    $section->addTextBreak(2);
     $section->addText(strtoupper($pengajuanSurat->jenisSurat->nama ?? 'SURAT'),
-        ['bold' => true, 'size' => 14],
+        ['bold' => true, 'size' => 14, 'underline' => 'single', 'allCaps' => true],
         ['alignment' => 'center']);
-    $section->addText('Nomor: ' . $pengajuanSurat->id . '/' . now()->format('Y') . '/' .
+    $section->addText('Nomor: ' . $pengajuanSurat->id . '/' . now()->format('Y') . '/' . 
         ($pengajuanSurat->jenisSurat->kode ?? 'XXX'),
-        null,
+        ['size' => 12],
         ['alignment' => 'center']);
     $section->addTextBreak(1);
-
-    // First section - Official signing
-    $section->addText('Yang bertanda tangan di bawah ini:');
-    $section->addText('Nama', null, ['indentation' => ['left' => 0, 'firstLine' => 85], 'spaceAfter' => 0]);
-    $section->addText(': ' . $currentUser->name, null, ['indentation' => ['left' => 3000], 'spaceAfter' => 0]);
-    $section->addText('Jabatan', null, ['indentation' => ['left' => 0, 'firstLine' => 85], 'spaceAfter' => 0]);
-    $section->addText(': ' . ($pengajuanSurat->user->jabatan ?? $currentUser->jabatan ?? 'Petugas Kelurahan'), null, ['indentation' => ['left' => 3000], 'spaceAfter' => 0]);
-    $section->addText('Alamat', null, ['indentation' => ['left' => 0, 'firstLine' => 85], 'spaceAfter' => 0]);
-    $section->addText(': ' . ($config->alamat_kantor ?? '-'), null, ['indentation' => ['left' => 3000], 'spaceAfter' => 0]);
-
+    
+    // First section - Official signing with properly formatted layout
+    $section->addText('Yang bertanda tangan di bawah ini:', null, $normalStyle);
+    
+    // Create table for aligned data (better than indentation)
+    $tableStyle = [
+        'width' => 100 * 50, // 100% of page width
+        'borderSize' => 0,
+        'cellMargin' => 0,
+    ];
+    
+    $firstTable = $section->addTable($tableStyle);
+    
+    // Add official information
+    $this->addTableRow($firstTable, 'Nama', $currentUser->name);
+    $this->addTableRow($firstTable, 'Jabatan', $pengajuanSurat->user->jabatan ?? $currentUser->jabatan ?? 'Petugas Kelurahan');
+    $this->addTableRow($firstTable, 'Alamat', $config->alamat_kantor ?? '-');
+    
     $section->addTextBreak(1);
-
-    // Second section - Citizen info
-    $section->addText('Dengan ini menerangkan bahwa:');
-    $section->addText('Nama', null, ['indentation' => ['left' => 0, 'firstLine' => 85], 'spaceAfter' => 0]);
-    $section->addText(': ' . ($pengajuanSurat->warga->nama ?? '-'), null, ['indentation' => ['left' => 3000], 'spaceAfter' => 0]);
-    $section->addText('NIK', null, ['indentation' => ['left' => 0, 'firstLine' => 85], 'spaceAfter' => 0]);
-    $section->addText(': ' . ($pengajuanSurat->warga->nik ?? '-'), null, ['indentation' => ['left' => 3000], 'spaceAfter' => 0]);
-    $section->addText('Tempat/Tanggal Lahir', null, ['indentation' => ['left' => 0, 'firstLine' => 85], 'spaceAfter' => 0]);
-    $section->addText(': ' . (($pengajuanSurat->warga->tempat_lahir ?? '-') . ', ' .
-        ($pengajuanSurat->warga->tanggal_lahir ? date('d F Y', strtotime($pengajuanSurat->warga->tanggal_lahir)) : '-')),
-        null, ['indentation' => ['left' => 3000], 'spaceAfter' => 0]);
-    $section->addText('Jenis Kelamin', null, ['indentation' => ['left' => 0, 'firstLine' => 85], 'spaceAfter' => 0]);
-    $section->addText(': ' . ($pengajuanSurat->warga->jenis_kelamin ?? '-'), null, ['indentation' => ['left' => 3000], 'spaceAfter' => 0]);
-    $section->addText('Agama', null, ['indentation' => ['left' => 0, 'firstLine' => 85], 'spaceAfter' => 0]);
-    $section->addText(': ' . ($pengajuanSurat->warga->agama ?? '-'), null, ['indentation' => ['left' => 3000], 'spaceAfter' => 0]);
-    $section->addText('Alamat', null, ['indentation' => ['left' => 0, 'firstLine' => 85], 'spaceAfter' => 0]);
-    $section->addText(': ' . ($pengajuanSurat->warga->alamat ?? '-'), null, ['indentation' => ['left' => 3000], 'spaceAfter' => 0]);
-
-    // Additional info from template
+    
+    // Second section - Citizen info with proper table alignment
+    $section->addText('Dengan ini menerangkan bahwa:', null, $normalStyle);
+    
+    $secondTable = $section->addTable($tableStyle);
+    
+    // Add citizen information
+    $this->addTableRow($secondTable, 'Nama', $pengajuanSurat->warga->nama ?? '-');
+    $this->addTableRow($secondTable, 'NIK', $pengajuanSurat->warga->nik ?? '-');
+    $this->addTableRow($secondTable, 'Tempat/Tanggal Lahir', 
+        ($pengajuanSurat->warga->tempat_lahir ?? '-') . ', ' . 
+        ($pengajuanSurat->warga->tanggal_lahir ? date('d F Y', strtotime($pengajuanSurat->warga->tanggal_lahir)) : '-'));
+    $this->addTableRow($secondTable, 'Jenis Kelamin', $pengajuanSurat->warga->jenis_kelamin ?? '-');
+    $this->addTableRow($secondTable, 'Agama', $pengajuanSurat->warga->agama ?? '-');
+    $this->addTableRow($secondTable, 'Alamat', $pengajuanSurat->warga->alamat ?? '-');
+    
+    // Additional template fields
     if ($pengajuanSurat->jenisSurat->has_template && $pengajuanSurat->jenisSurat->template_fields) {
         $templateFields = json_decode($pengajuanSurat->jenisSurat->template_fields, true);
-
+        
         if (is_array($templateFields)) {
             foreach ($templateFields as $field => $label) {
-                $section->addText($label, null, ['indentation' => ['left' => 0, 'firstLine' => 85], 'spaceAfter' => 0]);
-                $section->addText(': ' . ($pengajuanSurat->data[$field] ?? '-'), null, ['indentation' => ['left' => 3000], 'spaceAfter' => 0]);
+                $this->addTableRow($secondTable, $label, $pengajuanSurat->data[$field] ?? '-');
             }
         }
     }
-
+    
     $section->addTextBreak(1);
-
-    // Purpose and content section
+    
+    // Purpose and content section with proper paragraph formatting
     if (!empty($pengajuanSurat->keperluan)) {
-        $section->addText($pengajuanSurat->keperluan);
+        $section->addText($pengajuanSurat->keperluan, null, $normalStyle);
         $section->addTextBreak(1);
     }
-
-    // Template text or default
-    $section->addText($pengajuanSurat->jenisSurat->template_surat ?? 'Demikian surat ini dibuat dengan sebenarnya dan untuk dipergunakan sebagaimana mestinya.');
-
-    // Signature section
+    
+    // Full template section with letter content
+    $templateText = $pengajuanSurat->jenisSurat->template_surat ?? 'Demikian surat ini dibuat dengan sebenarnya dan untuk dipergunakan sebagaimana mestinya.';
+    
+    // Split template into paragraphs and add them properly
+    $paragraphs = explode("\n", $templateText);
+    foreach ($paragraphs as $paragraph) {
+        if (!empty(trim($paragraph))) {
+            $section->addText(trim($paragraph), null, $normalStyle);
+            $section->addTextBreak(0.5);
+        }
+    }
+    
+    // Signature section with proper alignment and spacing
     $section->addTextBreak(1);
-    $section->addText(($config->nama_kelurahan ?? 'Kelurahan') . ', ' . now()->format('d F Y'), null, ['alignment' => 'right']);
-    $section->addText(($config->jabatan_penandatangan ?? 'Petugas') . ',', null, ['alignment' => 'right']);
+    
+    // Format date in Indonesian
+    setlocale(LC_TIME, 'id_ID');
+    $date = now()->format('d F Y');
+    
+    $section->addText(($config->nama_kelurahan ?? 'Kelurahan') . ', ' . $date, null, $rightStyle);
+    $section->addText(($config->jabatan_penandatangan ?? 'Petugas') . ',', null, $rightStyle);
     $section->addTextBreak(3);
-    $section->addText($pengajuanSurat->user->name ?? $currentUser->name, ['bold' => true, 'underline' => true], ['alignment' => 'right']);
-
+    $section->addText($pengajuanSurat->user->name ?? $currentUser->name, 
+        ['bold' => true, 'underline' => 'single'], 
+        $rightStyle);
+    
     // Add NIP if available
     if (!empty($pengajuanSurat->user->nip) || !empty($currentUser->nip)) {
-        $section->addText('NIP. ' . ($pengajuanSurat->user->nip ?? $currentUser->nip), null, ['alignment' => 'right']);
+        $section->addText('NIP. ' . ($pengajuanSurat->user->nip ?? $currentUser->nip), null, $rightStyle);
     }
-
+    
+    // Add footer with pagination
+    $footer = $section->addFooter();
+    $footer->addPreserveText('Halaman {PAGE} dari {NUMPAGES}', null, ['alignment' => 'right']);
+    
     // Save file
     $fileName = 'Surat_' . $pengajuanSurat->jenisSurat->kode . '_' . $pengajuanSurat->id . '.docx';
     $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-
+    
     // Save to temp file
     $tempFile = tempnam(sys_get_temp_dir(), 'word');
     $objWriter->save($tempFile);
-
+    
     // Return file as download
     return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
+}
+
+/**
+ * Helper function to add table rows with consistent formatting
+ */
+private function addTableRow($table, $label, $value)
+{
+    $row = $table->addRow();
+    $row->addCell(2500)->addText($label, null, ['alignment' => 'left']);
+    $row->addCell(500)->addText(':', null, ['alignment' => 'center']);
+    $row->addCell(7000)->addText($value, null, ['alignment' => 'left']);
 }
 
 

@@ -16,6 +16,7 @@ class JenisSurat extends Model
         'nama',
         'template_surat',
         'deskripsi',
+        'code'
     ];
 
     /**

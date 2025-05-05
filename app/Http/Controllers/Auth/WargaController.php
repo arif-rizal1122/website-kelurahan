@@ -14,6 +14,17 @@ use Illuminate\View\View;
 class WargaController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(['auth:warga'])->except(['showLoginForm', 'loginWarga']);
+        $this->middleware(['verified:warga'])->only(['showMenuWarga', 'showFormulirWarga', 'storePengajuanWarga']);
+    }
+
+    /**
      * Show the application's login form for warga.
      */
     public function showLoginForm(): View
@@ -21,7 +32,7 @@ class WargaController extends Controller
         return view('auth.guest');
     }
 
-       /**
+    /**
      * Show the form for creating a new pengajuan surat (for warga).
      */
     public function showFormulirWarga(): View
@@ -31,15 +42,11 @@ class WargaController extends Controller
         return view('formulir', compact('warga', 'jenisSurats'));
     }
 
-
-
-
     /**
      * Store a newly created pengajuan surat (from warga).
      */
     public function storePengajuanWarga(StorePengajuanSuratWargaRequest $request)
     {
-         
         try {
             $data = $request->validated();
             $data['warga_id'] = Auth::guard('warga')->id();
@@ -57,9 +64,9 @@ class WargaController extends Controller
         }
     }
 
-
-
-
+    /**
+     * Show menu warga.
+     */
     public function showMenuWarga(): View
     {
         return view('menu');
@@ -83,7 +90,14 @@ class WargaController extends Controller
         if (Auth::guard('warga')->attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
 
-            return Redirect::intended(route('menu.warga'));
+            // Cek apakah email sudah diverifikasi
+            if (Auth::guard('warga')->user()->hasVerifiedEmail()) {
+                return Redirect::intended(route('menu.warga'));
+            } else {
+                // Redirect ke halaman verifikasi email jika belum diverifikasi
+                return redirect()->route('verification.notice')
+                    ->with('warning', 'Anda harus memverifikasi email sebelum dapat mengakses layanan.');
+            }
         }
 
         return back()->withErrors([

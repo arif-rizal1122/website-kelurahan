@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use App\Models\User;
+use Illuminate\Http\Request;
 use App\Models\Warga;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -30,9 +32,9 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::GUEST;
+    protected $redirectTo = '/email/verify'; // Redirect to email verification page
 
-  /**
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -67,14 +69,44 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return Warga::create([
+        return Warga::create([ // Kembalikan instance Warga yang dibuat
             'nama' => $data['nama'],
             'nik' => $data['nik'],
             'email' => $data['email'],
             'alamat' => $data['alamat'],
-            'password' => Hash::make($data['password']), 
+            'password' => Hash::make($data['password']),
         ]);
     }
 
+    /**
+     * Handle a registration request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    public function register(Request $request) 
+    {
+        $this->validator($request->all())->validate();
 
+        $warga = $this->create($request->all());
+        
+        // Trigger event untuk mengirim email verifikasi
+        event(new Registered($warga));
+        
+        // Login warga after registration
+        Auth::guard('warga')->login($warga);
+        
+        // Redirect ke halaman verifikasi email
+        return redirect()->route('verification.notice')->with('success', 'Pendaftaran berhasil! Silakan verifikasi email Anda sebelum melanjutkan.');
+    }
+
+    /**
+     * Show the registration form
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function showRegistrationForm()
+    {
+        return view('auth.register');
+    }
 }

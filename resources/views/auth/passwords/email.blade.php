@@ -2,6 +2,9 @@
 @section('title')
 Reset Password
 @endsection
+@php
+    $previousUrl = url()->previous();
+@endphp
 @section('content')
     <div class="auth-page-wrapper pt-5">
         <!-- auth page bg -->
@@ -85,8 +88,14 @@ Reset Password
                         <!-- end card -->
 
                         <div class="mt-4 text-center">
-                            <p class="mb-0">Wait, I remember my password... <a href="{{ route('login') }}"
-                                    class="fw-semibold text-primary text-decoration-underline"> Click here </a> </p>
+                            <p class="mb-0">
+                                Wait, I remember my password..!
+                                @if (Str::contains($previousUrl, '/login/warga'))
+                                    <a href="{{ route('warga.login.form') }}" class="fw-semibold text-primary text-decoration-underline">Click here</a>
+                                @else
+                                    <a href="{{ route('login') }}" class="fw-semibold text-primary text-decoration-underline">Click here</a>
+                                @endif
+                            </p>
                         </div>
 
                     </div>

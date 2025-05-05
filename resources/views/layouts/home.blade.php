@@ -57,7 +57,7 @@
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="btn-getstarted" href="{{ route('warga.login') }}">Get Started</a>
+      <a class="btn-getstarted" href="{{ route('warga.login.form') }}">Get Started</a>
 
     </div>
   </header>
