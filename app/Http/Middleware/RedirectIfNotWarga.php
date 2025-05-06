@@ -19,6 +19,15 @@ class RedirectIfNotWarga
      */
     public function handle(Request $request, Closure $next, ...$guards): Response
     {
+        // Jika pengguna sedang login sebagai admin (web) tapi mencoba akses area warga
+        // Logout dari guard web untuk mencegah konflik session
+        if (Auth::guard('web')->check()) {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
+
+        // Jika tidak login sebagai warga, redirect ke login warga
         if (!Auth::guard('warga')->check()) {
             return redirect()->route('warga.login.form');
         }

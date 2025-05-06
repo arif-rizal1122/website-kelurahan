@@ -65,8 +65,8 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'auth.admin' => \App\Http\Middleware\RedirectIfNotAdmin::class,
         'auth.warga' => \App\Http\Middleware\RedirectIfNotWarga::class,
         'adminAccess' => \App\Http\Middleware\AdminUserAccess::class,
-        'verified.warga' => \App\Http\Middleware\EnsureEmailIsVerifiedForWarga::class,
     ];
 }

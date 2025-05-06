@@ -125,4 +125,18 @@ return [
 
     'password_timeout' => 10800,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Session Storage
+    |--------------------------------------------------------------------------
+    |
+    | Untuk mencegah konflik session antar guard, gunakan nama session berbeda
+    | untuk setiap tipe guard (web dan warga)
+    |
+    */
+    'session_names' => [
+        'web' => 'admin_session',
+        'warga' => 'warga_session',
+    ],
+
 ];

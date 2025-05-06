@@ -48,16 +48,13 @@
                     </button>
                 </div>
                 <div class="ms-1 header-item d-flex">
-                    <a href="{{ route('pengajuan-surat.index') }}" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle">
+                    <a href="{{ route('pengajuan-surat.status', 'diajukan') }}" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle">
                         <i class='bx bx-bell fs-22'></i>
                         @if ($pengajuanDiajukan->count() > 0)
                             <span class="badge bg-danger rounded-pill">{{ $pengajuanDiajukan->count() }}</span>
                         @endif
                     </a>
                 </div>
-                
-                
-
 
                 <div class="dropdown ms-sm-3 header-item topbar-user">
                     <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

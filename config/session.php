@@ -72,7 +72,7 @@ return [
     |
     */
 
-    'connection' => env('SESSION_CONNECTION', null),
+    'connection' => env('SESSION_CONNECTION'),
 
     /*
     |--------------------------------------------------------------------------
@@ -100,7 +100,7 @@ return [
     |
     */
 
-    'store' => env('SESSION_STORE', null),
+    'store' => env('SESSION_STORE'),
 
     /*
     |--------------------------------------------------------------------------
@@ -155,7 +155,7 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN', null),
+    'domain' => env('SESSION_DOMAIN'),
 
     /*
     |--------------------------------------------------------------------------
@@ -197,5 +197,19 @@ return [
     */
 
     'same_site' => 'lax',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Session Guard Cookies
+    |--------------------------------------------------------------------------
+    |
+    | Konfigurasi nama cookie untuk setiap guard agar tidak bertabrakan
+    |
+    */
+   
+    'guard_cookies' => [
+        'web' => 'admin_session',
+        'warga' => 'warga_session',
+    ],
 
 ];

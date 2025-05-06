@@ -65,7 +65,7 @@
                                     <i class="bx bx-edit me-2"></i>Ajukan Surat Kembali
                                 </a>
                                 <p class="mt-3">
-                                    <a href="{{ route('menu.warga') }}" class="btn-link">
+                                    <a href="{{ route('warga.login.form') }}" class="btn-link">
                                         <i class="bx bx-arrow-back me-1"></i>Kembali ke Menu Utama
                                     </a>
                                 </p>

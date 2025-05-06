@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\Auth\WargaController;
+use App\Http\Controllers\DashboardWarga\WargaController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\Common\PendudukController;
 use App\Http\Controllers\Surat\SuratKeluarController;
@@ -15,7 +15,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-
+use PhpOffice\Math\Element\Row;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +34,16 @@ Route::get('/', [HomeController::class, 'mainPage'])->name('homepage');
 
 Route::get('index/{locale}', [HomeController::class, 'lang']);
 
+// Password Reset Routes for Warga
+Route::get('/password/warga/reset', [App\Http\Controllers\Auth\WargaForgotPasswordController::class, 'showLinkRequestForm'])
+    ->name('warga.password.request');
+Route::post('/password/warga/email', [App\Http\Controllers\Auth\WargaForgotPasswordController::class, 'sendResetLinkEmail'])
+    ->name('warga.password.email');
+Route::get('/password/warga/reset/{token}', [App\Http\Controllers\Auth\WargaResetPasswordController::class, 'showResetForm'])
+    ->name('warga.password.reset');
+Route::post('/password/warga/reset', [App\Http\Controllers\Auth\WargaResetPasswordController::class, 'reset'])
+    ->name('warga.password.update');
+
 
 // Routes untuk autentikasi warga
 Route::get('/login/warga', [WargaController::class, 'showLoginForm'])->name('warga.login.form'); 
@@ -49,11 +59,20 @@ Route::get('/email/verify', [VerificationController::class, 'show'])->name('veri
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
 Route::post('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 
+
+
+
 // Routes yang memerlukan autentikasi warga (dan verifikasi email)
-Route::middleware(['auth:warga', 'verified:warga'])->group(function () {
-    Route::get('/warga/menu', [WargaController::class, 'showMenuWarga'])->name('menu.warga');
-    Route::get('/warga/formulir', [WargaController::class, 'showFormulirWarga'])->name('formulir.warga');
-    Route::post('/warga/pengajuan', [WargaController::class, 'storePengajuanWarga'])->name('pengajuan-surat.store');
+Route::middleware(['auth.warga', 'verified:warga'])->name('warga.')->group(function () {
+    Route::get('/menu', [WargaController::class, 'showMenuWarga'])->name('menu');
+    Route::get('/formulir', [WargaController::class, 'showFormulirWarga'])->name('formulir');
+    Route::post('/pengajuan', [WargaController::class, 'storePengajuanWarga'])->name('pengajuan');
+
+    Route::get('profile', [WargaController::class, 'profile'])->name('profile');
+    Route::get('notifikasi', [WargaController::class, 'notifikasi'])->name('notifikasi');
+    Route::get('riwayat', [WargaController::class, 'riwayat'])->name('riwayat');
+    Route::get('/pengajuan/{pengajuanSurat}', [WargaController::class, 'showPengajuanWarga'])->name('pengajuan-surat.show');
+    // Route::get('/{pengajuanSurat}/print', [WargaController::class, 'printWarga'])->name('pengajuan-surat.print');
 });
 
 
@@ -62,7 +81,7 @@ Route::middleware(['auth:warga', 'verified:warga'])->group(function () {
 
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth.admin'])->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('root'); 

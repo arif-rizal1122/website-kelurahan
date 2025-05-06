@@ -322,57 +322,46 @@ public function print(PengajuanSurat $pengajuanSurat)
         return back();
     }
     
-    // Load relationships
     $pengajuanSurat->load(['warga', 'jenisSurat', 'user']);
     $config = Config::first();
     $currentUser = Auth::user();
 
-    // Initialize PHPWord
     $phpWord = new \PhpOffice\PhpWord\PhpWord();
     
-    // Set default font settings
     $phpWord->setDefaultFontName('Times New Roman');
     $phpWord->setDefaultFontSize(12);
     
-    // Add styles
     $phpWord->addTitleStyle(1, ['bold' => true, 'size' => 16], ['alignment' => 'center', 'spaceAfter' => 100]);
     $phpWord->addTitleStyle(2, ['bold' => true, 'size' => 14], ['alignment' => 'center', 'spaceAfter' => 100]);
     
-    // Standard paragraph styles
     $normalStyle = ['alignment' => 'both', 'spaceAfter' => 100];
     $centerStyle = ['alignment' => 'center', 'spaceAfter' => 100];
     $rightStyle = ['alignment' => 'right', 'spaceAfter' => 100];
     
-    // Label styles for indentation
     $labelStyle = [
         'indentation' => ['left' => 0, 'firstLine' => 0],
         'tabs' => [new \PhpOffice\PhpWord\Style\Tab('left', 1500)]
     ];
     
-    // Bold font style
     $boldFontStyle = ['bold' => true];
     
-    // Create section with margin settings (in twips)
     $section = $phpWord->addSection([
-        'marginLeft' => 1133, // 2cm
-        'marginRight' => 1133, // 2cm
-        'marginTop' => 1133, // 2cm
-        'marginBottom' => 1133, // 2cm
+        'marginLeft' => 1133,
+        'marginRight' => 1133,
+        'marginTop' => 1133,
+        'marginBottom' => 1133,
     ]);
     
-    // Create header with proper formatting
     $header = $section->addHeader();
     
-    // Create a table for header (logo and text)
     $headerTable = $header->addTable([
-        'width' => 100 * 50, // 100% of page width
+        'width' => 100 * 50,
         'alignment' => 'center',
         'cellMargin' => 80,
     ]);
     
     $headerTable->addRow();
     
-    // Logo cell
     $logoCell = $headerTable->addCell(1500, ['valign' => 'center']);
     if (file_exists(public_path('images/logo.png'))) {
         $logoCell->addImage(
@@ -381,7 +370,6 @@ public function print(PengajuanSurat $pengajuanSurat)
         );
     }
     
-    // Header text cell
     $textCell = $headerTable->addCell(8500, ['valign' => 'center']);
     $textCell->addText('PEMERINTAH ' . strtoupper($config->nama_kabupaten ?? 'KABUPATEN'), 
         ['bold' => true, 'size' => 14, 'allCaps' => true], 
@@ -398,7 +386,6 @@ public function print(PengajuanSurat $pengajuanSurat)
         ['size' => 11],
         ['alignment' => 'center']);
     
-    // Add horizontal line (border)
     $header->addLine([
         'weight' => 3, 
         'width' => '100%', 
@@ -406,7 +393,6 @@ public function print(PengajuanSurat $pengajuanSurat)
         'color' => '000000'
     ]);
     
-    // Add a thinner second line for double border effect
     $header->addLine([
         'weight' => 1, 
         'width' => '100%', 
@@ -414,42 +400,36 @@ public function print(PengajuanSurat $pengajuanSurat)
         'color' => '000000'
     ]);
     
-    // Document title with appropriate spacing
     $section->addTextBreak(2);
     $section->addText(strtoupper($pengajuanSurat->jenisSurat->nama ?? 'SURAT'),
         ['bold' => true, 'size' => 14, 'underline' => 'single', 'allCaps' => true],
         ['alignment' => 'center']);
     $section->addText('Nomor: ' . $pengajuanSurat->id . '/' . now()->format('Y') . '/' . 
-        ($pengajuanSurat->jenisSurat->kode ?? 'XXX'),
+        ($pengajuanSurat->jenisSurat->code ?? 'XXX'),
         ['size' => 12],
         ['alignment' => 'center']);
     $section->addTextBreak(1);
     
-    // First section - Official signing with properly formatted layout
     $section->addText('Yang bertanda tangan di bawah ini:', null, $normalStyle);
     
-    // Create table for aligned data (better than indentation)
     $tableStyle = [
-        'width' => 100 * 50, // 100% of page width
+        'width' => 100 * 50,
         'borderSize' => 0,
         'cellMargin' => 0,
     ];
     
     $firstTable = $section->addTable($tableStyle);
     
-    // Add official information
     $this->addTableRow($firstTable, 'Nama', $currentUser->name);
     $this->addTableRow($firstTable, 'Jabatan', $pengajuanSurat->user->jabatan ?? $currentUser->jabatan ?? 'Petugas Kelurahan');
     $this->addTableRow($firstTable, 'Alamat', $config->alamat_kantor ?? '-');
     
     $section->addTextBreak(1);
     
-    // Second section - Citizen info with proper table alignment
     $section->addText('Dengan ini menerangkan bahwa:', null, $normalStyle);
     
     $secondTable = $section->addTable($tableStyle);
     
-    // Add citizen information
     $this->addTableRow($secondTable, 'Nama', $pengajuanSurat->warga->nama ?? '-');
     $this->addTableRow($secondTable, 'NIK', $pengajuanSurat->warga->nik ?? '-');
     $this->addTableRow($secondTable, 'Tempat/Tanggal Lahir', 
@@ -459,7 +439,6 @@ public function print(PengajuanSurat $pengajuanSurat)
     $this->addTableRow($secondTable, 'Agama', $pengajuanSurat->warga->agama ?? '-');
     $this->addTableRow($secondTable, 'Alamat', $pengajuanSurat->warga->alamat ?? '-');
     
-    // Additional template fields
     if ($pengajuanSurat->jenisSurat->has_template && $pengajuanSurat->jenisSurat->template_fields) {
         $templateFields = json_decode($pengajuanSurat->jenisSurat->template_fields, true);
         
@@ -472,16 +451,13 @@ public function print(PengajuanSurat $pengajuanSurat)
     
     $section->addTextBreak(1);
     
-    // Purpose and content section with proper paragraph formatting
     if (!empty($pengajuanSurat->keperluan)) {
         $section->addText($pengajuanSurat->keperluan, null, $normalStyle);
         $section->addTextBreak(1);
     }
     
-    // Full template section with letter content
     $templateText = $pengajuanSurat->jenisSurat->template_surat ?? 'Demikian surat ini dibuat dengan sebenarnya dan untuk dipergunakan sebagaimana mestinya.';
     
-    // Split template into paragraphs and add them properly
     $paragraphs = explode("\n", $templateText);
     foreach ($paragraphs as $paragraph) {
         if (!empty(trim($paragraph))) {
@@ -490,10 +466,8 @@ public function print(PengajuanSurat $pengajuanSurat)
         }
     }
     
-    // Signature section with proper alignment and spacing
     $section->addTextBreak(1);
     
-    // Format date in Indonesian
     setlocale(LC_TIME, 'id_ID');
     $date = now()->format('d F Y');
     
@@ -504,30 +478,22 @@ public function print(PengajuanSurat $pengajuanSurat)
         ['bold' => true, 'underline' => 'single'], 
         $rightStyle);
     
-    // Add NIP if available
     if (!empty($pengajuanSurat->user->nip) || !empty($currentUser->nip)) {
         $section->addText('NIP. ' . ($pengajuanSurat->user->nip ?? $currentUser->nip), null, $rightStyle);
     }
     
-    // Add footer with pagination
     $footer = $section->addFooter();
     $footer->addPreserveText('Halaman {PAGE} dari {NUMPAGES}', null, ['alignment' => 'right']);
     
-    // Save file
     $fileName = 'Surat_' . $pengajuanSurat->jenisSurat->kode . '_' . $pengajuanSurat->id . '.docx';
     $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
     
-    // Save to temp file
     $tempFile = tempnam(sys_get_temp_dir(), 'word');
     $objWriter->save($tempFile);
     
-    // Return file as download
     return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
 }
 
-/**
- * Helper function to add table rows with consistent formatting
- */
 private function addTableRow($table, $label, $value)
 {
     $row = $table->addRow();

@@ -30,7 +30,7 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(Request $request)
+        public function index(Request $request)
     {
         if ($request->path() === 'dashboard') {
             $totalDiajukan = PengajuanSurat::where('status', Status::DIAJUKAN)->count();
@@ -39,12 +39,41 @@ class DashboardController extends Controller
             $totalDitolak = PengajuanSurat::where('status', Status::DITOLAK)->count();
             $jumlahPenduduk = TwebPenduduk::count();
 
+            // Ambil data untuk 6 bulan terakhir
+            $monthlyStats = [];
+            $currentMonth = now();
+            
+            for ($i = 5; $i >= 0; $i--) {
+                $month = clone $currentMonth;
+                $month->subMonths($i);
+                
+                $startOfMonth = $month->copy()->startOfMonth();
+                $endOfMonth = $month->copy()->endOfMonth();
+                
+                $monthlyStats[] = [
+                    'bulan' => $month->format('M'),
+                    'diajukan' => PengajuanSurat::where('status', Status::DIAJUKAN)
+                        ->whereBetween('tanggal_pengajuan', [$startOfMonth, $endOfMonth])
+                        ->count(),
+                    'diproses' => PengajuanSurat::where('status', Status::DIPROSES)
+                        ->whereBetween('tanggal_pengajuan', [$startOfMonth, $endOfMonth])
+                        ->count(),
+                    'selesai' => PengajuanSurat::where('status', Status::SELESAI)
+                        ->whereBetween('tanggal_selesai', [$startOfMonth, $endOfMonth])
+                        ->count(),
+                    'ditolak' => PengajuanSurat::where('status', Status::DITOLAK)
+                        ->whereBetween('tanggal_pengajuan', [$startOfMonth, $endOfMonth])
+                        ->count(),
+                ];
+            }
+
             return view('dashboard', [
                 'totalDiajukan' => $totalDiajukan,
                 'totalDiproses' => $totalDiproses,
                 'totalSelesai' => $totalSelesai,
                 'totalDitolak' => $totalDitolak,
                 'jumlahPenduduk' => $jumlahPenduduk,
+                'monthlyStats' => $monthlyStats,
             ]);
         }
 

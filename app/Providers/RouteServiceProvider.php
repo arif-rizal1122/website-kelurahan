@@ -19,7 +19,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/dashboard';
 
-    // public const GUEST = '/';
+    public const GUEST = '/login/warga';
 
     /**
      * The controller namespace for the application.

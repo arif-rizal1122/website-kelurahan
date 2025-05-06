@@ -12,7 +12,7 @@
             <img src="{{ URL::asset('build/images/profile-bg.jpg') }}" class="img-fluid w-100 h-100 object-fit-cover" alt="Profile Background" style="object-position: center;">
             <div class="profile-header-overlay">
                 <div class="upload-trigger">
-                    <input id="profile-foreground-img-file-input" type="file" class="d-none">
+                    <input id="profile-foreground-img-file-input" type="files" class="d-none">
                     <label for="profile-foreground-img-file-input" class="mb-0">
                         <i class="ri-image-edit-line me-1"></i> Change Cover Photo
                     </label>
@@ -40,14 +40,6 @@
                             <p class="text-muted mb-2">{{ Auth::user()->jabatan }}</p>
                             <span class="user-badge bg-primary bg-opacity-10 text-primary mb-3">{{ Auth::user()->role }}</span>
                             
-                            <div class="d-flex gap-2 mt-2">
-                                <button class="btn btn-sm btn-primary">
-                                    <i class="ri-edit-2-line me-1"></i> Edit Profile
-                                </button>
-                                <button class="btn btn-sm btn-outline-secondary">
-                                    <i class="ri-settings-4-line me-1"></i> Settings
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -55,12 +47,6 @@
                 <!-- Contact Information Card -->
                 <div class="profile-info-card card">
                     <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                            <h5 class="card-title mb-0 fw-bold">Contact Information</h5>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-light">
-                                <i class="ri-edit-line me-1"></i> Edit
-                            </a>
-                        </div>
                         
                         <div class="contact-info-item">
                             <div class="contact-info-icon bg-primary bg-opacity-10 text-primary">
@@ -340,14 +326,6 @@
                             <!-- User Details Tab -->
                             <div class="tab-pane fade show active" id="pengunaUser" role="tabpanel">
                                 <div class="user-info-box mb-4">
-                                    <div class="d-flex align-items-center justify-content-between mb-3">
-                                        <h5 class="mb-0 fw-bold">
-                                            <i class="ri-user-3-line me-2"></i> Personal Information
-                                        </h5>
-                                        <button class="btn btn-sm btn-outline-primary">
-                                            <i class="ri-edit-2-line me-1"></i> Edit
-                                        </button>
-                                    </div>
                                     
                                     <div class="row">
                                         <div class="col-md-6">

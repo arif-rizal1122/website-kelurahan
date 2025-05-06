@@ -56,7 +56,7 @@
                             </div>
                             
                             <div class="mt-4 text-center">
-                                <a href="{{ route('menu.warga') }}" class="btn btn-primary w-100">
+                                <a href="{{ route('warga.login.form') }}" class="btn btn-primary w-100">
                                     <i class="bx bx-menu me-2"></i>Kembali ke Menu Utama
                                 </a>
                             </div>
