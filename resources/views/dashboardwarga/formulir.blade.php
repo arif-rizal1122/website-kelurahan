@@ -1,253 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Form Pengajuan Surat</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+@extends('layouts.master-without-nav')
+@section('title') Riwayat Pengajuan @endsection
+@section('css')
+    <link href="{{ URL::asset('build/libs/jsvectormap/css/jsvectormap.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css')}}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ URL::asset('build/css/sub.menu.pengajuan.surat.min.css') }}" rel="stylesheet" type="text/css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ URL::asset('build/css/custom.formulir.warga.css') }}">
     <style>
-        :root {
-            --primary-color: #4361ee;
-            --primary-hover: #3a56d4;
-            --light-bg: #f8f9fa;
-            --border-radius: 10px;
-            --shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        .animate__fadeIn {
+            animation-duration: 0.5s;
+            animation-name: fadeIn;
         }
-
-        body {
-            background-color: #f0f3f9;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
-
-        .page-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        .card {
-            border: none;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .card:hover {
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-        }
-
-        .card-header {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            padding: 1.5rem;
-        }
-
-        .form-header {
-            background: linear-gradient(45deg, var(--primary-color), #5e7ce2);
-            color: white;
-            border-bottom: none;
-        }
-
-        .card-body {
-            padding: 2rem;
-        }
-
-        .form-label {
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            color: #444;
-        }
-
-        .form-control, .form-select {
-            padding: 0.75rem 1rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            transition: all 0.2s;
-        }
-
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-            border-color: var(--primary-hover);
-            transform: translateY(-2px);
-        }
-
-        .btn-outline-secondary:hover {
-            background-color: #f0f0f0;
-            transform: translateY(-2px);
-        }
-
-        .status-badge {
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-weight: 500;
-        }
-
-        .accordion {
-            border-radius: var(--border-radius);
-            overflow: hidden;
-        }
-
-        .accordion-item {
-            border: none;
-            margin-bottom: 0.5rem;
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .accordion-button {
-            padding: 1rem 1.5rem;
-            font-weight: 500;
-            background-color: rgba(67, 97, 238, 0.03);
-        }
-
-        .accordion-button:not(.collapsed) {
-            background-color: rgba(67, 97, 238, 0.08);
-            color: var(--primary-color);
-        }
-
-        .accordion-button:focus {
-            box-shadow: none;
-            border-color: transparent;
-        }
-
-        .alert {
-            border-radius: 8px;
-            border: none;
-        }
-
-        .alert-info {
-            background-color: rgba(67, 97, 238, 0.08);
-            color: #2d3b80;
-        }
-
-        .floating-container {
-            position: relative;
-        }
-
-        .floating-label {
-            position: absolute;
-            top: 0;
-            left: 12px;
-            transform: translateY(-50%);
-            background-color: white;
-            padding: 0 8px;
-            font-size: 0.8rem;
-            color: #666;
-            pointer-events: none;
-        }
-
-        .step-indicator {
-            display: flex;
-            margin: 2rem 0;
-        }
-
-        .step {
-            flex: 1;
-            text-align: center;
-            position: relative;
-        }
-
-        .step::before {
-            content: '';
-            height: 2px;
-            background-color: #e0e0e0;
-            position: absolute;
-            top: 15px;
-            left: 0;
-            right: 0;
-            z-index: 1;
-        }
-
-        .step:first-child::before {
-            left: 50%;
-        }
-
-        .step:last-child::before {
-            right: 50%;
-        }
-
-        .step-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background-color: white;
-            border: 2px solid #e0e0e0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
-
-        .step-text {
-            margin-top: 0.5rem;
-            font-size: 0.85rem;
-            color: #666;
-        }
-
-        .step.active .step-icon {
-            border-color: var(--primary-color);
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .step.active .step-text {
-            color: var(--primary-color);
-            font-weight: 500;
-        }
-
-        .file-upload {
-            border: 2px dashed #e0e0e0;
-            border-radius: 8px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .file-upload:hover {
-            border-color: var(--primary-color);
-        }
-
-        .file-upload i {
-            font-size: 2rem;
-            color: #999;
-            margin-bottom: 1rem;
-        }
-
-        #file_pendukung {
-            display: none;
+    
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+    
+            to {
+                opacity: 1;
+            }
         }
     </style>
-</head>
-<body>
+@endsection
+
+@section('content')
+<div class="page-header bg-light py-5 animate__animated animate__fadeIn">
+    <div class="container">
+        <div class="d-flex flex-column align-items-start">
+            <a href="{{ route('warga.menu') }}" class="logo d-flex align-items-center mb-2 text-decoration-none">
+                <img src="assets/img/logo.png" alt="" height="30" class="me-2">
+                <h1 class="sitename text-primary fw-bold mb-0">SMART<b>LURAH</b></h1>
+            </a>
+            <p class="text-muted fw-semibold mb-0">Form Pengisian Formulir</p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
     <div class="page-container">
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
+                        <i class='bx bx-check-circle fs-5 align-middle me-2'></i> {{ session('success') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
@@ -256,7 +55,7 @@
                     <div class="card-header form-header">
                         <div class="d-flex align-items-center">
                             <div class="icon-wrapper bg-white bg-opacity-25 p-2 rounded-circle me-3">
-                                <i class="bi bi-file-earmark-text fs-4"></i>
+                                <i class='bx bxs-file-doc fs-4'></i>
                             </div>
                             <div>
                                 <h4 class="mb-0">Form Pengajuan Surat</h4>
@@ -267,117 +66,191 @@
 
                     <div class="card-body">
 
-                        <form id="formPengajuanSurat" enctype="multipart/form-data" method="POST" action="{{ route('warga.pengajuan') }}" enctype="multipart/form-data">
+                        <form id="formPengajuanSurat" method="POST" action="{{ route('warga.pengajuan') }}" enctype="multipart/form-data">
                             @csrf
-                            <div class="row g-4">
-                                <div class="col-md-6">
-                                    <h5 class="text-primary mb-4">Informasi Pemohon</h5>
 
-                                    <div class="mb-4">
-                                        <label for="tanggal_pengajuan" class="form-label">Tanggal Pengajuan</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text bg-white">
-                                                <i class="bi bi-calendar-event"></i>
+                            <div class="container">
+                                <div class="row g-4">
+                                  <!-- Kolom Kiri -->
+                                  <div class="col-md-6">
+                                    <div class="card shadow-sm">
+                                      <div class="card-header bg-white">
+                                        <h5 class="text-primary mb-0">Informasi Pemohon</h5>
+                                      </div>
+                                      <div class="card-body">
+                                        <!-- Tanggal Pengajuan -->
+                                        <div class="mb-3">
+                                          <label for="tanggal_pengajuan" class="form-label">Tanggal Pengajuan</label>
+                                          <div class="input-group">
+                                            <span class="input-group-text">
+                                              <i class='bx bx-calendar-event'></i>
                                             </span>
                                             <input type="text" class="form-control bg-light" id="tanggal_pengajuan" value="<?php echo date('d-m-Y H:i'); ?>" readonly name="tanggal_pengajuan">
+                                          </div>
+                                          <small class="text-muted fst-italic">Tanggal diisi otomatis oleh sistem</small>
                                         </div>
-                                        <small class="text-muted fst-italic">Tanggal diisi otomatis oleh sistem</small>
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <label class="form-label d-block">File Pendukung</label>
-                                        <div class="file-upload @error('file_pendukung') is-invalid @enderror" id="fileUploadWrapper">
-                                            <i class="bi bi-cloud-arrow-up"></i>
-                                            <h6>Unggah file pendukung</h6>
-                                            <p class="text-muted small">Klik atau seret file di sini (PDF, JPG, PNG; Maks: 2MB)</p>
+                                        
+                                        <!-- File Pendukung -->
+                                        <div class="mb-3">
+                                          <label class="form-label">File Pendukung</label>
+                                          <div class="mb-2">
+                                            <button type="button" class="btn btn-sm btn-info text-white w-100" data-bs-toggle="modal" data-bs-target="#filePendukungModal">
+                                              <i class='bx bx-info-circle me-1'></i> Klik untuk informasi file pendukung
+                                            </button>
+                                          </div>
+                                          <div class="border rounded p-3 text-center bg-light">
+                                            <i class='bx bx-cloud-upload fs-3'></i>
+                                            <h6 class="mt-2">Unggah file pendukung</h6>
+                                            <p class="text-muted small">Klik atau seret file di sini</p>
                                             <input class="form-control" type="file" id="file_pendukung" name="file_pendukung">
+                                          </div>
                                         </div>
-                                        @error('file_pendukung')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                        
+                                        <!-- Status -->
+                                       
+                                      </div>
                                     </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <h5 class="text-primary mb-4">Detail Pengajuan</h5>
-
-                                    <div class="mb-4">
-                                        <label for="jenis_surat_id" class="form-label">Jenis Surat <span class="text-danger">*</span></label>
-                                        <div class="input-group">
-                                            <span class="input-group-text bg-white">
-                                                <i class="bi bi-envelope-paper"></i>
+                                  </div>
+                                  
+                                  <!-- Kolom Kanan -->
+                                  <div class="col-md-6">
+                                    <div class="card shadow-sm">
+                                      <div class="card-header bg-white">
+                                        <h5 class="text-primary mb-0">Detail Pengajuan</h5>
+                                      </div>
+                                      <div class="card-body">
+                                        <!-- Jenis Surat -->
+                                        <div class="mb-3">
+                                          <label for="jenis_surat_id" class="form-label">
+                                            Jenis Surat <span class="text-danger">*</span>
+                                          </label>
+                                          <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class='bx bxs-envelope-open'></i>
                                             </span>
                                             <select class="form-select @error('jenis_surat_id') is-invalid @enderror" id="jenis_surat_id" name="jenis_surat_id" required>
                                                 <option value="" selected disabled>Pilih jenis surat</option>
                                                 @foreach ($jenisSurats as $jenisSurat)
-                                                <option value="{{ $jenisSurat->id }}" {{ old('jenis_surat_id') == $jenisSurat->id ? 'selected' : '' }}>{{ $jenisSurat->nama }}</option>
+                                                    <option value="{{ $jenisSurat->id }}" {{ old('jenis_surat_id') == $jenisSurat->id ? 'selected' : '' }}>
+                                                        {{ $jenisSurat->nama }}
+                                                    </option>
                                                 @endforeach
                                             </select>
+                                            @error('jenis_surat_id')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
-                                        @error('jenis_surat_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <label for="status" class="form-label">Status</label>
-                                        <input type="text" class="form-control bg-light" id="status" value="Diajukan" readonly name="status">
-                                        <small class="text-muted fst-italic">Status awal pengajuan</small>
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <label for="keperluan" class="form-label">Keperluan <span class="text-danger">*</span></label>
-                                        <div class="input-group">
-                                            <span class="input-group-text bg-white">
-                                                <i class="bi bi-chat-left-text"></i>
-                                            </span>
-                                            <textarea class="form-control @error('keperluan') is-invalid @enderror" id="keperluan" name="keperluan" rows="4" placeholder="Jelaskan keperluan pengajuan surat Anda secara detail" required>{{ old('keperluan') }}</textarea>
                                         </div>
-                                        @error('keperluan')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+
+                                        <div class="mb-3">
+                                            <label for="status" class="form-label">Status</label>
+                                            <input type="text" class="form-control bg-light" id="statuss" value="Diajukan" readonly name="status">
+                                            <small class="text-muted fst-italic">Status awal pengajuan</small>
+                                          </div>
+                                        
+                                        <!-- Keterangan Pengajuan -->
+                                        
+                                      </div>
                                     </div>
-                                </div>
+                                  </div>
 
-                                <input type="hidden" id="user_id" name="user_id">
-                                <input type="hidden" id="tanggal_diproses" name="tanggal_diproses">
-                                <input type="hidden" id="tanggal_selesai" name="tanggal_selesai">
-                                <input type="hidden" id="keterangan_penolakan" name="keterangan_penolakan">
 
-                                <div class="col-12">
+                                  <div class="mb-3">
+                                    <label class="form-label fw-semibold">Keterangan Pengajuan</label>
+                                    <div class="alert alert-light border mb-3">
+                                      <p class="small mb-0 text-muted">
+                                        Silakan lengkapi keterangan ini untuk memperjelas pengajuan Anda.
+                                        Informasi yang lengkap akan mempercepat proses persetujuan.
+                                      </p>
+                                    </div>
+                                    
+                                    <!-- Apa -->
+                                    <div class="mb-3">
+                                      <label for="apa" class="form-label">Apa <span class="text-danger">*</span></label>
+                                      <textarea class="form-control" id="apa" name="apa" rows="2" placeholder="Apa yang Anda ajukan?" required data-bs-toggle="modal" data-bs-target="#apaModal"></textarea>
+                                    </div>
+                                    
+                                    <!-- Mengapa -->
+                                    <div class="mb-3">
+                                      <label for="mengapa" class="form-label">Mengapa <span class="text-danger">*</span></label>
+                                      <textarea class="form-control" id="mengapa" name="mengapa" rows="2" placeholder="Mengapa Anda mengajukan surat ini?" required data-bs-toggle="modal" data-bs-target="#mengapaModal"></textarea>
+                                    </div>
+                                    
+                                    
+                                    </div>
+                                  </div>
+                                  <!-- Kapan dan Dimana -->
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <div class="mb-3">
+                                        <label for="kapan" class="form-label">Kapan</label>
+                                        <textarea class="form-control" id="kapan" name="kapan" rows="2" placeholder="Kapan peristiwa terjadi?" required data-bs-toggle="modal" data-bs-target="#kapanModal"></textarea>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="mb-3">
+                                        <label for="di_mana" class="form-label">Di Mana</label>
+                                        <textarea class="form-control" id="di_mana" name="di_mana" rows="2" placeholder="Lokasi peristiwa" required data-bs-toggle="modal" data-bs-target="#diManaModal"></textarea>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  
+                                  <!-- Siapa dan Bagaimana -->
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <div class="mb-3">
+                                        <label for="siapa" class="form-label">Siapa</label>
+                                        <textarea class="form-control" id="siapa" name="siapa" rows="2" placeholder="Pihak yang terlibat" required data-bs-toggle="modal" data-bs-target="#siapaModal"></textarea>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="mb-3">
+                                        <label for="bagaimana" class="form-label">Bagaimana</label>
+                                        <textarea class="form-control" id="bagaimana" name="bagaimana" rows="2" placeholder="Proses/kronologi" required data-bs-toggle="modal" data-bs-target="#bagaimanaModal"></textarea>
+                                      </div>
+                                    </div>
+                                  
+                                  <!-- Hidden fields -->
+                                  <input type="hidden" id="user_id" name="user_id">
+                                  <input type="hidden" id="tanggal_diproses" name="tanggal_diproses">
+                                  <input type="hidden" id="tanggal_selesai" name="tanggal_selesai">
+                                  <input type="hidden" id="keterangan_penolakan" name="keterangan_penolakan">
+                                  
+                                  <!-- Info Alert -->
+                                  <div class="col-12">
                                     <div class="alert alert-info d-flex" role="alert">
-                                        <i class="bi bi-info-circle-fill me-3 fs-4"></i>
-                                        <div>
-                                            <strong>Informasi Proses Pengajuan:</strong>
-                                            <p class="mb-0">Pengajuan Anda akan diproses dalam waktu 1-3 hari kerja. Anda akan menerima notifikasi ketika status pengajuan berubah.</p>
-                                        </div>
+                                      <i class='bx bx-info-circle fs-5 align-middle me-3'></i>
+                                      <div>
+                                        <strong>Informasi Proses Pengajuan:</strong>
+                                        <p class="mb-0">Pengajuan Anda akan diproses dalam waktu 1-3 hari kerja. Anda akan menerima notifikasi ketika status pengajuan berubah.</p>
+                                      </div>
                                     </div>
-                                </div>
-
-                                <div class="col-12 mt-4">
-                                    <div class="d-flex gap-3">
-                                        <button type="submit" class="btn btn-warning flex-grow-sm-1" id="btnKirimPengajuan">
-                                            <i class="bi bi-send me-2"></i>Kirim
-                                        </button>
-                                        <button type="reset" class="btn btn-outline-secondary">
-                                            <i class="bi bi-x-circle me-2"></i>Reset
-                                        </button>
-                                        <a href="{{ route('warga.menu') }}" class="btn btn-primary">
-                                            <i class="bi bi-arrow-left-circle me-2"></i>Kembali
-                                        </a>
+                                  </div>
+                                  
+                                  <!-- Buttons -->
+                                  <div class="col-12 mb-4">
+                                    <div class="d-flex gap-2">
+                                      <button type="submit" class="btn btn-warning" id="btnKirimPengajuan">
+                                        <i class='bx bx-send me-2'></i>Kirim
+                                      </button>
+                                      <button type="reset" class="btn btn-outline-secondary">
+                                        <i class='bx bx-x-circle me-2'></i>Reset
+                                      </button>
+                                      <a href="{{ route('warga.menu') }}" class="btn btn-primary ms-auto">
+                                        <i class='bx bx-arrow-back-circle me-2'></i>Kembali
+                                      </a>
                                     </div>
+                                  </div>
                                 </div>
-                            </div>
+                              </div>
                         </form>
-
-
                     </div>
                 </div>
 
                 <div class="card mb-4">
                     <div class="card-header bg-white">
                         <h5 class="mb-0 d-flex align-items-center">
-                            <i class="bi bi-lightbulb text-warning me-2"></i>
+                            <i class='bx bx-bulb text-warning me-2'></i>
                             Panduan Pengajuan
                         </h5>
                     </div>
@@ -386,7 +259,7 @@
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
-                                        <i class="bi bi-check-circle me-2 text-success"></i>
+                                        <i class='bx bx-check-circle me-2 text-success'></i>
                                         Persyaratan Pengajuan
                                     </button>
                                 </h2>
@@ -394,15 +267,15 @@
                                     <div class="accordion-body">
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item d-flex align-items-center">
-                                                <i class="bi bi-check-circle-fill text-success me-3"></i>
+                                                <i class='bx bx-check-circle-alt text-success me-3'></i>
                                                 Identitas warga harus terdaftar dalam sistem
                                             </li>
                                             <li class="list-group-item d-flex align-items-center">
-                                                <i class="bi bi-check-circle-fill text-success me-3"></i>
+                                                <i class='bx bx-check-circle-alt text-success me-3'></i>
                                                 Pastikan data yang diisi sudah benar
                                             </li>
                                             <li class="list-group-item d-flex align-items-center">
-                                                <i class="bi bi-check-circle-fill text-success me-3"></i>
+                                                <i class='bx bx-check-circle-alt text-success me-3'></i>
                                                 Lampirkan file pendukung (jika diperlukan)
                                             </li>
                                         </ul>
@@ -412,7 +285,7 @@
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
-                                        <i class="bi bi-arrow-repeat me-2 text-primary"></i>
+                                        <i class='bx bx-refresh me-2 text-primary'></i>
                                         Proses Penyelesaian
                                     </button>
                                 </h2>
@@ -444,67 +317,62 @@
         </div>
     </div>
 
+
+
+    @include('dashboardwarga.modalFormulir')
+    
+@endsection
+
+@section('script')
+    <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
+    <script src="{{ URL::asset('build/libs/swiper/swiper-bundle.min.js')}}"></script>
+    <script src="{{ URL::asset('build/js/app.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
     <script>
-       document.getElementById('formPengajuanSurat').addEventListener('submit', function(event) {
+        document.addEventListener('DOMContentLoaded', function() {
+            // File Upload Handler
+            const fileInput = document.getElementById('file_pendukung');
+            const fileUploadWrapper = document.getElementById('fileUploadWrapper');
+            fileInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    const fileName = this.files[0].name;
+                    const fileSize = Math.round(this.files[0].size / 1024); // KB
 
-            const btnKirimPengajuan = document.getElementById('btnKirimPengajuan');
-            btnKirimPengajuan.classList.remove('btn-warning');
-            btnKirimPengajuan.classList.add('btn-primary');
-            btnKirimPengajuan.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i>Mengirim...';
+                    fileUploadWrapper.classList.add('has-file');
+                    // Menampilkan nama file
+                    const infoElement = document.createElement('p');
+                    infoElement.className = 'file-info';
+                    infoElement.textContent = `File: ${fileName} (${fileSize} KB)`;
+                    // Hapus info sebelumnya jika ada
+                    const oldInfo = fileUploadWrapper.querySelector('.file-info');
+                    if (oldInfo) {
+                        fileUploadWrapper.removeChild(oldInfo);
+                    }
+                    fileUploadWrapper.appendChild(infoElement);
+                } else {
+                    fileUploadWrapper.classList.remove('has-file');
+                    const oldInfo = fileUploadWrapper.querySelector('.file-info');
+                    if (oldInfo) {
+                        fileUploadWrapper.removeChild(oldInfo);
+                    }
+                }
+            });
 
+            // Show tooltip for info buttons
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+ 
+            document.getElementById('fileUploadWrapper').addEventListener('click', function(e) {
+                // Only show the modal if they click on the wrapper, not specifically the file input
+                if (e.target !== fileInput) {
+                    const modal = new bootstrap.Modal(document.getElementById('filePendukungModal'));
+                    modal.show();
+                }
+            });
+            
         });
-
-
-    // Get file upload elements
-const fileUploadWrapper = document.getElementById('fileUploadWrapper');
-const fileInput = document.getElementById('file_pendukung');
-
-// Make the custom file upload area clickable
-fileUploadWrapper.addEventListener('click', function() {
-    fileInput.click();
-});
-
-// Show file name when selected
-fileInput.addEventListener('change', function() {
-    if (this.files && this.files[0]) {
-        const fileName = this.files[0].name;
-        fileUploadWrapper.innerHTML = `
-            <i class="bi bi-file-earmark-check text-success"></i>
-            <h6>${fileName}</h6>
-            <p class="text-muted small">Klik untuk mengubah file</p>
-        `;
-    }
-});
-
-// Optional: Add drag and drop functionality
-fileUploadWrapper.addEventListener('dragover', function(e) {
-    e.preventDefault();
-    this.classList.add('border-primary');
-});
-
-fileUploadWrapper.addEventListener('dragleave', function(e) {
-    e.preventDefault();
-    this.classList.remove('border-primary');
-});
-
-fileUploadWrapper.addEventListener('drop', function(e) {
-    e.preventDefault();
-    this.classList.remove('border-primary');
-    
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-        fileInput.files = e.dataTransfer.files;
-        const fileName = e.dataTransfer.files[0].name;
-        fileUploadWrapper.innerHTML = `
-            <i class="bi bi-file-earmark-check text-success"></i>
-            <h6>${fileName}</h6>
-            <p class="text-muted small">Klik untuk mengubah file</p>
-        `;
-    }
-});
     </script>
-
-
-</body>
-</html>
+@endsection

@@ -1,11 +1,10 @@
-@extends('layouts.master-without-nav')
-@section('title')
+<?php $__env->startSection('title'); ?>
     Pengajuan Surat Diproses
-@endsection
-@section('css')
-<link href="{{ URL::asset('build/css/email.pages.css') }}" rel="stylesheet" type="text/css" />
-@endsection
-@section('content')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('css'); ?>
+<link href="<?php echo e(URL::asset('build/css/email.pages.css')); ?>" rel="stylesheet" type="text/css" />
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
     <div class="auth-page">
         <div class="container-fluid p-0">
             <div class="row justify-content-center align-items-center min-vh-100">
@@ -26,7 +25,7 @@
                             </div>
                             
                             <div class="mt-3">
-                                <p class="mb-3"><span class="fw-bold">Yth. Bapak/Ibu</span> {{ $nama_warga }},</p>
+                                <p class="mb-3"><span class="fw-bold">Yth. Bapak/Ibu</span> <?php echo e($nama_warga); ?>,</p>
                                 <p class="mb-3">
                                     Kami informasikan bahwa pengajuan surat Anda dengan detail sebagai berikut sedang dalam proses:
                                 </p>
@@ -34,11 +33,11 @@
                                 <div class="detail-list mb-4">
                                     <div class="detail-item">
                                         <span class="detail-label">Jenis Surat:</span>
-                                        <span class="detail-value">{{ $jenis_surat }}</span>
+                                        <span class="detail-value"><?php echo e($jenis_surat); ?></span>
                                     </div>
                                     <div class="detail-item">
                                         <span class="detail-label">Tanggal Pengajuan:</span>
-                                        <span class="detail-value">{{ $tanggal_pengajuan }}</span>
+                                        <span class="detail-value"><?php echo e($tanggal_pengajuan); ?></span>
                                     </div>
                                 </div>
                                 
@@ -52,7 +51,7 @@
                             </div>
                             
                             <div class="mt-4 text-center">
-                                <a href="{{ route('warga.login.form') }}" class="btn btn-primary w-100">
+                                <a href="<?php echo e(route('warga.login.form')); ?>" class="btn btn-primary w-100">
                                     <i class="bx bx-menu me-2"></i>Kembali ke Menu Utama
                                 </a>
                             </div>
@@ -62,4 +61,5 @@
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.master-without-nav', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/arifrizal/Desktop/bckup/website-kelurahan/resources/views/emails/pengajuan_diproses.blade.php ENDPATH**/ ?>

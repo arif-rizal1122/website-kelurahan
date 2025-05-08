@@ -36,10 +36,7 @@
                                         <span class="detail-label">Jenis Surat:</span>
                                         <span class="detail-value">{{ $jenis_surat }}</span>
                                     </div>
-                                    <div class="detail-item">
-                                        <span class="detail-label">Nomor Pengajuan:</span>
-                                        <span class="detail-value">{{ $nomor_pengajuan }}</span>
-                                    </div>
+                                   
                                     <div class="detail-item">
                                         <span class="detail-label">Tanggal Pengajuan:</span>
                                         <span class="detail-value">{{ $tanggal_pengajuan }}</span>

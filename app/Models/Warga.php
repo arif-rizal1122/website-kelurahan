@@ -22,6 +22,9 @@ class Warga extends Authenticatable implements MustVerifyEmail
         'email', 
         'password',
         'alamat',
+        'jenis_kelamin',
+        'agama',
+        'pekerjaan',
         'email_verified_at',
     ];
 

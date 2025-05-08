@@ -1,24 +1,24 @@
-@extends('layouts.master')
-@section('title')
+<?php $__env->startSection('title'); ?>
     Data Pengajuan Surat
-@endsection
-@section('css')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('css'); ?>
     <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
 
   
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('content')
-    @component('components.breadcrumb')
-        @slot('li_1')
+<?php $__env->startSection('content'); ?>
+    <?php $__env->startComponent('components.breadcrumb'); ?>
+        <?php $__env->slot('li_1'); ?>
             Pengajuan Surat
-        @endslot
-        @slot('title')
-            Data Pengajuan Surat {{ $statusName }}
-        @endslot
-    @endcomponent
+        <?php $__env->endSlot(); ?>
+        <?php $__env->slot('title'); ?>
+            Data Pengajuan Surat <?php echo e($statusName); ?>
+
+        <?php $__env->endSlot(); ?>
+    <?php echo $__env->renderComponent(); ?>
 
     <div class="row">
         <div class="col-12">
@@ -26,28 +26,28 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div>
-                        @php
+                        <?php
                             $countDiajukan = isset($allPengajuan) ? $allPengajuan->where('status', 'diajukan')->count() : 0;
                             $countDiproses = isset($allPengajuan) ? $allPengajuan->where('status', 'diproses')->count() : 0;
                             $countSelesai = isset($allPengajuan) ? $allPengajuan->where('status', 'selesai')->count() : 0;
                             $countDitolak = isset($allPengajuan) ? $allPengajuan->where('status', 'ditolak')->count() : 0;
-                        @endphp
+                        ?>
                         
-                        <a href="{{ route('pengajuan-surat.status', 'diajukan') }}" class="btn btn-sm btn-outline-warning me-1">
+                        <a href="<?php echo e(route('pengajuan-surat.status', 'diajukan')); ?>" class="btn btn-sm btn-outline-warning me-1">
                             <i class="bx bxs-inbox me-2"></i> Diajukan
-                            <span class="badge bg-warning text-black">{{ $countDiajukan }}</span>
+                            <span class="badge bg-warning text-black"><?php echo e($countDiajukan); ?></span>
                         </a>
-                        <a href="{{ route('pengajuan-surat.status', 'diproses') }}" class="btn btn-sm btn-outline-info me-2">
+                        <a href="<?php echo e(route('pengajuan-surat.status', 'diproses')); ?>" class="btn btn-sm btn-outline-info me-2">
                             <i class="bx bx-loader-circle me-2"></i> Diproses
-                            <span class="badge bg-info text-black">{{ $countDiproses }}</span>
+                            <span class="badge bg-info text-black"><?php echo e($countDiproses); ?></span>
                         </a>
-                        <a href="{{ route('pengajuan-surat.status', 'selesai') }}" class="btn btn-sm btn-outline-success me-2">
+                        <a href="<?php echo e(route('pengajuan-surat.status', 'selesai')); ?>" class="btn btn-sm btn-outline-success me-2">
                             <i class="bx bx-check-double me-2"></i> Selesai
-                            <span class="badge bg-success text-black">{{ $countSelesai }}</span>
+                            <span class="badge bg-success text-black"><?php echo e($countSelesai); ?></span>
                         </a>
-                        <a href="{{ route('pengajuan-surat.status', 'ditolak') }}" class="btn btn-sm btn-outline-secondary">
+                        <a href="<?php echo e(route('pengajuan-surat.status', 'ditolak')); ?>" class="btn btn-sm btn-outline-secondary">
                             <i class="bx bx-x-circle me-2"></i> Ditolak
-                            <span class="badge bg-secondary text-black">{{ $countDitolak }}</span>
+                            <span class="badge bg-secondary text-black"><?php echo e($countDitolak); ?></span>
                         </a>
                     </div>
                 </div>
@@ -66,13 +66,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($pengajuan as $pengajuanSurat)
+                                <?php $__currentLoopData = $pengajuan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pengajuanSurat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
-                                        <td>{{ $pengajuanSurat->warga->nama ?? '-' }}</td>
-                                        <td>{{ $pengajuanSurat->jenisSurat->nama ?? '-' }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($pengajuanSurat->tanggal_pengajuan)->format('d-m-Y') }}</td>
+                                        <td><?php echo e($pengajuanSurat->warga->nama ?? '-'); ?></td>
+                                        <td><?php echo e($pengajuanSurat->jenisSurat->nama ?? '-'); ?></td>
+                                        <td><?php echo e(\Carbon\Carbon::parse($pengajuanSurat->tanggal_pengajuan)->format('d-m-Y')); ?></td>
                                         <td>
-                                            @php
+                                            <?php
                                                 $statusClass = '';
                                                 $statusIcon = '';
                                                 
@@ -89,76 +89,77 @@
                                                     $statusClass = 'status-ditolak';
                                                     $statusIcon = 'bx bx-x-circle';
                                                 }
-                                            @endphp
+                                            ?>
                                             
-                                            <span class="status-badge {{ $statusClass }}">
-                                                <i class="{{ $statusIcon }}"></i> {{ $pengajuanSurat->status->value }}
+                                            <span class="status-badge <?php echo e($statusClass); ?>">
+                                                <i class="<?php echo e($statusIcon); ?>"></i> <?php echo e($pengajuanSurat->status->value); ?>
+
                                             </span>
                                         </td>
-                                        <td>{{ $pengajuanSurat->user->name ?? '-' }}</td>
+                                        <td><?php echo e($pengajuanSurat->user->name ?? '-'); ?></td>
                                         <td>
-                                            @if ($pengajuanSurat->file_pendukung)
-                                                <a href="{{ asset('storage/' . $pengajuanSurat->file_pendukung) }}"
+                                            <?php if($pengajuanSurat->file_pendukung): ?>
+                                                <a href="<?php echo e(asset('storage/' . $pengajuanSurat->file_pendukung)); ?>"
                                                    target="_blank"
                                                    class="text-primary"> 
                                                     <i class="bx bxs-file-pdf bx-sm align-middle"></i> 
                                                 </a>
-                                            @else
+                                            <?php else: ?>
                                                 <span class="text-muted">Tidak Ada</span>
-                                            @endif
+                                            <?php endif; ?>
                                         </td>
 
                                         <td>
                                             <div class="d-flex gap-1 overflow-auto">
-                                                <a href="{{ route('pengajuan-surat.show', $pengajuanSurat->id) }}"
+                                                <a href="<?php echo e(route('pengajuan-surat.show', $pengajuanSurat->id)); ?>"
                                                     class="btn btn-sm btn-info" data-bs-toggle="tooltip" title="Lihat Detail">
                                                     <i class="bx bx-detail"></i> Detail
                                                 </a>
                                         
-                                                @if ($pengajuanSurat->status == \App\Enums\Status::DIAJUKAN)
+                                                <?php if($pengajuanSurat->status == \App\Enums\Status::DIAJUKAN): ?>
                                                     <button type="button" class="btn btn-sm btn-warning process-btn" 
-                                                        data-id="{{ $pengajuanSurat->id }}"
-                                                        data-status="{{ \App\Enums\Status::DIPROSES }}"
+                                                        data-id="<?php echo e($pengajuanSurat->id); ?>"
+                                                        data-status="<?php echo e(\App\Enums\Status::DIPROSES); ?>"
                                                         data-bs-toggle="tooltip" title="Proses Pengajuan">
                                                         <i class="bx bx-task"></i> Proses
                                                     </button>
                                                     
-                                                    <a href="{{ route('pengajuan-surat.reject', $pengajuanSurat->id) }}" 
+                                                    <a href="<?php echo e(route('pengajuan-surat.reject', $pengajuanSurat->id)); ?>" 
                                                         class="btn btn-sm btn-secondary reject-btn"
                                                         data-bs-toggle="tooltip" title="Tolak Pengajuan">
                                                         <i class="bx bx-x-circle"></i> Tolak
                                                     </a>
-                                                @elseif ($pengajuanSurat->status == \App\Enums\Status::DIPROSES)
+                                                <?php elseif($pengajuanSurat->status == \App\Enums\Status::DIPROSES): ?>
                                                     <button type="button" class="btn btn-sm btn-success complete-btn" 
-                                                        data-id="{{ $pengajuanSurat->id }}"
-                                                        data-status="{{ \App\Enums\Status::SELESAI }}"
+                                                        data-id="<?php echo e($pengajuanSurat->id); ?>"
+                                                        data-status="<?php echo e(\App\Enums\Status::SELESAI); ?>"
                                                         data-bs-toggle="tooltip" title="Selesaikan Pengajuan">
                                                         <i class="bx bx-check-circle"></i> Selesaikan
                                                     </button>
-                                                @elseif ($pengajuanSurat->status == \App\Enums\Status::SELESAI)
-                                                    <a href="{{ route('pengajuan-surat.print', $pengajuanSurat->id) }}" class="btn btn-primary btn-sm">
+                                                <?php elseif($pengajuanSurat->status == \App\Enums\Status::SELESAI): ?>
+                                                    <a href="<?php echo e(route('pengajuan-surat.print', $pengajuanSurat->id)); ?>" class="btn btn-primary btn-sm">
                                                         <i class="bx bx-printer"></i> Cetak Word
                                                     </a>
-                                                @elseif ($pengajuanSurat->status == \App\Enums\Status::DITOLAK)
+                                                <?php elseif($pengajuanSurat->status == \App\Enums\Status::DITOLAK): ?>
                                                     <button type="button" class="btn btn-sm btn-secondary" disabled>
                                                         <i class="bx bx-info-circle"></i> Ditolak
                                                     </button>
-                                                @endif
+                                                <?php endif; ?>
 
-                                                @auth
-                                                @if (Auth::user()->role === 'admin')
+                                                <?php if(auth()->guard()->check()): ?>
+                                                <?php if(Auth::user()->role === 'admin'): ?>
                                                     <button type="button" class="btn btn-sm btn-danger delete-btn" 
-                                                        data-id="{{ $pengajuanSurat->id }}"
+                                                        data-id="<?php echo e($pengajuanSurat->id); ?>"
                                                         data-bs-toggle="tooltip" title="Hapus Pengajuan">
                                                         <i class="bx bx-trash"></i> Hapus
                                                     </button>
-                                                @endif
-                                                @endauth
+                                                <?php endif; ?>
+                                                <?php endif; ?>
 
                                             </div>
                                         </td>
                                     </tr>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </tbody>
                         </table>
                     </div>
@@ -191,18 +192,18 @@
 
     <!-- Form processing untuk status update -->
     <form id="process-form" action="" method="POST" style="display: none;">
-        @csrf
-        @method('PATCH')
+        <?php echo csrf_field(); ?>
+        <?php echo method_field('PATCH'); ?>
     </form>
 
     <!-- Form delete -->
     <form id="delete-form" action="" method="POST" style="display: none;">
-        @csrf
-        @method('DELETE')
+        <?php echo csrf_field(); ?>
+        <?php echo method_field('DELETE'); ?>
     </form>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
+<?php $__env->startSection('script'); ?>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -214,8 +215,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
+    <script src="<?php echo e(URL::asset('build/js/pages/datatables.init.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('build/js/app.js')); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
@@ -307,31 +308,32 @@
             });
     </script>
     
-    @if(session('success'))
+    <?php if(session('success')): ?>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil!',
-                text: '{{ session('success') }}',
+                text: '<?php echo e(session('success')); ?>',
                 timer: 3000,
                 showConfirmButton: false
             });
         });
     </script>
-    @endif
+    <?php endif; ?>
     
-    @if(session('error'))
+    <?php if(session('error')): ?>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({
                 icon: 'error',
                 title: 'Error!',
-                text: '{{ session('error') }}',
+                text: '<?php echo e(session('error')); ?>',
                 timer: 3000,
                 showConfirmButton: false
             });
         });
     </script>
-    @endif
-@endsection
+    <?php endif; ?>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/arifrizal/Desktop/bckup/website-kelurahan/resources/views/pengajuan/pengajuanSurat/show_by_status.blade.php ENDPATH**/ ?>

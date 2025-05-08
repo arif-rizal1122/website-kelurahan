@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             AttachmentSeeder::class,
             WargaSeeder::class,
             JenisSuratSeeder::class,
+            KeteranganSeeder::class,
             PengajuanSuratSeeder::class
         ]);
     }

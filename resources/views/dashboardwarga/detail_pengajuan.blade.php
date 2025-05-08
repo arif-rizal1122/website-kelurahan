@@ -2,16 +2,35 @@
 @section('title') Detail Pengajuan @endsection
 @section('css')
 <link rel="stylesheet" href="{{ URL::asset('build/css/sub.menu.pengajuan.surat.min.css') }}" rel="stylesheet" type="text/css">
+<style>
+    .animate__fadeIn {
+        animation-duration: 0.5s;
+        animation-name: fadeIn;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+</style>
 @endsection
+
 @section('content')
-    <div class="page-header animate-fadeIn">
-        <a href="{{ route('warga.riwayat') }}" class="back-button">
-            <i class="bi bi-arrow-left"></i>
-        </a>
-        <h1>
-            <a href="{{ route('warga.menu') }}">Detail Pengajuan Surat</a>
-        </h1>
-        <p class="text-black">Informasi lengkap mengenai pengajuan surat Anda.</p>
+<div class="page-header bg-light py-5 animate__animated animate__fadeIn">
+    <div class="container">
+        <div class="d-flex flex-column align-items-start">
+            <a href="{{ route('warga.menu') }}" class="logo d-flex align-items-center mb-2 text-decoration-none">
+                <img src="{{ URL::asset('assets/img/logo.png') }}" alt="" height="30" class="me-2">
+                <h1 class="sitename text-primary fw-bold mb-0">SMART<b>LURAH</b></h1>
+            </a>
+            <p class="text-muted fw-semibold mb-0">Form Detail Pengajuab</p>
+        </div>
+    </div>
     </div>
 
     <div class="container py-4">

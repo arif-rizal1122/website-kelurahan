@@ -1,0 +1,412 @@
+:root {
+    --primary-color: #4361ee;
+    --primary-hover: #3a56d4;
+    --light-bg: #f8f9fa;
+    --border-radius: 12px; /* Sedikit lebih bulat */
+    --shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Efek shadow yang lebih halus */
+    --transition-duration: 0.3s; /* Durasi transisi yang digunakan */
+}
+
+body {
+    background-color: #f0f3f9;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6; /* Meningkatkan keterbacaan teks */
+}
+
+.page-container {
+    max-width: 1200px; /* Lebar maksimum yang lebih umum */
+    margin: 2rem auto; /* Memberikan ruang atas dan bawah */
+    padding: 1.5rem; /* Padding yang lebih konsisten */
+}
+
+.card {
+    background-color: white; /* Latar belakang putih untuk tampilan bersih */
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform var(--transition-duration) ease-in-out, box-shadow var(--transition-duration) ease-in-out;
+    display: flex; /* Menggunakan flexbox untuk layout yang lebih fleksibel */
+    flex-direction: column; /* Menyusun elemen card secara vertikal */
+}
+
+/* Efek hover yang lebih halus dan jelas */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: var(--light-bg); /* Latar belakang lebih terang */
+    border-bottom: 1px solid #e0e0e0;
+    padding: 1.5rem 2rem; /* Padding horizontal lebih besar */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Untuk menempatkan elemen header dengan baik */
+}
+
+.card-header-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-header {
+    background: linear-gradient(45deg, var(--primary-color), #6a80e2); /* Gradien yang sedikit berbeda */
+    color: white;
+    border-bottom: none;
+    padding: 1.5rem 2rem;
+}
+
+.form-header h2, .form-header h3 {
+    margin: 0; /* Menghilangkan margin default pada heading */
+    font-weight: 500;
+}
+
+.card-body {
+    padding: 2rem;
+    flex-grow: 1; /* Memungkinkan body card untuk mengisi ruang yang tersisa */
+}
+
+.form-group {
+    margin-bottom: 1.5rem; /* Spasi antar form group */
+}
+
+.form-label {
+    display: block; /* Membuat label mengambil seluruh lebar */
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    color: #444;
+}
+
+.form-control, .form-select {
+    display: block; /* Membuat input mengambil seluruh lebar */
+    width: 100%; /* Responsif */
+    padding: 0.8rem 1rem;
+    border: 1px solid #ccc; /* Border yang lebih terlihat */
+    border-radius: 8px;
+    transition: border-color var(--transition-duration) ease-in-out, box-shadow var(--transition-duration) ease-in-out;
+    font-size: 1rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    outline: none; /* Menghilangkan outline default browser */
+    box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25); /* Efek fokus yang lebih modern */
+}
+
+.btn {
+    padding: 0.8rem 1.75rem; /* Padding tombol yang sedikit lebih besar */
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background-color var(--transition-duration) ease-in-out, transform 0.2s;
+    display: inline-flex; /* Untuk penataan ikon di dalam tombol */
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem; /* Jarak antara ikon dan teks */
+    border: 2px solid transparent; /* Untuk efek hover border */
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Efek shadow saat hover */
+}
+
+.btn-outline-secondary {
+    color: #6c757d;
+    border-color: #6c757d;
+    background-color: transparent;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #e0e0e0;
+    border-color: #6c757d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.status-badge {
+    padding: 0.6rem 1.2rem; /* Padding yang lebih proporsional */
+    border-radius: 8px; /* Radius yang sama dengan elemen lain */
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px; /* Sedikit spasi antar huruf */
+}
+
+.accordion {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    border: 1px solid #e0e0e0; /* Menambahkan border untuk tampilan yang lebih terstruktur */
+}
+
+.accordion-item {
+    border-bottom: 1px solid #e0e0e0;
+    background-color: white;
+    border-radius: 0; /* Menghapus border radius individual item */
+    overflow: visible; /* Memastikan konten tidak terpotong saat animasi */
+}
+
+.accordion-item:last-child {
+    border-bottom: none;
+}
+
+.accordion-button {
+    padding: 1.2rem 1.75rem;
+    font-weight: 500;
+    background-color: #f9f9f9; /* Latar belakang netral */
+    border: none;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    transition: background-color var(--transition-duration) ease-in-out, color var(--transition-duration) ease-in-out;
+}
+
+.accordion-button:hover {
+    background-color: #f0f0f0;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.accordion-body {
+    padding: 1.5rem 2rem;
+    background-color: white;
+    border-top: 1px solid #e0e0e0; /* Garis pemisah antara header dan body */
+}
+
+.alert {
+    border-radius: 8px;
+    border: none;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.alert-info {
+    background-color: #e7f3fe;
+    color: #0c5460;
+    border-left: 4px solid #17a2b8; /* Indikator warna yang lebih jelas */
+}
+
+.floating-container {
+    position: relative;
+}
+
+.floating-label {
+    position: absolute;
+    top: 0;
+    left: 12px;
+    transform: translateY(-50%);
+    background-color: white;
+    padding: 0 8px;
+    font-size: 0.9rem; /* Ukuran font yang lebih sesuai */
+    color: #777; /* Warna teks yang sedikit lebih gelap */
+    pointer-events: none;
+    transition: transform 0.2s ease-in-out, font-size 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.form-control:focus + .floating-label,
+.form-control:not(:placeholder-shown) + .floating-label,
+.form-select:focus + .floating-label,
+.form-select:not(:default) + .floating-label {
+    transform: translateY(-150%);
+    font-size: 0.75rem;
+    color: var(--primary-color);
+}
+
+.step-indicator {
+    display: flex;
+    margin: 2rem 0 3rem; /* Ruang bawah yang lebih besar */
+    padding: 0 1rem; /* Padding horizontal */
+    align-items: center;
+    justify-content: space-between; /* Distribusi langkah yang lebih baik */
+}
+
+.step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+}
+
+.step::before {
+    content: '';
+    height: 3px; /* Ketebalan garis yang lebih baik */
+    background-color: #ddd; /* Warna garis yang lebih terang */
+    position: absolute;
+    top: 14px; /* Penyesuaian posisi garis */
+    left: 0;
+    right: 0;
+    z-index: 0; /* Di bawah ikon */
+}
+
+.step:first-child::before {
+    left: 50%;
+}
+
+.step:last-child::before {
+    right: 50%;
+}
+
+.step-icon {
+    width: 36px; /* Ukuran ikon yang sedikit lebih besar */
+    height: 36px;
+    border-radius: 50%;
+    background-color: white;
+    border: 2px solid #ddd; /* Warna border yang sesuai */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.75rem; /* Ruang bawah ikon */
+    position: relative;
+    z-index: 1;
+    font-size: 1rem;
+    color: #777;
+}
+
+.step-text {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.step.active .step-icon {
+    border-color: var(--primary-color);
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.step.active .step-text {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.file-upload {
+    position: relative;
+    border: 2px dashed #ccc; /* Warna border yang lebih netral */
+    border-radius: 8px;
+    padding: 30px; /* Padding yang lebih besar */
+    text-align: center;
+    transition: border-color var(--transition-duration) ease-in-out, background-color var(--transition-duration) ease-in-out;
+    background-color: #f9f9f9; /* Latar belakang yang lebih terang */
+    cursor: pointer;
+}
+
+.file-upload:hover {
+    border-color: var(--primary-color);
+    background-color: #f0f8ff;
+}
+
+.file-upload.has-file {
+    border-color: #28a745;
+    background-color: #e6ffe9;
+}
+
+.file-upload input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-info {
+    margin-top: 15px; /* Ruang atas yang lebih besar */
+    padding: 10px; /* Padding yang lebih besar */
+    background-color: #e9ecef;
+    border-radius: 6px; /* Radius yang lebih umum */
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.invalid-feedback.d-block {
+    display: block;
+    color: #dc3545; /* Warna error yang jelas */
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+}
+
+/* Responsif Design */
+@media (max-width: 768px) {
+    .page-container {
+        padding: 1rem;
+    }
+
+    .card-header {
+        padding: 1rem 1.5rem;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .btn {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
+    }
+
+    .status-badge {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    .accordion-button {
+        padding: 1rem 1.2rem;
+        font-size: 0.95rem;
+    }
+
+    .accordion-body {
+        padding: 1rem 1.5rem;
+    }
+
+    .step-indicator {
+        margin: 1.5rem 0 2rem;
+    }
+
+    .step-text {
+        font-size: 0.8rem;
+    }
+
+    .file-upload {
+        padding: 20px;
+    }
+
+    .file-info {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .step-indicator {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .step::before {
+        display: none; /* Sembunyikan garis pada tampilan mobile vertikal */
+    }
+
+    .step {
+        margin-bottom: 1.5rem;
+    }
+
+    .step:last-child {
+        margin-bottom: 0;
+    }
+}

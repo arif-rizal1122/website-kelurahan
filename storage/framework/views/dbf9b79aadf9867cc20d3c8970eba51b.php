@@ -1,16 +1,15 @@
-@extends('layouts.master')
-@section('title')
+<?php $__env->startSection('title'); ?>
     Profile Pengguna
-@endsection
-@section('css')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('css'); ?>
     <!-- Include Box Icons CSS -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-@endsection
-@section('content')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
     <div class="container-fluid">
         <!-- Profile Header -->
         <div class="profile-header mb-4">
-            <img src="{{ URL::asset('build/images/profile-bg.jpg') }}" class="img-fluid w-100 h-100 object-fit-cover" alt="Profile Background" style="object-position: center;">
+            <img src="<?php echo e(URL::asset('build/images/profile-bg.jpg')); ?>" class="img-fluid w-100 h-100 object-fit-cover" alt="Profile Background" style="object-position: center;">
             <div class="profile-header-overlay">
                 <div class="upload-trigger">
                     <input id="profile-foreground-img-file-input" type="files" class="d-none">
@@ -30,16 +29,16 @@
                         <div class="d-flex flex-column align-items-center">
                             <div class="position-relative mb-3">
                                 <div class="profile-avatar mx-auto">
-                                    <img src="@if (Auth::user()->avatar) {{ asset('storage/' . Auth::user()->avatar) }}@else{{ asset('build/images/users/avatar-1.jpg') }} @endif"
+                                    <img src="<?php if(Auth::user()->avatar): ?> <?php echo e(asset('storage/' . Auth::user()->avatar)); ?><?php else: ?><?php echo e(asset('build/images/users/avatar-1.jpg')); ?> <?php endif; ?>"
                                         class="img-fluid rounded-circle w-100 h-100 object-fit-cover" alt="Profile Image">
                                     <div class="profile-avatar-badge">
                                         <i class='bx bxs-check-circle'></i>
                                     </div>
                                 </div>
                             </div>
-                            <h4 class="fw-bold mb-1">{{ Auth::user()->name }}</h4>
-                            <p class="text-muted mb-2">{{ Auth::user()->jabatan }}</p>
-                            <span class="user-badge bg-primary bg-opacity-10 text-primary mb-3">{{ Auth::user()->role }}</span>
+                            <h4 class="fw-bold mb-1"><?php echo e(Auth::user()->name); ?></h4>
+                            <p class="text-muted mb-2"><?php echo e(Auth::user()->jabatan); ?></p>
+                            <span class="user-badge bg-primary bg-opacity-10 text-primary mb-3"><?php echo e(Auth::user()->role); ?></span>
                             
                         </div>
                     </div>
@@ -55,19 +54,11 @@
                             </div>
                             <div>
                                 <p class="text-muted mb-1 small">Email Address</p>
-                                <h6 class="mb-0">{{ Auth::user()->email }}</h6>
+                                <h6 class="mb-0"><?php echo e(Auth::user()->email); ?></h6>
                             </div>
                         </div>
                         
-                        {{-- <div class="contact-info-item">
-                            <div class="contact-info-icon bg-success bg-opacity-10 text-success">
-                                <i class='bx bx-phone fs-4'></i>
-                            </div>
-                            <div>
-                                <p class="text-muted mb-1 small">Phone Number</p>
-                                <h6 class="mb-0">+62812345678</h6>
-                            </div>
-                        </div> --}}
+                        
                         
                         <div class="contact-info-item mb-0">
                             <div class="contact-info-icon bg-info bg-opacity-10 text-info">
@@ -75,7 +66,7 @@
                             </div>
                             <div>
                                 <p class="text-muted mb-1 small">Office Address</p>
-                                <h6 class="mb-0">Kantor Desa, Kec. {{ $config->nama_kecamatan ?? '-' }}, {{ $config->nama_kabupaten ?? '-' }}</h6>
+                                <h6 class="mb-0">Kantor Desa, Kec. <?php echo e($config->nama_kecamatan ?? '-'); ?>, <?php echo e($config->nama_kabupaten ?? '-'); ?></h6>
                             </div>
                         </div>
                     </div>
@@ -104,221 +95,431 @@
                         <div class="tab-content">
                             <!-- General Information Tab -->
                             <div class="tab-pane fade" id="commonDetails" role="tabpanel">
-                                <form action="{{ route('config.update') }}" method="POST" enctype="multipart/form-data">
-                                    @csrf
+                                <form action="<?php echo e(route('config.update')); ?>" method="POST" enctype="multipart/form-data">
+                                    <?php echo csrf_field(); ?>
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <div class="form-floating">
-                                                <input type="text" name="nama_desa" class="form-control @error('nama_desa') is-invalid @enderror"
+                                                <input type="text" name="nama_desa" class="form-control <?php $__errorArgs = ['nama_desa'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                     id="namaDesaInput" placeholder="Nama Desa"
-                                                    value="{{ old('nama_desa', $config->nama_desa ?? '') }}"
-                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                    value="<?php echo e(old('nama_desa', $config->nama_desa ?? '')); ?>"
+                                                    <?php if(Auth::user()->role != 'admin'): ?> readonly <?php endif; ?>>
                                                 <label for="namaDesaInput">Nama Desa</label>
-                                                @error('nama_desa')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['nama_desa'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <div class="form-floating">
-                                                <input type="text" name="kode_desa" class="form-control @error('kode_desa') is-invalid @enderror"
+                                                <input type="text" name="kode_desa" class="form-control <?php $__errorArgs = ['kode_desa'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                     id="kodeDesaInput" placeholder="Kode Desa"
-                                                    value="{{ old('kode_desa', $config->kode_desa ?? '') }}"
-                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                    value="<?php echo e(old('kode_desa', $config->kode_desa ?? '')); ?>"
+                                                    <?php if(Auth::user()->role != 'admin'): ?> readonly <?php endif; ?>>
                                                 <label for="kodeDesaInput">Kode Desa</label>
-                                                @error('kode_desa')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['kode_desa'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <div class="form-floating">
-                                                <input type="text" name="nama_kecamatan" class="form-control @error('nama_kecamatan') is-invalid @enderror"
+                                                <input type="text" name="nama_kecamatan" class="form-control <?php $__errorArgs = ['nama_kecamatan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                     id="namaKecamatanInput" placeholder="Nama Kecamatan"
-                                                    value="{{ old('nama_kecamatan', $config->nama_kecamatan ?? '') }}"
-                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                    value="<?php echo e(old('nama_kecamatan', $config->nama_kecamatan ?? '')); ?>"
+                                                    <?php if(Auth::user()->role != 'admin'): ?> readonly <?php endif; ?>>
                                                 <label for="namaKecamatanInput">Nama Kecamatan</label>
-                                                @error('nama_kecamatan')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['nama_kecamatan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <div class="form-floating">
-                                                <input type="text" name="kode_kecamatan" class="form-control @error('kode_kecamatan') is-invalid @enderror"
+                                                <input type="text" name="kode_kecamatan" class="form-control <?php $__errorArgs = ['kode_kecamatan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                     id="kodeKecamatanInput" placeholder="Kode Kecamatan"
-                                                    value="{{ old('kode_kecamatan', $config->kode_kecamatan ?? '') }}"
-                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                    value="<?php echo e(old('kode_kecamatan', $config->kode_kecamatan ?? '')); ?>"
+                                                    <?php if(Auth::user()->role != 'admin'): ?> readonly <?php endif; ?>>
                                                 <label for="kodeKecamatanInput">Kode Kecamatan</label>
-                                                @error('kode_kecamatan')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['kode_kecamatan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <div class="form-floating">
-                                                <input type="text" name="nama_kepala_camat" class="form-control @error('nama_kepala_camat') is-invalid @enderror"
+                                                <input type="text" name="nama_kepala_camat" class="form-control <?php $__errorArgs = ['nama_kepala_camat'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                     id="namaCamatInput" placeholder="Nama Camat"
-                                                    value="{{ old('nama_kepala_camat', $config->nama_kepala_camat ?? '') }}"
-                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                    value="<?php echo e(old('nama_kepala_camat', $config->nama_kepala_camat ?? '')); ?>"
+                                                    <?php if(Auth::user()->role != 'admin'): ?> readonly <?php endif; ?>>
                                                 <label for="namaCamatInput">Nama Camat</label>
-                                                @error('nama_kepala_camat')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['nama_kepala_camat'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <div class="form-floating">
-                                                <input type="text" name="nip_kepala_camat" class="form-control @error('nip_kepala_camat') is-invalid @enderror"
+                                                <input type="text" name="nip_kepala_camat" class="form-control <?php $__errorArgs = ['nip_kepala_camat'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                     id="nipCamatInput" placeholder="NIP Camat"
-                                                    value="{{ old('nip_kepala_camat', $config->nip_kepala_camat ?? '') }}"
-                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                    value="<?php echo e(old('nip_kepala_camat', $config->nip_kepala_camat ?? '')); ?>"
+                                                    <?php if(Auth::user()->role != 'admin'): ?> readonly <?php endif; ?>>
                                                 <label for="nipCamatInput">NIP Camat</label>
-                                                @error('nip_kepala_camat')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['nip_kepala_camat'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <div class="form-floating">
-                                                <input type="text" name="nama_kabupaten" class="form-control @error('nama_kabupaten') is-invalid @enderror"
+                                                <input type="text" name="nama_kabupaten" class="form-control <?php $__errorArgs = ['nama_kabupaten'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                     id="namaKabupatenInput" placeholder="Nama Kabupaten"
-                                                    value="{{ old('nama_kabupaten', $config->nama_kabupaten ?? '') }}"
-                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                    value="<?php echo e(old('nama_kabupaten', $config->nama_kabupaten ?? '')); ?>"
+                                                    <?php if(Auth::user()->role != 'admin'): ?> readonly <?php endif; ?>>
                                                 <label for="namaKabupatenInput">Nama Kabupaten</label>
-                                                @error('nama_kabupaten')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['nama_kabupaten'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <div class="form-floating">
-                                                <input type="text" name="kode_kabupaten" class="form-control @error('kode_kabupaten') is-invalid @enderror"
+                                                <input type="text" name="kode_kabupaten" class="form-control <?php $__errorArgs = ['kode_kabupaten'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                     id="kodeKabupatenInput" placeholder="Kode Kabupaten"
-                                                    value="{{ old('kode_kabupaten', $config->kode_kabupaten ?? '') }}"
-                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                    value="<?php echo e(old('kode_kabupaten', $config->kode_kabupaten ?? '')); ?>"
+                                                    <?php if(Auth::user()->role != 'admin'): ?> readonly <?php endif; ?>>
                                                 <label for="kodeKabupatenInput">Kode Kabupaten</label>
-                                                @error('kode_kabupaten')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['kode_kabupaten'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <div class="form-floating">
-                                                <input type="text" name="nama_propinsi" class="form-control @error('nama_propinsi') is-invalid @enderror"
+                                                <input type="text" name="nama_propinsi" class="form-control <?php $__errorArgs = ['nama_propinsi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                     id="namaProvinsiInput" placeholder="Nama Provinsi"
-                                                    value="{{ old('nama_propinsi', $config->nama_propinsi ?? '') }}"
-                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                    value="<?php echo e(old('nama_propinsi', $config->nama_propinsi ?? '')); ?>"
+                                                    <?php if(Auth::user()->role != 'admin'): ?> readonly <?php endif; ?>>
                                                 <label for="namaProvinsiInput">Nama Provinsi</label>
-                                                @error('nama_propinsi')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['nama_propinsi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <div class="form-floating">
-                                                <input type="text" name="kode_propinsi" class="form-control @error('kode_propinsi') is-invalid @enderror"
+                                                <input type="text" name="kode_propinsi" class="form-control <?php $__errorArgs = ['kode_propinsi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                     id="kodeProvinsiInput" placeholder="Kode Provinsi"
-                                                    value="{{ old('kode_propinsi', $config->kode_propinsi ?? '') }}"
-                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                    value="<?php echo e(old('kode_propinsi', $config->kode_propinsi ?? '')); ?>"
+                                                    <?php if(Auth::user()->role != 'admin'): ?> readonly <?php endif; ?>>
                                                 <label for="kodeProvinsiInput">Kode Provinsi</label>
-                                                @error('kode_propinsi')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['kode_propinsi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <div class="form-floating">
-                                                <input type="email" name="email_desa" class="form-control @error('email_desa') is-invalid @enderror"
+                                                <input type="email" name="email_desa" class="form-control <?php $__errorArgs = ['email_desa'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                     id="emailDesaInput" placeholder="Email Desa"
-                                                    value="{{ old('email_desa', $config->email_desa ?? '') }}"
-                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                    value="<?php echo e(old('email_desa', $config->email_desa ?? '')); ?>"
+                                                    <?php if(Auth::user()->role != 'admin'): ?> readonly <?php endif; ?>>
                                                 <label for="emailDesaInput">Email Desa</label>
-                                                @error('email_desa')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['email_desa'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <div class="form-floating">
-                                                <input type="text" name="nomor_operator" class="form-control @error('nomor_operator') is-invalid @enderror"
+                                                <input type="text" name="nomor_operator" class="form-control <?php $__errorArgs = ['nomor_operator'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                     id="nomorOperatorInput" placeholder="Nomor Operator"
-                                                    value="{{ old('nomor_operator', $config->nomor_operator ?? '') }}"
-                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                    value="<?php echo e(old('nomor_operator', $config->nomor_operator ?? '')); ?>"
+                                                    <?php if(Auth::user()->role != 'admin'): ?> readonly <?php endif; ?>>
                                                 <label for="nomorOperatorInput">Nomor Operator</label>
-                                                @error('nomor_operator')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['nomor_operator'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <div class="form-floating">
-                                                <input type="text" name="telepon" class="form-control @error('telepon') is-invalid @enderror"
+                                                <input type="text" name="telepon" class="form-control <?php $__errorArgs = ['telepon'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                     id="teleponInput" placeholder="Telepon"
-                                                    value="{{ old('telepon', $config->telepon ?? '') }}"
-                                                    @if(Auth::user()->role != 'admin') readonly @endif>
+                                                    value="<?php echo e(old('telepon', $config->telepon ?? '')); ?>"
+                                                    <?php if(Auth::user()->role != 'admin'): ?> readonly <?php endif; ?>>
                                                 <label for="teleponInput">Telepon</label>
-                                                @error('telepon')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['telepon'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <label class="form-label">Logo</label>
-                                            @if(Auth::user()->role == 'admin')
+                                            <?php if(Auth::user()->role == 'admin'): ?>
                                                 <div class="input-group">
-                                                    <input type="file" name="logo" class="form-control @error('logo') is-invalid @enderror">
+                                                    <input type="file" name="logo" class="form-control <?php $__errorArgs = ['logo'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
                                                     <span class="input-group-text"><i class='bx bx-upload'></i></span>
                                                 </div>
-                                                @if($config->logo)
+                                                <?php if($config->logo): ?>
                                                     <div class="mt-2">
-                                                        <img src="{{ asset('storage/' . $config->logo) }}" alt="Logo Saat Ini" 
+                                                        <img src="<?php echo e(asset('storage/' . $config->logo)); ?>" alt="Logo Saat Ini" 
                                                             class="img-thumbnail" style="max-height: 80px;">
                                                         <small class="d-block text-muted mt-1">Logo Saat Ini</small>
                                                     </div>
-                                                @endif
-                                                @error('logo')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            @else
-                                                <input type="text" class="form-control" value="{{ $config->logo }}" readonly>
+                                                <?php endif; ?>
+                                                <?php $__errorArgs = ['logo'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                            <?php else: ?>
+                                                <input type="text" class="form-control" value="<?php echo e($config->logo); ?>" readonly>
                                                 <small class="text-muted">Hanya admin yang dapat mengubah logo.</small>
-                                            @endif
+                                            <?php endif; ?>
                                         </div>
                                         
                                         <div class="col-md-12">
                                             <div class="form-floating">
-                                                <textarea name="alamat_kantor" class="form-control @error('alamat_kantor') is-invalid @enderror" 
+                                                <textarea name="alamat_kantor" class="form-control <?php $__errorArgs = ['alamat_kantor'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                                     id="alamatKantorInput" placeholder="Alamat Kantor" style="height: 100px;"
-                                                    @if(Auth::user()->role != 'admin') readonly @endif>{{ old('alamat_kantor', $config->alamat_kantor ?? '') }}</textarea>
+                                                    <?php if(Auth::user()->role != 'admin'): ?> readonly <?php endif; ?>><?php echo e(old('alamat_kantor', $config->alamat_kantor ?? '')); ?></textarea>
                                                 <label for="alamatKantorInput">Alamat Kantor</label>
-                                                @error('alamat_kantor')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['alamat_kantor'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
                                         
                                         <div class="col-12 text-end">
                                             <hr>
-                                            @if(Auth::user()->role == 'admin')
+                                            <?php if(Auth::user()->role == 'admin'): ?>
                                                 <button type="submit" class="btn btn-primary px-4">
                                                     <i class='bx bx-save me-1'></i> Save Changes
                                                 </button>
-                                            @endif
-                                            <a href="{{ route('config.index') }}" class="btn btn-light ms-2">Cancel</a>
+                                            <?php endif; ?>
+                                            <a href="<?php echo e(route('config.index')); ?>" class="btn btn-light ms-2">Cancel</a>
                                         </div>
                                     </div>
                                 </form>
@@ -332,21 +533,21 @@
                                         <div class="col-md-6">
                                             <div class="user-info-item">
                                                 <div class="user-info-label">Full Name</div>
-                                                <div class="user-info-value">{{ Auth::user()->name }}</div>
+                                                <div class="user-info-value"><?php echo e(Auth::user()->name); ?></div>
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <div class="user-info-item">
                                                 <div class="user-info-label">Email Address</div>
-                                                <div class="user-info-value">{{ Auth::user()->email }}</div>
+                                                <div class="user-info-value"><?php echo e(Auth::user()->email); ?></div>
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <div class="user-info-item">
                                                 <div class="user-info-label">Position</div>
-                                                <div class="user-info-value">{{ Auth::user()->jabatan }}</div>
+                                                <div class="user-info-value"><?php echo e(Auth::user()->jabatan); ?></div>
                                             </div>
                                         </div>
                                         
@@ -354,7 +555,7 @@
                                             <div class="user-info-item">
                                                 <div class="user-info-label">Role</div>
                                                 <div class="user-info-value">
-                                                    <span class="badge bg-primary-subtle text-primary">{{ Auth::user()->role }}</span>
+                                                    <span class="badge bg-primary-subtle text-primary"><?php echo e(Auth::user()->role); ?></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -362,7 +563,7 @@
                                         <div class="col-md-6">
                                             <div class="user-info-item">
                                                 <div class="user-info-label">NIP</div>
-                                                <div class="user-info-value">{{ Auth::user()->nip }}</div>
+                                                <div class="user-info-value"><?php echo e(Auth::user()->nip); ?></div>
                                             </div>
                                         </div>
                                     </div>
@@ -402,7 +603,7 @@
                                                         <i class='bx bx-time fs-4'></i>
                                                     </div>
                                                     <h6 class="mb-1">Last Login</h6>
-                                                    <p class="text-muted small mb-0">{{ date('d F Y, H:i') }} WIB</p>
+                                                    <p class="text-muted small mb-0"><?php echo e(date('d F Y, H:i')); ?> WIB</p>
                                                 </div>
                                             </div>
                                             
@@ -412,7 +613,7 @@
                                                         <i class='bx bx-calendar-check fs-4'></i>
                                                     </div>
                                                     <h6 class="mb-1">Account Created</h6>
-                                                    <p class="text-muted small mb-0">{{ Auth::user()->created_at ? Auth::user()->created_at->format('d F Y') : '-' }}</p>
+                                                    <p class="text-muted small mb-0"><?php echo e(Auth::user()->created_at ? Auth::user()->created_at->format('d F Y') : '-'); ?></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -499,8 +700,8 @@
         </div>
         <!--end row-->
     </div>
-@endsection
-@section('script')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('script'); ?>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Profile cover image change
@@ -546,5 +747,6 @@
         });
     });
     </script>
-    <script src="{{ URL::asset('build/js/app.js') }}"></script>
-@endsection
+    <script src="<?php echo e(URL::asset('build/js/app.js')); ?>"></script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /home/arifrizal/Desktop/bckup/website-kelurahan/resources/views/pages-profile-settings.blade.php ENDPATH**/ ?>

@@ -36,19 +36,19 @@
                                         <td class="fw-bold text-primary" style="width: 30%;">
                                             <i class="bx bx-user me-2"></i>Nama
                                         </td>
-                                        <td class="text-primary">{{ $user->name ?? '-' }}</td>
+                                        <td class="text-black">{{ $user->name ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <td class="fw-bold text-primary">
                                             <i class="bx bx-envelope me-2"></i>Email
                                         </td>
-                                        <td class="text-primary">{{ $user->email ?? '-' }}</td>
+                                        <td class="text-black">{{ $user->email ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <td class="fw-bold text-primary">
                                             <i class="bx bx-shield me-2"></i>Role
                                         </td>
-                                        <td class="text-primary">
+                                        <td class="text-black">
                                             @if ($user->role)
                                                 <span class="badge bg-soft-success text-success">
                                                     {{ ucfirst($user->role) }}
@@ -62,19 +62,19 @@
                                         <td class="fw-bold text-primary">
                                             <i class="bx bx-id-card me-2"></i>NIP
                                         </td>
-                                        <td class="text-primary">{{ $user->nip ?? '-' }}</td>
+                                        <td class="text-black">{{ $user->nip ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <td class="fw-bold text-primary">
                                             <i class="bx bx-briefcase me-2"></i>Jabatan
                                         </td>
-                                        <td class="text-primary">{{ $user->jabatan ?? '-' }}</td>
+                                        <td class="text-black">{{ $user->jabatan ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <td class="fw-bold text-primary">
                                             <i class="bx bx-image me-2"></i>Avatar
                                         </td>
-                                        <td class="text-primary">
+                                        <td class="text-black">
                                             @if ($user->avatar)
                                                 <img src="{{ asset('storage/' . $user->avatar) }}" alt="Avatar"
                                                     class="img-thumbnail" width="100">

@@ -21,17 +21,28 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div>
+                        <?php
+                            $countDiajukan = isset($allPengajuan) ? $allPengajuan->where('status', 'diajukan')->count() : 0;
+                            $countDiproses = isset($allPengajuan) ? $allPengajuan->where('status', 'diproses')->count() : 0;
+                            $countSelesai = isset($allPengajuan) ? $allPengajuan->where('status', 'selesai')->count() : 0;
+                            $countDitolak = isset($allPengajuan) ? $allPengajuan->where('status', 'ditolak')->count() : 0;
+                        ?>
+                        
                         <a href="<?php echo e(route('pengajuan-surat.status', 'diajukan')); ?>" class="btn btn-sm btn-outline-warning me-1">
-                            <i class="bx bxs-inbox me-1"></i> Diajukan
+                            <i class="bx bxs-inbox me-2"></i> Diajukan
+                            <span class="badge bg-warning text-black"><?php echo e($countDiajukan); ?></span>
                         </a>
-                        <a href="<?php echo e(route('pengajuan-surat.status', 'diproses')); ?>" class="btn btn-sm btn-outline-info me-1">
-                            <i class="bx bx-loader-circle me-1"></i> Diproses
+                        <a href="<?php echo e(route('pengajuan-surat.status', 'diproses')); ?>" class="btn btn-sm btn-outline-info me-2">
+                            <i class="bx bx-loader-circle me-2"></i> Diproses
+                            <span class="badge bg-info text-black"><?php echo e($countDiproses); ?></span>
                         </a>
-                        <a href="<?php echo e(route('pengajuan-surat.status', 'selesai')); ?>" class="btn btn-sm btn-outline-success me-1">
-                            <i class="bx bx-check-double me-1"></i> Selesai
+                        <a href="<?php echo e(route('pengajuan-surat.status', 'selesai')); ?>" class="btn btn-sm btn-outline-success me-2">
+                            <i class="bx bx-check-double me-2"></i> Selesai
+                            <span class="badge bg-success text-black"><?php echo e($countSelesai); ?></span>
                         </a>
                         <a href="<?php echo e(route('pengajuan-surat.status', 'ditolak')); ?>" class="btn btn-sm btn-outline-secondary">
-                            <i class="bx bx-x-circle me-1"></i> Ditolak
+                            <i class="bx bx-x-circle me-2"></i> Ditolak
+                            <span class="badge bg-secondary text-black"><?php echo e($countDitolak); ?></span>
                         </a>
                     </div>
                 </div>
@@ -43,7 +54,6 @@
                                     <th>Warga</th>
                                     <th>Jenis Surat</th>
                                     <th>Tanggal Pengajuan</th>
-                                    <th>Keperluan</th>
                                     <th>Status</th>
                                     <th>Petugas</th>
                                     <th>File Pendukung</th>
@@ -56,7 +66,6 @@
                                         <td><?php echo e($pengajuanSurat->warga->nama ?? '-'); ?></td>
                                         <td><?php echo e($pengajuanSurat->jenisSurat->nama ?? '-'); ?></td>
                                         <td><?php echo e(\Carbon\Carbon::parse($pengajuanSurat->tanggal_pengajuan)->format('d-m-Y')); ?></td>
-                                        <td><?php echo e($pengajuanSurat->keperluan); ?></td>
                                         <td>
                                             <?php if($pengajuanSurat->status == \App\Enums\Status::DIAJUKAN): ?>
                                                 <span class="badge bg-warning"><?php echo e($pengajuanSurat->status->value); ?></span>
@@ -76,7 +85,7 @@
                                             <?php if($pengajuanSurat->file_pendukung): ?>
                                                 <a href="<?php echo e(asset('storage/' . $pengajuanSurat->file_pendukung)); ?>"
                                                    target="_blank"
-                                                   class="text-primary"> 
+                                                   class="text-black"> 
                                                     <i class="bx bxs-file-pdf bx-sm align-middle"></i> 
                                                 </a>
                                             <?php else: ?>

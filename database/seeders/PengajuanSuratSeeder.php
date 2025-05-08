@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\JenisSurat;
+use App\Models\Keterangan;
 use App\Models\PengajuanSurat;
 use App\Models\User;
 use App\Models\Warga;
@@ -25,61 +26,36 @@ class PengajuanSuratSeeder extends Seeder
             return;
         }
 
-        // Contoh Pengajuan Surat 1: Baru diajukan
-        PengajuanSurat::create([
-            'warga_id' => $wargas->random()->id,
-            'jenis_surat_id' => $jenisSurats->random()->id,
-            'tanggal_pengajuan' => now()->subDays(5),
-            'keperluan' => 'Pengajuan surat keterangan domisili untuk keperluan pendaftaran sekolah anak.',
-            'keterangan_penolakan' => null,
-            'status' => 'diajukan',
-            'created_at' => now()->subDays(5),
-            'updated_at' => now()->subDays(5),
-        ]);
+        // Fungsi untuk membuat data keterangan acak
+        $buatKeteranganAcak = function () {
+            $faker = \Faker\Factory::create('id_ID');
+            return [
+                'apa' => $faker->sentence(rand(3, 7)),
+                'mengapa' => $faker->paragraph(rand(1, 3)),
+                'kapan' => $faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d H:i:s'),
+                'di_mana' => $faker->address(),
+                'siapa' => $faker->name(),
+                'bagaimana' => $faker->paragraph(rand(2, 4)),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        };
 
-        // Contoh Pengajuan Surat 2: Sedang diproses
-        PengajuanSurat::create([
-            'warga_id' => $wargas->random()->id,
-            'jenis_surat_id' => $jenisSurats->random()->id,
-            'tanggal_pengajuan' => now()->subDays(10),
-            'keperluan' => 'Permohonan surat pengantar pembuatan KTP.',
-            'status' => 'diajukan',
-            'tanggal_diproses' => now()->subDays(2),
-            'keterangan_penolakan' => null,
-            'user_id' => null,
-            'created_at' => now()->subDays(10),
-            'updated_at' => now()->subDays(2),
-        ]);
-
-        // Contoh Pengajuan Surat 3: Sudah selesai
-        PengajuanSurat::create([
-            'warga_id' => $wargas->random()->id,
-            'jenis_surat_id' => $jenisSurats->random()->id,
-            'tanggal_pengajuan' => now()->subWeeks(2),
-            'keperluan' => 'Pengajuan surat keterangan usaha untuk pengajuan pinjaman.',
-            'status' => 'diajukan',
-            'tanggal_diproses' => now()->subWeeks(1, 5),
-            'tanggal_selesai' => now()->subWeeks(1),
-            'keterangan_penolakan' => null,
-            'user_id' => null,
-            'created_at' => now()->subWeeks(2),
-            'updated_at' => now()->subWeeks(1),
-        ]);
-
-        // Contoh Pengajuan Surat 4: Ditolak
-        PengajuanSurat::create([
-            'warga_id' => $wargas->random()->id,
-            'jenis_surat_id' => $jenisSurats->random()->id,
-            'tanggal_pengajuan' => now()->subWeeks(3),
-            'keperluan' => 'Permintaan surat izin keramaian (tidak disetujui).',
-            'status' => 'diajukan',
-            'tanggal_diproses' => now()->subWeeks(2, 3),
-            'keterangan_penolakan' => null,
-            'user_id' => null,
-            'created_at' => now()->subWeeks(3),
-            'updated_at' => now()->subWeeks(2, 3),
-        ]);
-
-        // Anda bisa menambahkan lebih banyak contoh pengajuan surat di sini
+        for ($i = 0; $i < 15; $i++) {
+            $keterangan = Keterangan::create($buatKeteranganAcak());
+            PengajuanSurat::create([
+                'warga_id' => $wargas->random()->id,
+                'jenis_surat_id' => $jenisSurats->random()->id,
+                'keterangan_id' => $keterangan->id,
+                'tanggal_pengajuan' => now()->subDays(rand(1, 30)),
+                'status' => 'diajukan', // Set status menjadi 'diajukan'
+                'tanggal_diproses' => null, // Kosongkan tanggal diproses
+                'user_id' => null, // Kosongkan user_id
+                'tanggal_selesai' => null, // Kosongkan tanggal selesai
+                'keterangan_penolakan' => null, // Kosongkan keterangan penolakan
+                'created_at' => now()->subDays(rand(1, 30)),
+                'updated_at' => now(),
+            ]);
+        }
     }
 }

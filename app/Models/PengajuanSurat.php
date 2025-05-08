@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class PengajuanSurat extends Model
 {
@@ -15,21 +16,24 @@ class PengajuanSurat extends Model
     protected $fillable = [
         'warga_id',
         'jenis_surat_id',
+        'keterangan_id',
         'tanggal_pengajuan',
-        'keperluan',
         'status',
         'tanggal_diproses',
         'user_id',
         'tanggal_selesai',
         'keterangan_penolakan',
         'file_pendukung',
+        'cek',
     ];
+
 
     protected $casts = [
         'tanggal_pengajuan' => 'datetime',
         'tanggal_diproses' => 'datetime',
         'tanggal_selesai' => 'datetime',
         'status' => \App\Enums\Status::class, 
+        'cek' => 'boolean'
     ];
 
     /**
@@ -60,5 +64,15 @@ class PengajuanSurat extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+     /**
+     * Get the fiveW1h associated with the PengajuanSurat
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function keterangan(): BelongsTo
+    {
+        return $this->belongsTo(Keterangan::class, 'keterangan_id');
     }
 }

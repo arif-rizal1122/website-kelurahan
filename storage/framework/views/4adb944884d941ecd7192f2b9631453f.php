@@ -70,7 +70,7 @@
                         <!-- item-->
                         
                         
-                        <a class="dropdown-item" href="<?php echo e(route('config.index')); ?>"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Settings</span></a>
+                        <a class="dropdown-item" href="<?php echo e(route('config.index')); ?>"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class='bx bx-cog text-muted fs-16 align-middle me-1'></i> <span class="align-middle">Settings</span></a>
                         <a class="dropdown-item " href="javascript:void();" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bx bx-power-off font-size-16 align-middle me-1"></i> <span key="t-logout">Logout</span></a>
                         <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST" style="display: none;">
                             <?php echo csrf_field(); ?>

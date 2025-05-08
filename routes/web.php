@@ -13,6 +13,7 @@ use App\Http\Controllers\Pengajuan\JenisSuratController;
 use App\Http\Controllers\HomeController; 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
+use App\Models\Warga;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\Math\Element\Row;
@@ -69,10 +70,12 @@ Route::middleware(['auth.warga', 'verified:warga'])->name('warga.')->group(funct
     Route::post('/pengajuan', [WargaController::class, 'storePengajuanWarga'])->name('pengajuan');
 
     Route::get('profile', [WargaController::class, 'profile'])->name('profile');
-    Route::get('notifikasi', [WargaController::class, 'notifikasi'])->name('notifikasi');
     Route::get('riwayat', [WargaController::class, 'riwayat'])->name('riwayat');
     Route::get('/pengajuan/{pengajuanSurat}', [WargaController::class, 'showPengajuanWarga'])->name('pengajuan-surat.show');
     // Route::get('/{pengajuanSurat}/print', [WargaController::class, 'printWarga'])->name('pengajuan-surat.print');
+    // Route::put('/pengajuan-surat/update-checked', [WargaController::class, 'updateChecked'])
+    // ->name('pengajuan-surat.update-checked');
+
 });
 
 

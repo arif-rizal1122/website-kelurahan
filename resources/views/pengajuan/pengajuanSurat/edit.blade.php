@@ -93,31 +93,105 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
-                            <label for="keperluan" class="form-label fw-bold text-info">
-                                <i class="bx bx-note me-1"></i>Keperluan
+                        {{-- Field-field Keterangan untuk Update --}}
+                        <div class="mt-4">
+                            <h5>Edit Keterangan Tambahan</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="apa" class="form-label">Apa</label>
+                                        <textarea class="form-control @error('apa') is-invalid @enderror" id="apa" name="apa">{{ old('apa', $pengajuanSurat->keterangan->apa ?? '') }}</textarea>
+                                        @error('apa')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="mengapa" class="form-label">Mengapa</label>
+                                        <textarea class="form-control @error('mengapa') is-invalid @enderror" id="mengapa" name="mengapa">{{ old('mengapa', $pengajuanSurat->keterangan->mengapa ?? '') }}</textarea>
+                                        @error('mengapa')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="kapan" class="form-label">Kapan</label>
+                                        <input type="text" class="form-control @error('kapan') is-invalid @enderror" id="kapan" name="kapan"
+                                               value="{{ old('kapan', $pengajuanSurat->keterangan->kapan ? \Carbon\Carbon::parse($pengajuanSurat->keterangan->kapan)->format('Y-m-d') : '') }}">
+                                        @error('kapan')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="di_mana" class="form-label">Di Mana</label>
+                                        <textarea class="form-control @error('di_mana') is-invalid @enderror" id="di_mana" name="di_mana">{{ old('di_mana', $pengajuanSurat->keterangan->di_mana ?? '') }}</textarea>
+                                        @error('di_mana')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="siapa" class="form-label">Siapa</label>
+                                        <textarea class="form-control @error('siapa') is-invalid @enderror" id="siapa" name="siapa">{{ old('siapa', $pengajuanSurat->keterangan->siapa ?? '') }}</textarea>
+                                        @error('siapa')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="bagaimana" class="form-label">Bagaimana</label>
+                                        <textarea class="form-control @error('bagaimana') is-invalid @enderror" id="bagaimana" name="bagaimana">{{ old('bagaimana', $pengajuanSurat->keterangan->bagaimana ?? '') }}</textarea>
+                                        @error('bagaimana')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <label for="file_pendukung" class="form-label fw-bold text-info">
+                                <i class="bx bx-upload me-1"></i>File Pendukung (PDF, DOC, DOCX, Max: 2MB)
                             </label>
-                            <textarea class="form-control @error('keperluan') is-invalid @enderror"
-                                id="keperluan"
-                                name="keperluan"
-                                rows="3"
-                                placeholder="Jelaskan keperluan pengajuan surat">{{ old('keperluan', $pengajuanSurat->keperluan) }}</textarea>
-                            @error('keperluan')
+                            <input type="file"
+                                class="form-control @error('file_pendukung') is-invalid @enderror"
+                                id="file_pendukung"
+                                name="file_pendukung"
+                                accept=".pdf,.doc,.docx">
+                            @if ($pengajuanSurat->file_pendukung)
+                                <small class="text-muted">File saat ini: <a href="{{ asset('storage/' . $pengajuanSurat->file_pendukung) }}" target="_blank">Lihat File</a></small>
+                            @endif
+                            @error('file_pendukung')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        
-                        <div class="mb-3">
-                            <label for="tanggal_diproses" class="form-label fw-bold text-info">
-                                <i class="bx bx-calendar-check me-1"></i>Tanggal Diproses
+                        <div class="mt-4">
+                            <label for="status_pengajuan" class="form-label fw-bold text-info">
+                                <i class="bx bx-label me-1"></i>Status <span class="text-danger">*</span>
                             </label>
-                            <input type="date"
-                                class="form-control @error('tanggal_diproses') is-invalid @enderror"
-                                id="tanggal_diproses"
-                                name="tanggal_diproses"
-                                value="{{ old('tanggal_diproses', $pengajuanSurat->tanggal_diproses ? $pengajuanSurat->tanggal_diproses->toDateString() : null) }}">
-                            @error('tanggal_diproses')
+                            <select class="form-control @error('status') is-invalid @enderror"
+                                id="status_pengajuan"
+                                name="status"
+                                required>
+                                <option value="">Pilih Status</option>
+                                @foreach (\App\Enums\Status::cases() as $status)
+                                    <option value="{{ $status->value }}" {{ old('status', $pengajuanSurat->status?->value) == $status->value ? 'selected' : '' }}>
+                                        {{ $status->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('status')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -142,6 +216,20 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="tanggal_diproses" class="form-label fw-bold text-info">
+                                <i class="bx bx-calendar-check me-1"></i>Tanggal Diproses
+                            </label>
+                            <input type="date"
+                                class="form-control @error('tanggal_diproses') is-invalid @enderror"
+                                id="tanggal_diproses"
+                                name="tanggal_diproses"
+                                value="{{ old('tanggal_diproses', $pengajuanSurat->tanggal_diproses ? $pengajuanSurat->tanggal_diproses->toDateString() : null) }}">
+                            @error('tanggal_diproses')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
                             <label for="tanggal_selesai" class="form-label fw-bold text-info">
                                 <i class="bx bx-calendar-check me-1"></i>Tanggal Selesai
                             </label>
@@ -156,27 +244,6 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="status_pengajuan" class="form-label fw-bold text-info">
-                                <i class="bx bx-label me-1"></i>Status <span class="text-danger">*</span>
-                            </label>
-                            <select class="form-control @error('status') is-invalid @enderror"
-                                id="status_pengajuan"
-                                name="status"
-                                required>
-                                <option value="">Pilih Status</option>
-                                @foreach (\App\Enums\Status::cases() as $status)
-                                    <option value="{{ $status->value }}" {{ old('status', $pengajuanSurat->status?->value) == $status->value ? 'selected' : '' }}>
-                                        {{ $status->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('status')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-
-                        <div class="mb-3">
                             <label for="keterangan_penolakan" class="form-label fw-bold text-info">
                                 <i class="bx bx-message-alt-error me-1"></i>Keterangan Penolakan
                             </label>
@@ -186,23 +253,6 @@
                                 rows="3"
                                 placeholder="Alasan penolakan (jika ditolak)">{{ old('keterangan_penolakan', $pengajuanSurat->keterangan_penolakan) }}</textarea>
                             @error('keterangan_penolakan')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="file_pendukung" class="form-label fw-bold text-info">
-                                <i class="bx bx-upload me-1"></i>File Pendukung (PDF, DOC, DOCX, Max: 2MB)
-                            </label>
-                            <input type="file"
-                                class="form-control @error('file_pendukung') is-invalid @enderror"
-                                id="file_pendukung"
-                                name="file_pendukung"
-                                accept=".pdf,.doc,.docx">
-                            @if ($pengajuanSurat->file_pendukung)
-                                <small class="text-muted">File saat ini: <a href="{{ asset('storage/' . $pengajuanSurat->file_pendukung) }}" target="_blank">Lihat File</a></small>
-                            @endif
-                            @error('file_pendukung')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>

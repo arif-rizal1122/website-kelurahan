@@ -33,7 +33,13 @@ class UpdatePengajuanSuratRequest extends FormRequest
             'user_id' => 'nullable|exists:users,id',  
             'tanggal_selesai' => 'nullable|date',
             'keterangan_penolakan' => 'nullable|string',
-            'file_pendukung' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+            'file_pendukung' => 'nullable|file|mimes:pdf,doc,docx,jpg,png,jpeg|max:2048',
+            'apa' => 'nullable|string|max:250',
+            'mengapa' => 'nullable|string|max:250',
+            'kapan' => 'nullable|string|max:250',
+            'di_mana' => 'nullable|string|max:250',
+            'siapa' => 'nullable|string|max:250',
+            'bagaimana' => 'nullable|string|max:250',
         ];
     }
 }

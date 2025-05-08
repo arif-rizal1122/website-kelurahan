@@ -26,10 +26,14 @@ class StorePengajuanSuratWargaRequest extends FormRequest
     {
         return [
             'jenis_surat_id' => 'required|exists:jenis_surats,id',
-            'tanggal_pengajuan' => 'nullable|date',
-            'keperluan' => 'required|string', 
-            
-            'file_pendukung' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+            'tanggal_pengajuan' => 'nullable|date_format:d-m-Y H:i',
+            'file_pendukung' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+            'apa' => 'required|string|max:150',
+            'mengapa' => 'required|string|max:150',
+            'kapan' => 'required|string|max:150',
+            'di_mana' => 'required|string|max:150',
+            'siapa' => 'required|string|max:150',
+            'bagaimana' => 'required|string|max:150',
         ];
     }
     

@@ -3,8 +3,8 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('css'); ?>
-    <!-- Animasi CSS -->
     <link href="<?php echo e(URL::asset('build/libs/aos/aos.css')); ?>" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
         /* Style khusus untuk Login Admin - Tema Professional & Tech */
         :root {
@@ -13,46 +13,46 @@
             --admin-accent: #1A3B8A;
             --admin-gradient: linear-gradient(135deg, #1e3c72, #2a5298);
         }
-        
+
         .auth-one-bg {
             background-image: var(--admin-gradient), url("<?php echo e(URL::asset('build/images/bg-admin.jpg')); ?>");
             background-size: cover;
             background-position: center;
         }
-        
+
         .btn-primary {
             background-color: var(--admin-primary);
             border-color: var(--admin-primary);
         }
-        
+
         .btn-primary:hover {
             background-color: var(--admin-accent);
             border-color: var(--admin-accent);
         }
-        
+
         .text-primary {
             color: var(--admin-primary) !important;
         }
-        
+
         .bg-primary {
             background-color: var(--admin-primary) !important;
         }
-        
+
         .card {
             border-radius: 16px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.15);
         }
-        
+
         .form-control, .input-group-text {
             border-radius: 8px;
         }
-        
+
         .admin-card-header {
             position: relative;
             overflow: hidden;
             border-radius: 16px 16px 0 0;
         }
-        
+
         .admin-card-header::before {
             content: "";
             position: absolute;
@@ -64,7 +64,7 @@
             top: -150px;
             right: -150px;
         }
-        
+
         .admin-card-header::after {
             content: "";
             position: absolute;
@@ -76,7 +76,7 @@
             bottom: -100px;
             left: -100px;
         }
-        
+
         .admin-icon {
             width: 80px;
             height: 80px;
@@ -90,29 +90,29 @@
             margin-bottom: 1rem;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
-        
+
         .admin-icon i {
             font-size: 36px;
             color: #fff;
             transform: rotate(-45deg);
         }
-        
+
         .btn {
             transition: all 0.3s;
             border-radius: 8px;
         }
-        
+
         .btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.15);
         }
-        
+
         .card-separator {
             position: relative;
             text-align: center;
             margin: 1.5rem 0;
         }
-        
+
         .card-separator::before {
             content: "";
             position: absolute;
@@ -122,13 +122,13 @@
             height: 1px;
             background: #e9ecef;
         }
-        
+
         .card-separator span {
             position: relative;
             background: #fff;
             padding: 0 1rem;
         }
-        
+
         .tech-icon {
             display: inline-flex;
             align-items: center;
@@ -140,7 +140,7 @@
             color: var(--admin-primary);
             margin-right: 10px;
         }
-        
+
         .security-badge {
             display: inline-block;
             background: rgba(54, 79, 199, 0.1);
@@ -150,22 +150,22 @@
             font-size: 0.75rem;
             margin-bottom: 0.75rem;
         }
-        
+
         /* Animation classes */
         .input-group {
             transition: all 0.3s ease;
         }
-        
+
         .input-group:focus-within {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
-        
+
         /* Glow effect on input focus */
         .form-control:focus {
             box-shadow: 0 0 0 3px rgba(54, 79, 199, 0.15);
         }
-        
+
         /* Type effect for heading */
         .typing-effect {
             overflow: hidden;
@@ -174,12 +174,12 @@
             margin: 0 auto;
             animation: typing 3.5s steps(30, end), blink-caret 0.75s step-end infinite;
         }
-        
+
         @keyframes typing {
             from { width: 0 }
             to { width: 100% }
         }
-        
+
         @keyframes blink-caret {
             from, to { border-color: transparent }
             50% { border-color: var(--admin-primary); }
@@ -189,7 +189,6 @@
 
 <?php $__env->startSection('content'); ?>
 <div class="auth-page-wrapper min-vh-100 d-flex align-items-center bg-light py-5">
-    <!-- auth page bg -->
     <div class="auth-one-bg-position auth-one-bg" data-aos="fade" data-aos-duration="1000">
         <div class="bg-overlay bg-primary bg-opacity-70"></div>
         <div class="shape">
@@ -199,14 +198,13 @@
         </div>
     </div>
 
-    <!-- auth page content -->
     <div class="auth-page-content w-100">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8" data-aos="fade-down" data-aos-delay="200">
                     <div class="text-center mb-5">
                         <div class="admin-icon">
-                            <i class="ri-admin-line"></i>
+                            <i class='bx bx-shield-alt-2'></i>
                         </div>
                         <div>
                             <a href="<?php echo e(route('homepage')); ?>" class="d-inline-block auth-logo">
@@ -218,14 +216,12 @@
                     </div>
                 </div>
             </div>
-            <!-- end row -->
-
             <div class="row justify-content-center">
                 <div class="col-md-8 col-lg-6 col-xl-5">
                     <div class="card border-0 overflow-hidden" data-aos="zoom-in" data-aos-delay="400">
                         <div class="card-header admin-card-header bg-primary bg-opacity-10 border-bottom-0 py-4">
                             <div class="text-center">
-                                <span class="security-badge"><i class="ri-shield-check-line me-1"></i> Admin Zone</span>
+                                <span class="security-badge"><i class='bx bx-lock-alt me-1'></i> Admin Zone</span>
                                 <h4 class="text-primary mb-2">Selamat Datang Admin!</h4>
                                 <p class="text-muted mb-0">Masuk untuk mengelola sistem administrasi</p>
                             </div>
@@ -237,7 +233,7 @@
                                 <div class="mb-4">
                                     <label for="username" class="form-label fw-medium">Username <span class="text-danger">*</span></label>
                                     <div class="input-group input-group-lg">
-                                        <span class="input-group-text bg-light border-end-0"><i class="ri-user-3-line"></i></span>
+                                        <span class="input-group-text bg-light border-end-0"><i class='bx bx-user'></i></span>
                                         <input type="text" class="form-control form-control-lg border-start-0 <?php $__errorArgs = ['email'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -259,13 +255,13 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                                     </div>
-                                    <small class="text-muted"><i class="ri-information-line me-1"></i> Gunakan username yang diberikan oleh administrator</small>
+                                    <small class="text-muted"><i class='bx bx-info-circle me-1'></i> Gunakan username yang diberikan oleh administrator</small>
                                 </div>
 
                                 <div class="mb-4">
                                     
                                     <div class="input-group input-group-lg auth-pass-inputgroup">
-                                        <span class="input-group-text bg-light border-end-0"><i class="ri-lock-password-fill"></i></span>
+                                        <span class="input-group-text bg-light border-end-0"><i class='bx bx-key'></i></span>
                                         <input type="password" class="form-control form-control-lg border-start-0 pe-5 <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -297,37 +293,35 @@ unset($__errorArgs, $__bag); ?>
 
                                 <div class="mb-4">
                                     <button class="btn btn-primary btn-lg w-100 waves-effect waves-light" type="submit">
-                                        <i class="ri-login-circle-fill me-1 align-middle"></i> Masuk ke Dashboard
+                                        <i class='bx bx-log-in-circle me-1 align-middle'></i> Masuk ke Dashboard
                                     </button>
                                 </div>
 
                                 <div class="card-separator">
                                     <span class="text-muted">atau</span>
                                 </div>
-                                
+
                                 <div class="mb-3">
                                     <a href="<?php echo e(route('warga.login.form')); ?>" class="btn btn-outline-secondary btn-lg w-100">
-                                        <i class="ri-team-line me-1"></i> Masuk Sebagai Warga
+                                        <i class='bx bx-group me-1'></i> Masuk Sebagai Warga
                                     </a>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    <!-- end card -->
-
                     <div class="mt-4 text-center" data-aos="fade-up" data-aos-delay="500">
                         <p class="mb-3 text-white">Belum memiliki akses? <a href="<?php echo e(route('register')); ?>" class="fw-semibold text-white text-decoration-underline"> Daftar Admin </a></p>
-                        
+
                         <div class="mt-4 d-flex justify-content-center gap-3">
                             <div class="d-flex align-items-center text-white-50">
                                 <div class="tech-icon">
-                                    <i class="ri-dashboard-3-line"></i>
+                                    <i class='bx bx-bar-chart-alt-2'></i>
                                 </div>
                                 <small>Dashboard Analitik</small>
                             </div>
                             <div class="d-flex align-items-center text-white-50">
                                 <div class="tech-icon">
-                                    <i class="ri-secure-payment-line"></i>
+                                    <i class='bx bx-shield-alt'></i>
                                 </div>
                                 <small>Akses Aman</small>
                             </div>
@@ -335,13 +329,8 @@ unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
             </div>
-            <!-- end row -->
+            </div>
         </div>
-        <!-- end container -->
-    </div>
-    <!-- end auth page content -->
-    
-    <!-- footer -->
     <footer class="footer position-absolute bottom-0 start-0 end-0">
         <div class="container">
             <div class="row">
@@ -353,8 +342,7 @@ unset($__errorArgs, $__bag); ?>
             </div>
         </div>
     </footer>
-    <!-- end Footer -->
-</div>
+    </div>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('script'); ?>

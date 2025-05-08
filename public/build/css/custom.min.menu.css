@@ -86,6 +86,8 @@ body {
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%; 
+    max-width: 380px; /* Tetapkan max-width untuk layar yang lebih besar */
 }
 
 .card:hover {
@@ -132,6 +134,14 @@ body {
     margin-right: auto;
     margin-left: auto;
     max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1rem; /* Tambahkan sedikit padding atas */
+    padding-bottom: 1rem; /* Tambahkan sedikit padding bawah */
+    position: relative;
 }
 
 .row {
@@ -153,21 +163,43 @@ body {
 /* Media queries untuk responsivitas */
 @media (max-width: 576px) {
     .container {
-        max-width: 100%;
+        padding-right: 10px; /* Kurangi sedikit padding kanan untuk layar kecil */
+        padding-left: 10px;  /* Kurangi sedikit padding kiri untuk layar kecil */
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
     }
-    
+
     .app-icon {
         width: 60px;
         height: 60px;
+        margin-bottom: 1rem;
     }
-    
+
     .card {
         padding: 1rem;
+        margin-bottom: 1rem;
     }
-    
+
     .btn {
         padding: 0.4rem 1rem;
         font-size: 0.9rem;
+    }
+
+    .menu-button {
+        margin-bottom: 8px;
+    }
+
+    .decorative-shape {
+        display: none; /* Sembunyikan elemen dekoratif pada layar kecil */
+    }
+
+    .d-flex.flex-wrap.justify-content-center.gap-2.w-100 {
+        max-width: 100% !important; /* Biarkan tombol aksi mengambil lebar penuh */
+    }
+
+    .btn-outline-light.btn-sm {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.5rem;
     }
 }
 
@@ -214,3 +246,65 @@ body {
 .mx-auto { margin-left: auto; margin-right: auto; }
 .w-100 { width: 100%; }
 .h-100 { height: 100%; }
+
+/* Styling untuk checked items (mungkin tidak relevan untuk menu ini) */
+.item-checked {
+    border-left: 3px solid #28a745 !important;
+    background-color: rgba(40, 167, 69, 0.05);
+}
+
+/* Hover effect untuk check container (mungkin tidak relevan untuk menu ini) */
+.check-container {
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.check-container:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* Animation untuk check icon (mungkin tidak relevan untuk menu ini) */
+.check-icon {
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.check-icon.checked {
+    transform: scale(1.2);
+}
+
+/* Additional styling untuk responsiveness (mungkin tidak relevan untuk menu ini) */
+@media (max-width: 576px) {
+    .check-container span {
+        display: none;
+    }
+}
+
+/* Checkbox custom styling (mungkin tidak relevan untuk menu ini) */
+.check-container {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+}
+
+.check-icon {
+    font-size: 1.5rem;
+    color: #ccc;
+    transition: all 0.2s ease;
+}
+
+.check-icon.checked {
+    color: #28a745;
+}
+
+.check-loading {
+    display: none;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

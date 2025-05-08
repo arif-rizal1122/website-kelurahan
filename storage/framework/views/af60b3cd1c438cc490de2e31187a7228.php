@@ -3,7 +3,6 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('css'); ?>
-    <!-- Animasi CSS -->
     <link href="<?php echo e(URL::asset('build/libs/aos/aos.css')); ?>" rel="stylesheet">
     <style>
         /* Style khusus untuk Login Warga - Tema Community */
@@ -13,46 +12,46 @@
             --warga-accent: #2E8B57;
             --warga-gradient: linear-gradient(135deg, #4F7942, #2E8B57);
         }
-        
+
         .auth-one-bg {
             background-image: var(--warga-gradient), url("<?php echo e(URL::asset('build/images/bg-community.jpg')); ?>");
             background-size: cover;
             background-position: center;
         }
-        
+
         .btn-primary {
             background-color: var(--warga-primary);
             border-color: var(--warga-primary);
         }
-        
+
         .btn-primary:hover {
             background-color: var(--warga-accent);
             border-color: var(--warga-accent);
         }
-        
+
         .text-primary {
             color: var(--warga-primary) !important;
         }
-        
+
         .bg-primary {
             background-color: var(--warga-primary) !important;
         }
-        
+
         .card {
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-        
+
         .form-control, .input-group-text {
             border-radius: 8px;
         }
-        
+
         .auth-card-header {
             position: relative;
             overflow: hidden;
             border-radius: 15px 15px 0 0;
         }
-        
+
         .auth-card-header::before {
             content: "";
             position: absolute;
@@ -64,7 +63,7 @@
             top: -125px;
             right: -125px;
         }
-        
+
         .auth-card-header::after {
             content: "";
             position: absolute;
@@ -76,17 +75,17 @@
             bottom: -75px;
             left: -75px;
         }
-        
+
         .floating-label {
             position: relative;
         }
-        
+
         .floating-label input:focus + label,
         .floating-label input:not(:placeholder-shown) + label {
             transform: translateY(-25px) scale(0.85);
             color: var(--warga-primary);
         }
-        
+
         .floating-label label {
             position: absolute;
             left: 15px;
@@ -94,16 +93,16 @@
             transition: all 0.2s ease-in-out;
             pointer-events: none;
         }
-        
+
         .btn {
             transition: all 0.3s;
         }
-        
+
         .btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        
+
         .warga-icon {
             width: 80px;
             height: 80px;
@@ -115,18 +114,18 @@
             margin: 0 auto;
             margin-bottom: 1rem;
         }
-        
+
         .warga-icon i {
             font-size: 40px;
             color: #fff;
         }
-        
+
         .card-separator {
             position: relative;
             text-align: center;
             margin: 1.5rem 0;
         }
-        
+
         .card-separator::before {
             content: "";
             position: absolute;
@@ -136,13 +135,13 @@
             height: 1px;
             background: #e9ecef;
         }
-        
+
         .card-separator span {
             position: relative;
             background: #fff;
             padding: 0 1rem;
         }
-        
+
         .feature-icon {
             display: inline-flex;
             align-items: center;
@@ -154,7 +153,7 @@
             color: var(--warga-primary);
             margin-right: 10px;
         }
-        
+
         .welcome-badge {
             display: inline-block;
             background: rgba(79, 121, 66, 0.1);
@@ -185,7 +184,7 @@
                 <div class="col-lg-8" data-aos="fade-down" data-aos-delay="200">
                     <div class="text-center mb-5">
                         <div class="warga-icon">
-                            <i class="ri-community-line"></i>
+                            <i class='bx bx-group'></i>
                         </div>
                         <div>
                             <a href="<?php echo e(route('homepage')); ?>" class="d-inline-block auth-logo">
@@ -203,7 +202,7 @@
                     <div class="card border-0 overflow-hidden" data-aos="zoom-in" data-aos-delay="400">
                         <div class="card-header auth-card-header bg-primary bg-opacity-10 border-bottom-0 py-4">
                             <div class="text-center">
-                                <span class="welcome-badge"><i class="ri-user-smile-line me-1"></i> Warga Digital</span>
+                                <span class="welcome-badge"><i class='bx bx-user-check me-1'></i> Warga Digital</span>
                                 <h4 class="text-primary mb-2">Selamat Datang Warga!</h4>
                                 <p class="text-muted mb-0">Akses layanan digital kelurahan dengan mudah</p>
                             </div>
@@ -215,7 +214,7 @@
                                 <div class="mb-4">
                                     <label for="nik" class="form-label fw-medium">NIK (Nomor Induk Kependudukan) <span class="text-danger">*</span></label>
                                     <div class="input-group input-group-lg">
-                                        <span class="input-group-text bg-light border-end-0"><i class="ri-id-card-line"></i></span>
+                                        <span class="input-group-text bg-light border-end-0"><i class='bx bx-id-card'></i></span>
                                         <input type="text" class="form-control form-control-lg border-start-0 <?php $__errorArgs = ['nik'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -237,7 +236,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                                     </div>
-                                    <small class="text-muted"><i class="ri-information-line me-1"></i> NIK terdapat pada KTP elektronik Anda</small>
+                                    <small class="text-muted"><i class='bx bx-info-circle me-1'></i> NIK terdapat pada KTP elektronik Anda</small>
                                 </div>
 
                                 <div class="mb-4">
@@ -246,7 +245,7 @@ unset($__errorArgs, $__bag); ?>
                                         <a href="<?php echo e(route('warga.password.request')); ?>" class="text-primary fw-medium text-decoration-none fs-13">Lupa kata sandi?</a>
                                     </div>
                                     <div class="input-group input-group-lg auth-pass-inputgroup">
-                                        <span class="input-group-text bg-light border-end-0"><i class="ri-lock-password-line"></i></span>
+                                        <span class="input-group-text bg-light border-end-0"><i class='bx bx-lock-alt'></i></span>
                                         <input type="password" class="form-control form-control-lg border-start-0 pe-5 <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -278,36 +277,36 @@ unset($__errorArgs, $__bag); ?>
 
                                 <div class="mb-4">
                                     <button class="btn btn-primary btn-lg w-100 waves-effect waves-light" type="submit">
-                                        <i class="ri-login-box-line me-1 align-middle"></i> Masuk Sekarang
+                                        <i class='bx bx-log-in me-1 align-middle'></i> Masuk Sekarang
                                     </button>
                                 </div>
 
                                 <div class="card-separator">
                                     <span class="text-muted">atau</span>
                                 </div>
-                                
+
                                 <div class="mb-3">
                                     <a href="<?php echo e(route('login')); ?>" class="btn btn-outline-secondary btn-lg w-100">
-                                        <i class="ri-shield-user-line me-1"></i> Masuk Sebagai Petugas
+                                        <i class='bx bx-shield-alt-2 me-1'></i> Masuk Sebagai Petugas
                                     </a>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    
+
                     <div class="mt-4 text-center" data-aos="fade-up" data-aos-delay="500">
                         <p class="mb-3 text-white">Belum punya akun? <a href="<?php echo e(route('register')); ?>" class="fw-semibold text-white text-decoration-underline"> Daftar Sekarang </a></p>
-                        
+
                         <div class="mt-4 d-flex justify-content-center gap-3">
                             <div class="d-flex align-items-center text-white-50">
                                 <div class="feature-icon">
-                                    <i class="ri-file-paper-2-line"></i>
+                                    <i class='bx bx-file-document'></i>
                                 </div>
                                 <small>Layanan Dokumen</small>
                             </div>
                             <div class="d-flex align-items-center text-white-50">
                                 <div class="feature-icon">
-                                    <i class="ri-time-line"></i>
+                                    <i class='bx bx-timer'></i>
                                 </div>
                                 <small>Proses Cepat</small>
                             </div>
@@ -341,7 +340,7 @@ unset($__errorArgs, $__bag); ?>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         AOS.init();
-        
+
         // NIK input validation - only allow numbers
         const nikInput = document.getElementById('nik');
         nikInput.addEventListener('input', function() {
@@ -350,14 +349,14 @@ unset($__errorArgs, $__bag); ?>
                 this.value = this.value.slice(0, 16);
             }
         });
-        
+
         // Floating animations for form controls
         const formControls = document.querySelectorAll('.form-control');
         formControls.forEach(input => {
             input.addEventListener('focus', function() {
                 this.parentElement.classList.add('border-primary');
             });
-            
+
             input.addEventListener('blur', function() {
                 this.parentElement.classList.remove('border-primary');
             });

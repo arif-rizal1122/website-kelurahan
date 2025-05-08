@@ -7,12 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PengajuanSurat\StorePengajuanSuratWargaRequest;
 use App\Models\Config;
 use App\Models\JenisSurat;
+use App\Models\Keterangan;
 use App\Models\PengajuanSurat;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use Barryvdh\DomPDF\Facade\Pdf; 
 
 class WargaController extends Controller
 {
@@ -51,21 +53,39 @@ class WargaController extends Controller
     public function storePengajuanWarga(StorePengajuanSuratWargaRequest $request)
     {
         try {
-            $data = $request->validated();
-            $data['warga_id'] = Auth::guard('warga')->id();
-            $data['status'] = \App\Enums\Status::DIAJUKAN;
-    
+            $dataPengajuan = $request->validated();
+            $dataPengajuan['warga_id'] = Auth::guard('warga')->id();
+            $dataPengajuan['status'] = Status::DIAJUKAN;
+
+            // Buat record di tabel keterangans
+            $keterangan = Keterangan::create([
+                'apa' => $dataPengajuan['apa'] ?? null,
+                'mengapa' => $dataPengajuan['mengapa'] ?? null,
+                'kapan' => $dataPengajuan['kapan'] ?? null,
+                'di_mana' => $dataPengajuan['di_mana'] ?? null,
+                'siapa' => $dataPengajuan['siapa'] ?? null,
+                'bagaimana' => $dataPengajuan['bagaimana'] ?? null,
+            ]);
+            $dataPengajuan['keterangan_id'] = $keterangan->id;
+            unset($dataPengajuan['apa'], $dataPengajuan['mengapa'], $dataPengajuan['kapan'], $dataPengajuan['di_mana'], $dataPengajuan['siapa'], $dataPengajuan['bagaimana']);
             if ($request->hasFile('file_pendukung')) {
-                $data['file_pendukung'] = $request->file('file_pendukung')->store('surat_pendukung', 'public');
+                $file = $request->file('file_pendukung');
+
+                if ($file->isValid()) {
+                    $dataPengajuan['file_pendukung'] = $file->store('surat_pendukung', 'public');
+                } else {
+                    throw new \Exception('File tidak valid: ' . $file->getErrorMessage());
+                }
             }
-            PengajuanSurat::create($data);
+            PengajuanSurat::create($dataPengajuan);
             session()->flash('success', 'Pengajuan surat berhasil dikirim.');
-            return redirect()->back(); 
+            return redirect()->back();
         } catch (\Exception $e) {
             session()->flash('error', 'Terjadi kesalahan saat membuat pengajuan surat: ' . $e->getMessage());
             return back()->withInput();
         }
     }
+
 
     /**
      * Show menu warga.
@@ -123,67 +143,90 @@ class WargaController extends Controller
     }
 
 
-/**
-     * Menampilkan halaman notifikasi warga (berdasarkan riwayat pengajuan surat).
-     */
-    public function notifikasi(Request $request): View
-{
-    $wargaId = Auth::guard('warga')->id();
 
-    $query = PengajuanSurat::where('warga_id', $wargaId)
-        ->orderBy('created_at', 'desc');
+    public function profile(): View
+    {
+        $user = Auth::guard('warga')->user();
+        $latestActivities = $user->pengajuanSurats()
+            ->orderBy('tanggal_pengajuan', 'desc')
+            ->take(5)
+            ->get();
 
-    // Opsi Filter (berdasarkan request)
-    $jenisFilter = $request->input('jenis');
-    $waktuFilter = $request->input('waktu');
-
-    // Perbaiki logika filter status
-    if ($jenisFilter) {
-        $query->where('status', $jenisFilter);
+        return view('dashboardwarga.profile', compact('latestActivities'));
     }
 
-    if ($waktuFilter) {
-        switch ($waktuFilter) {
-            case 'Hari Ini':
-                $query->whereDate('created_at', today());
-                break;
-            case 'Minggu Ini':
-                $query->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
-                break;
-            case 'Bulan Ini':
-                $query->whereMonth('created_at', now()->month);
-                break;
-    }
-    }
 
-    $pengajuans = $query->paginate(10)
-        ->appends(['jenis' => $jenisFilter, 'waktu' => $waktuFilter]);
-
-    return view('dashboardwarga.notifikasi', compact('pengajuans', 'jenisFilter', 'waktuFilter'));
-}
-
-
-public function profile(): View
-{
-    $user = Auth::guard('warga')->user();
-    $latestActivities = $user->pengajuanSurats()
-                           ->orderBy('tanggal_pengajuan', 'desc')
-                           ->take(5) 
-                           ->get();
-
-    return view('dashboardwarga.profile', compact('latestActivities'));
-}
-
-
-
-    public function riwayat(): View
+    public function riwayat(Request $request): View
     {
         $wargaId = Auth::guard('warga')->id();
-        $pengajuans = PengajuanSurat::where('warga_id', $wargaId)->latest()->get();
-        return view('dashboardwarga.riwayat_pengajuan', compact('pengajuans'));
+        $query = PengajuanSurat::where('warga_id', $wargaId)
+            ->orderBy('created_at', 'desc');
+    
+        $statusFilter = $request->input('status');
+        $waktuFilter = $request->input('waktu');
+    
+        if ($statusFilter) {
+            $query->where('status', $statusFilter);
+        }
+    
+        if ($waktuFilter) {
+            switch ($waktuFilter) {
+                case 'Hari Ini':
+                    $query->whereDate('created_at', today());
+                    break;
+                case 'Minggu Ini':
+                    $query->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
+                    break;
+                case 'Bulan Ini':
+                    $query->whereMonth('created_at', now()->month);
+                    break;
+            }
+        }
+        $pengajuans = $query->paginate(10)
+            ->appends(['status' => $statusFilter, 'waktu' => $waktuFilter]);
+    
+        $jumlahDiajukan = PengajuanSurat::where('warga_id', $wargaId)
+            ->where('status', Status::DIAJUKAN)
+            ->count();
+        $jumlahDiproses = PengajuanSurat::where('warga_id', $wargaId)
+            ->where('status', Status::DIPROSES)
+            ->count();
+        $jumlahSelesai = PengajuanSurat::where('warga_id', $wargaId)
+            ->where('status', Status::SELESAI)
+            ->count();
+        $jumlahDitolak = PengajuanSurat::where('warga_id', $wargaId)
+            ->where('status', Status::DITOLAK)
+            ->count();
+        $jumlahSemua = PengajuanSurat::where('warga_id', $wargaId)->count();
+    
+        return view('dashboardwarga.riwayat_pengajuan', compact('pengajuans', 'statusFilter', 'waktuFilter', 'jumlahDiajukan', 'jumlahDiproses', 'jumlahSelesai', 'jumlahDitolak', 'jumlahSemua'));
     }
 
-        public function showPengajuanWarga(PengajuanSurat $pengajuanSurat): View
+
+
+    
+    // public function updateChecked(Request $request)
+    // {
+    //     $request->validate([
+    //         'checked_ids' => 'required',
+    //     ]);
+    //     $checkedIds = json_decode($request->checked_ids);
+    //     $wargaId = Auth::guard('warga')->id();
+    //     $pengajuans = PengajuanSurat::where('warga_id', $wargaId)->get();
+        
+    //     foreach ($pengajuans as $pengajuan) {
+    //         $pengajuan->cek = in_array($pengajuan->id, $checkedIds);
+    //         $pengajuan->save();
+    //     }
+        
+    //     return redirect()->back()->with('success', 'Checklist berhasil diperbarui');
+    // }
+
+    
+
+
+
+    public function showPengajuanWarga(PengajuanSurat $pengajuanSurat): View
     {
         // Pastikan pengajuan ini milik warga yang sedang login
         if ($pengajuanSurat->warga_id !== Auth::guard('warga')->id()) {
@@ -203,20 +246,19 @@ public function profile(): View
     //         session()->flash('error', 'Surat tidak dapat dicetak karena status saat ini adalah ' . $pengajuanSurat->status->value);
     //         return back();
     //     }
-    
+
     //     // Eager load relasi 'warga', 'jenisSurat', dan 'user'
     //     $pengajuanSurat->load(['warga', 'jenisSurat', 'user']);
-    
+
     //     $config = Config::first(); // Ambil konfigurasi aplikasi Anda
-    
+
     //     $data = [
     //         'pengajuan' => $pengajuanSurat,
     //         'config' => $config,
     //     ];
-    
+
     //     $pdf = Pdf::loadView('dashboardwarga.pdf', $data);
-    
+
     //     return $pdf->stream('pengajuan-surat-' . $pengajuanSurat->id . '.pdf');
     // }
-
 }

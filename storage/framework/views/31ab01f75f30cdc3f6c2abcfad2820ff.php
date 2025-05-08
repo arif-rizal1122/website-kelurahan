@@ -11,4 +11,4 @@
 <link href="<?php echo e(URL::asset('build/css/custom.min.css')); ?>"  rel="stylesheet" type="text/css" />
 
 <link rel="stylesheet" href="<?php echo e(URL::asset('build/libs/sweetalert2/sweetalert2.min.css')); ?>">
-<?php /**PATH /home/arifrizal/Desktop/bckup/website-kelurahan/resources/views/layouts/head-css.blade.php ENDPATH**/ ?>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'><?php /**PATH /home/arifrizal/Desktop/bckup/website-kelurahan/resources/views/layouts/head-css.blade.php ENDPATH**/ ?>
